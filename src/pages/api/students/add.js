@@ -1,43 +1,26 @@
 import { addUser } from "../../../db/users/index";
 import dataTypes from "../../../db/dataTypes";
-var fs = require("fs");
-const formidable = require("formidable");
+import { cookCreatedUserData } from "../../../services/users/index";
+import { checkAuthentication } from "../../../services/api";
 
 async function handler(req, res) {
-  await new Promise(function (resolve, reject) {
-    const form = new formidable.IncomingForm({
-      keepExtensions: true,
-    });
-    form.parse(req, async function (err, fields, files) {
-      if (err) {
-        console.log(err);
-        return res.status(400).send(err);
-      }
-
-      try {
-        const columns = Object.keys(fields)
-          .map((name) => ({
-            name,
-            value: fields[name],
-          }))
-          .concat(
-            Object.keys(files).map((name) => ({
-              name,
-              value: fs.readFileSync(files[name].filepath),
-            }))
-          );
-
+  try {
+    return await checkAuthentication({
+      req,
+      res,
+      cb: async () => {
+        const data = await cookCreatedUserData(req);
         await addUser({
-          columns,
+          columns: data.columns,
           role: dataTypes.role.data.student,
         });
         res.redirect("/students");
-      } catch (err) {
-        console.log(err);
-        res.status(400).send(err);
-      }
+      },
     });
-  });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send(err);
+  }
 }
 
 export const config = {

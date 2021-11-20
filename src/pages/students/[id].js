@@ -1,18 +1,29 @@
 import Head from "next/head";
-import { UserProfile } from "../../components";
+import { UserProfile, Header } from "../../components";
 import { getSingleStudentProps } from "../../services/pages/students";
+import { checkAuthentication } from "../../services/pages";
 
 const SingleStudent = ({ data }) => {
   if (!data) {
     return <div>not found</div>;
   }
-  return <UserProfile pageType="Student" data={data} />;
+  return (
+    <>
+      <Header />
+      <UserProfile pageType="Student" data={data} />
+    </>
+  );
 };
 
-const getServerSideProps = ({ params }) => {
-  return {
-    props: getSingleStudentProps({ id: +params.id }),
-  };
+const getServerSideProps = async ({ params, req }) => {
+  return await checkAuthentication({
+    req,
+    cb: () => {
+      return {
+        props: getSingleStudentProps({ id: +params.id }),
+      };
+    },
+  });
 };
 
 export { getServerSideProps };

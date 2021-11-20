@@ -33,7 +33,7 @@ const schema = {
       name: "password",
       isRequired: true,
       displayName: "Password",
-      type: dataTypes.text,
+      type: dataTypes.password,
     },
     role: {
       name: "role",

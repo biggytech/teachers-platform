@@ -7,6 +7,10 @@ const dataTypes = {
     dataType: "text",
     htmlType: "text",
   },
+  password: {
+    dataType: "text",
+    htmlType: "password",
+  },
   bytea: {
     dataType: "bytea",
     htmlType: "file",

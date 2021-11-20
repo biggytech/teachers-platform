@@ -1,11 +1,13 @@
 import Head from "next/head";
 import Link from "next/Link";
-import { Table } from "../../components";
+import { Table, Header } from "../../components";
 import { getTeachersProps } from "../../services/pages/teachers";
+import { checkAuthentication } from "../../services/pages";
 
 const TeachersList = ({ data }) => {
   return (
     <>
+      <Header />
       <Head>
         <title>Teachers</title>
       </Head>
@@ -28,13 +30,18 @@ const TeachersList = ({ data }) => {
   );
 };
 
-const getServerSideProps = ({ query }) => {
-  return {
-    props: getTeachersProps({
-      page: +query.page || 1,
-      limit: +query.limit || 20,
-    }),
-  };
+const getServerSideProps = async ({ query, req }) => {
+  return await checkAuthentication({
+    req,
+    cb: () => {
+      return {
+        props: getTeachersProps({
+          page: +query.page || 1,
+          limit: +query.limit || 20,
+        }),
+      };
+    },
+  });
 };
 
 export { getServerSideProps };

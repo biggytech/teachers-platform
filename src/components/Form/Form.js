@@ -1,11 +1,11 @@
-const Form = ({ name, action, columns }) => {
+const Form = ({
+  name,
+  action,
+  columns,
+  encType = "application/x-www-form-urlencoded",
+}) => {
   return (
-    <form
-      className="p-4"
-      action={action}
-      encType="multipart/form-data"
-      method="post"
-    >
+    <form className="p-4" action={action} encType={encType} method="post">
       <h1 className="mb-2 text-gray-600 font-bold md:text-2xl text-xl">
         {name}
       </h1>
