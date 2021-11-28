@@ -1,7 +1,6 @@
-import { getUserByUsername } from "../../db/users/index";
-import schema from "../../db/users/schema";
-import dataTypes from "../../db/dataTypes";
-import { authenticateUser } from "../../services/tokens";
+import { getTeacherByUsername } from "../../../db/teachers/index";
+import teachersSchema from "../../../db/teachers/schema";
+import { authenticateUser } from "../../../services/tokens";
 var bcrypt = require("bcryptjs");
 
 // const cookieOptions = {
@@ -16,16 +15,22 @@ async function handler(req, res) {
   try {
     const { username, password } = req.body;
 
-    const columns = [schema.columns.username, schema.columns.password];
+    let user;
 
-    const user = await getUserByUsername({
+    const columns = [
+      teachersSchema.columns.username,
+      teachersSchema.columns.password,
+    ];
+
+    user = await getTeacherByUsername({
       username,
       columns,
-      role: dataTypes.role.data.student,
     });
+
     if (!user) {
       throw new Error("not found");
     }
+
     var val = bcrypt.compareSync(password, user.password); // true
 
     if (val) {
@@ -33,7 +38,7 @@ async function handler(req, res) {
 
       res.redirect("/students");
     } else {
-      res.redirect("/login?invalid=true");
+      res.redirect("/login/teacher?invalid=true");
     }
   } catch (err) {
     console.log(err);

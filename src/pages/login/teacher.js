@@ -1,16 +1,20 @@
 import Head from "next/head";
 
-import { Form } from "../components";
-import { getLoginProps } from "../services/pages/login";
+import { Form } from "../../components";
+import { getTeacherLoginProps } from "../../services/pages/login";
 
 const Login = ({ columns, isInvalid }) => {
   return (
     <>
       <Head>
-        <title>Login</title>
+        <title>Login | Teacher</title>
       </Head>
       {isInvalid && <div>Invalid credentials</div>}
-      <Form name="Login" action="/api/login" columns={columns} />
+      <Form
+        name="Login | Teacher"
+        action="/api/login/teacher"
+        columns={columns}
+      />
     </>
   );
 };
@@ -18,7 +22,7 @@ const Login = ({ columns, isInvalid }) => {
 const getServerSideProps = ({ query }) => {
   console.log(query);
   return {
-    props: getLoginProps({ isInvalid: !!query.invalid }),
+    props: getTeacherLoginProps({ isInvalid: !!query.invalid }),
   };
 };
 

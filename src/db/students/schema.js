@@ -1,7 +1,7 @@
 const dataTypes = require("../dataTypes");
 
 const schema = {
-  name: "users",
+  name: "students",
   columns: {
     id: {
       name: "id",
@@ -35,16 +35,15 @@ const schema = {
       displayName: "Password",
       type: dataTypes.password,
     },
-    role: {
-      name: "role",
-      isRequired: true,
-      displayName: "Role",
-      type: dataTypes.role,
-    },
     picture: {
       name: "picture",
       displayName: "User picture",
       type: dataTypes.bytea,
+    },
+    teacher_id: {
+      name: "teacher_id",
+      displayName: "Teacher",
+      type: dataTypes.foreignKey,
     },
   },
 };

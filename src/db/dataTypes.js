@@ -15,15 +15,9 @@ const dataTypes = {
     dataType: "bytea",
     htmlType: "file",
   },
-  role: {
-    dataType: "role",
-    type: "enum",
-    data: {
-      student: "student",
-      teacher: "teacher",
-      admin: "admin",
-    },
-    htmlType: "text",
+  foreignKey: {
+    dataType: "integer",
+    htmlType: "number", // TODO: fix to select value
   },
 };
 

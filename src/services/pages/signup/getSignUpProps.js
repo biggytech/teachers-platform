@@ -1,17 +1,14 @@
 import schema from "../../../db/teachers/schema";
 
-const getAddTeacherProps = async () => {
+const getSignUpProps = ({}) => {
   const columns = [
+    schema.columns.username,
     schema.columns.firstname,
     schema.columns.lastname,
-    schema.columns.username,
     schema.columns.password,
-    schema.columns.picture,
   ];
 
-  return {
-    columns,
-  };
+  return { columns };
 };
 
-export default getAddTeacherProps;
+export default getSignUpProps;

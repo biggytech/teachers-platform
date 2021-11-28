@@ -1,27 +1,25 @@
 const { pool } = require("../index");
-const schema = require("../../db/users/schema");
+const schema = require("../../db/students/schema");
 
-const getUsers = ({ columns, role, page, limit }) => {
+const getStudents = ({ columns, page, limit }) => {
   const offset = (+page - 1) * +limit;
 
   return new Promise((resolve, reject) => {
     const query = {
       text: `
       SELECT 
-        (SELECT COUNT(*) FROM "${schema.name}" WHERE ${
-        schema.columns.role.name
-      }=$1) as total_records,
+        (SELECT COUNT(*) FROM "${schema.name}") as total_records,
           (SELECT json_agg(t.*) FROM (
             SELECT ${columns.map(({ name }) => name).join(",")} FROM "${
         schema.name
-      }" WHERE ${schema.columns.role.name}=$1 ORDER BY ${
+      }" ORDER BY ${
         schema.columns.id.name
       } ASC OFFSET ${offset} LIMIT ${limit}) 
             AS t
           ) AS rows
         ;
       `,
-      values: [role],
+      values: [],
     };
 
     pool.query(query, (error, results) => {
@@ -37,17 +35,15 @@ const getUsers = ({ columns, role, page, limit }) => {
   });
 };
 
-const getUser = ({ id, columns, role }) => {
+const getStudent = ({ id, columns }) => {
   return new Promise((resolve, reject) => {
     const query = {
       text: `
       SELECT ${columns.map(({ name }) => name).join(",")} FROM "${
         schema.name
-      }" WHERE ${schema.columns.role.name}=$1 AND ${
-        schema.columns.id.name
-      }=$2 LIMIT 1;
+      }" WHERE ${schema.columns.id.name}=$1 LIMIT 1;
       `,
-      values: [role, id],
+      values: [id],
     };
 
     pool.query(query, (error, results) => {
@@ -60,17 +56,15 @@ const getUser = ({ id, columns, role }) => {
   });
 };
 
-const getUserByUsername = ({ username, columns, role }) => {
+const getStudentByUsername = ({ username, columns }) => {
   return new Promise((resolve, reject) => {
     const query = {
       text: `
       SELECT ${columns.map(({ name }) => name).join(",")} FROM "${
         schema.name
-      }" WHERE ${schema.columns.role.name}=$1 AND ${
-        schema.columns.username.name
-      }=$2 LIMIT 1;
+      }" WHERE ${schema.columns.username.name}=$1 LIMIT 1;
       `,
-      values: [role, username],
+      values: [username],
     };
 
     pool.query(query, (error, results) => {
@@ -83,16 +77,13 @@ const getUserByUsername = ({ username, columns, role }) => {
   });
 };
 
-const addUser = ({ columns, role }) => {
+const addStudent = ({ columns }) => {
   return new Promise((resolve, reject) => {
     const query = {
       text: `INSERT INTO "${schema.name}" (${columns
         .map(({ name }) => name)
-        .concat(schema.columns.role.name)
-        .join(",")}) VALUES (${columns
-        .concat(schema.columns.role.name)
-        .map((_, index) => `$${index + 1}`)})`,
-      values: columns.map(({ value }) => value).concat(role),
+        .join(",")}) VALUES (${columns.map((_, index) => `$${index + 1}`)})`,
+      values: columns.map(({ value }) => value),
     };
 
     pool.query(query, (error, results) => {
@@ -106,8 +97,8 @@ const addUser = ({ columns, role }) => {
 };
 
 module.exports = {
-  getUsers,
-  getUser,
-  addUser,
-  getUserByUsername,
+  getStudents,
+  getStudent,
+  addStudent,
+  getStudentByUsername,
 };

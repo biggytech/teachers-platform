@@ -6,7 +6,7 @@ const checkAuthentication = async ({ req, cb }) => {
   if (!auth) {
     return {
       redirect: {
-        destination: "/login",
+        destination: "/login/teacher",
         permanent: false,
       },
     };

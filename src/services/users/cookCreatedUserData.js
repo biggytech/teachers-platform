@@ -1,5 +1,3 @@
-import schema from "../../db/users/schema";
-
 var fs = require("fs");
 var bcrypt = require("bcryptjs");
 const formidable = require("formidable");
@@ -10,7 +8,7 @@ const hashPassword = (password) => {
   return hash;
 };
 
-const cookCreatedUserData = (req) => {
+const cookCreatedUserData = (req, schema) => {
   return new Promise(function (resolve, reject) {
     const form = new formidable.IncomingForm({
       keepExtensions: true,

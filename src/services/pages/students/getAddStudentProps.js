@@ -1,4 +1,4 @@
-import schema from "../../../db/users/schema";
+import schema from "../../../db/students/schema";
 
 const getAddStudentProps = async () => {
   const columns = [

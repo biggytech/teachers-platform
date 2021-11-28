@@ -1,11 +1,10 @@
-import { getUser } from "../../../db/users/index";
-import schema from "../../../db/users/schema";
+import { getStudent } from "../../../db/students/index";
+import schema from "../../../db/students/schema";
 import dataTypes from "../../../db/dataTypes";
 
 const getSingleStudentProps = async ({ id }) => {
   const columns = [
     schema.columns.id,
-    schema.columns.role,
     schema.columns.firstname,
     schema.columns.lastname,
     schema.columns.username,
@@ -13,10 +12,9 @@ const getSingleStudentProps = async ({ id }) => {
     schema.columns.picture,
   ];
 
-  const data = await getUser({
+  const data = await getStudent({
     id,
     columns,
-    role: dataTypes.role.data.student,
   });
   if (data.picture) {
     data.picture = Buffer.from(data.picture).toString("base64");

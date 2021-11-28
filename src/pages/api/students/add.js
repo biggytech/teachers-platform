@@ -1,5 +1,5 @@
-import { addUser } from "../../../db/users/index";
-import dataTypes from "../../../db/dataTypes";
+import { addStudent } from "../../../db/students/index";
+import schema from "../../../db/students/schema";
 import { cookCreatedUserData } from "../../../services/users/index";
 import { checkAuthentication } from "../../../services/api";
 
@@ -9,10 +9,9 @@ async function handler(req, res) {
       req,
       res,
       cb: async () => {
-        const data = await cookCreatedUserData(req);
-        await addUser({
+        const data = await cookCreatedUserData(req, schema);
+        await addStudent({
           columns: data.columns,
-          role: dataTypes.role.data.student,
         });
         res.redirect("/students");
       },
