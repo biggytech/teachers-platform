@@ -8,10 +8,14 @@ async function handler(req, res) {
     return await checkAuthentication({
       req,
       res,
-      cb: async () => {
+      cb: async (user) => {
         const data = await cookCreatedUserData(req, schema);
+        console.log(data.columns);
         await addStudent({
-          columns: data.columns,
+          columns: data.columns.concat({
+            name: schema.columns.teacher_id.name,
+            value: user.id,
+          }),
         });
         res.redirect("/students");
       },

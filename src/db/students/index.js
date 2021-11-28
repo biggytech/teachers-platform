@@ -1,5 +1,6 @@
 const { pool } = require("../index");
 const schema = require("../../db/students/schema");
+const teachersSchema = require("../../db/teachers/schema");
 
 const getStudents = ({ columns, page, limit }) => {
   const offset = (+page - 1) * +limit;
@@ -21,6 +22,56 @@ const getStudents = ({ columns, page, limit }) => {
       `,
       values: [],
     };
+
+    pool.query(query, (error, results) => {
+      if (error) {
+        return reject(error);
+      }
+
+      resolve({
+        rows: results.rows[0]?.rows ?? [],
+        totalRecords: results.rows[0]?.total_records ?? 0,
+      });
+    });
+  });
+};
+
+const getStudentsWithTeachers = ({ columns, page, limit, teacherColumn }) => {
+  const offset = (+page - 1) * +limit;
+  // SELECT students.username,
+  // teachers.firstname || ' ' || teachers.lastname teacher
+  // FROM students
+  // INNER JOIN teachers ON students.teacher_id = teachers.id;
+  return new Promise((resolve, reject) => {
+    const query = {
+      text: `
+      SELECT 
+        (SELECT COUNT(*) FROM "${schema.name}") as total_records,
+          (SELECT json_agg(t.*) FROM (
+            SELECT ${columns
+              .map(({ name }) => `${schema.name}.${name}`)
+              .join(",")}, 
+            ${teachersSchema.name}.${
+        teachersSchema.columns.firstname.name
+      } || ' ' || ${teachersSchema.name}.${
+        teachersSchema.columns.lastname.name
+      } ${teacherColumn} 
+            FROM "${schema.name}" INNER JOIN ${teachersSchema.name} ON ${
+        schema.name
+      }.${schema.columns.teacher_id.name} = ${teachersSchema.name}.${
+        teachersSchema.columns.id.name
+      } 
+      ORDER BY ${schema.name}.${
+        schema.columns.id.name
+      } ASC OFFSET ${offset} LIMIT ${limit}) 
+            AS t
+          ) AS rows
+        ;
+      `,
+      values: [],
+    };
+
+    console.log(query.text);
 
     pool.query(query, (error, results) => {
       if (error) {
@@ -86,6 +137,8 @@ const addStudent = ({ columns }) => {
       values: columns.map(({ value }) => value),
     };
 
+    console.log(query);
+
     pool.query(query, (error, results) => {
       if (error) {
         return reject(error);
@@ -98,6 +151,7 @@ const addStudent = ({ columns }) => {
 
 module.exports = {
   getStudents,
+  getStudentsWithTeachers,
   getStudent,
   addStudent,
   getStudentByUsername,

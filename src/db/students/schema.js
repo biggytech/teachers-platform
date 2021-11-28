@@ -42,6 +42,7 @@ const schema = {
     },
     teacher_id: {
       name: "teacher_id",
+      columnName: "teacher",
       displayName: "Teacher",
       type: dataTypes.foreignKey,
     },

@@ -1,7 +1,6 @@
 import { addTeacher } from "../../db/teachers/index";
 import schema from "../../db/teachers/schema";
 import { cookCreatedUserData } from "../../services/users/index";
-import { checkAuthentication } from "../../services/api";
 
 async function handler(req, res) {
   try {

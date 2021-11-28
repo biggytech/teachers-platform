@@ -4,11 +4,9 @@ import dataTypes from "../../../db/dataTypes";
 
 const getTeachersProps = async ({ page, limit }) => {
   const columns = [
-    schema.columns.id,
     schema.columns.firstname,
     schema.columns.lastname,
     schema.columns.username,
-    schema.columns.password,
   ];
 
   const data = await getTeachers({

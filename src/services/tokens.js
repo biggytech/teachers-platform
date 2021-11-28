@@ -3,7 +3,7 @@ import { serialize } from "cookie";
 
 const cookieOptions = {
   httpOnly: true,
-  maxAge: 2592000,
+  // maxAge: 2592000,
   path: "/",
   //   domain: "localhost.com",
   sameSite: "Strict",

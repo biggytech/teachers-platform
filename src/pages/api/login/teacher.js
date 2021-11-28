@@ -18,6 +18,7 @@ async function handler(req, res) {
     let user;
 
     const columns = [
+      teachersSchema.columns.id,
       teachersSchema.columns.username,
       teachersSchema.columns.password,
     ];
@@ -34,7 +35,7 @@ async function handler(req, res) {
     var val = bcrypt.compareSync(password, user.password); // true
 
     if (val) {
-      await authenticateUser(res, { username });
+      await authenticateUser(res, { username, id: user.id });
 
       res.redirect("/students");
     } else {

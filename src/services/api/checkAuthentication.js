@@ -1,12 +1,12 @@
 import { userFromRequest } from "../tokens";
 
 const checkAuthentication = async ({ req, res, cb }) => {
-  const auth = await userFromRequest(req);
-  console.log(auth);
-  if (!auth) {
-    return res.redirect("/students");
+  const user = await userFromRequest(req);
+  console.log(user);
+  if (!user) {
+    return res.redirect("/login/teacher");
   } else {
-    return cb();
+    return cb(user);
   }
 };
 
