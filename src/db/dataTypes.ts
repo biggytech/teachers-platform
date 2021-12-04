@@ -1,5 +1,11 @@
 export type DBDataType = "integer" | "text" | "bytea";
-export type HtmlType = "number" | "text" | "password" | "file";
+export type HtmlType =
+  | "number"
+  | "text"
+  | "password"
+  | "file"
+  | "hidden"
+  | "url";
 
 export type DataTypeDefinition = {
   dataType: DBDataType;
@@ -26,9 +32,10 @@ export class DataType implements DataTypeDefinition {
 export class DataTypes {
   static readonly INTEGER = new DataType("integer", "number");
   static readonly TEXT = new DataType("text", "text");
+  static readonly URL = new DataType("text", "url");
   static readonly PASSWORD = new DataType("text", "password");
   static readonly BYTEA = new DataType("bytea", "file");
-  static readonly FOREIGN_KEY = new DataType("integer", "number");
+  static readonly FOREIGN_KEY = new DataType("integer", "hidden");
 }
 
 module.exports = DataTypes;

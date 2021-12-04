@@ -1,15 +1,14 @@
 import Schema, { Column } from "@db/Schema";
-
 const DataTypes = require("../dataTypes");
 
 const schema = new Schema({
-  name: "programs",
+  name: "materials",
   columns: [
     new Column({
       name: "title",
-      isRequired: true,
       displayName: "Title",
       type: DataTypes.TEXT,
+      isRequired: true,
     }),
 
     new Column({
@@ -19,10 +18,16 @@ const schema = new Schema({
     }),
 
     new Column({
-      name: "owner_id",
-      columnName: "owner",
-      displayName: "Owner",
+      name: "link",
+      displayName: "Link",
+      type: DataTypes.URL,
+    }),
+
+    new Column({
+      name: "program_id",
+      displayName: "Program",
       type: DataTypes.FOREIGN_KEY,
+      columnName: "program",
     }),
   ],
 });

@@ -1,6 +1,8 @@
+import DataTypes from "@db/dataTypes";
+
 export type SchemaDefinition = {
   name: string;
-  columns: Map<string, ColumnDefinition>;
+  columns: Array<ColumnDefinition>;
 };
 
 export type ColumnDefinition = {
@@ -11,6 +13,10 @@ export type ColumnDefinition = {
   constraints?: string;
   columnName?: string;
 };
+
+export interface ColumnDefinitionWithValue extends ColumnDefinition {
+  value?: string | null;
+}
 
 export class Column implements ColumnDefinition {
   name: string;
@@ -34,6 +40,12 @@ export class Column implements ColumnDefinition {
       columnName: this.columnName,
     };
   }
+
+  withValue(value?: string): ColumnDefinitionWithValue {
+    return Object.assign(this.toObject(), {
+      value: value ?? null,
+    });
+  }
 }
 
 export type ColumnValue = {
@@ -44,14 +56,24 @@ export type ColumnValue = {
 
 export class Schema implements SchemaDefinition {
   name: string;
-  columns: Map<string, Column> = new Map();
+  columns: Array<Column> = [];
 
   constructor(schemaDefinition: SchemaDefinition) {
     Object.assign(this, schemaDefinition);
+    this.columns = [
+      ...this.columns,
+      new Column({
+        name: "id",
+        displayName: "Id",
+        type: DataTypes.INTEGER,
+        isRequired: true,
+        constraints: "SERIAL PRIMARY KEY",
+      }),
+    ];
   }
 
   column(columnName: string): Column {
-    return this.columns.get(columnName);
+    return this.columns.find((c) => c.name === columnName);
   }
 }
 

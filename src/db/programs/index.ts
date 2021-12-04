@@ -107,9 +107,36 @@ const getProgramsWithOwners = ({ columns, page, limit, ownerColumn }) => {
   });
 };
 
-export { addProgram, getProgramsWithOwners };
+const getProgram = ({ id, columns, ownerColumn }) => {
+  return new Promise((resolve, reject) => {
+    const query = {
+      text: `
+      SELECT ${columns.map(({ name }) => `${schema.name}.${name}`).join(",")}, 
+        ${teachersSchema.name}.${
+        teachersSchema.column("firstname").name
+      } || ' ' || ${teachersSchema.name}.${
+        teachersSchema.column("lastname").name
+      } ${ownerColumn} 
+        FROM "${schema.name}" INNER JOIN ${teachersSchema.name} ON ${
+        schema.name
+      }.${schema.column("owner_id").name} = ${teachersSchema.name}.${
+        teachersSchema.column("id").name
+      } 
+        WHERE ${schema.name}.${schema.column("id").name}=$1 LIMIT 1;
+      `,
+      values: [id],
+    };
 
-// module.exports = {
-//   addProgram,
-//   getProgramsWithOwners,
-// };
+    console.log(query);
+
+    pool.query(query, (error, results) => {
+      if (error) {
+        return reject(error);
+      }
+
+      resolve(results.rows[0] ?? null);
+    });
+  });
+};
+
+export { addProgram, getProgramsWithOwners, getProgram };

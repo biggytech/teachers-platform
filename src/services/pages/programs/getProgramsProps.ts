@@ -3,6 +3,7 @@ import schema from "@db/programs/schema";
 
 const getProgramsProps = async ({ page, limit }) => {
   const columns = [
+    schema.column("id").toObject(),
     schema.column("title").toObject(),
     schema.column("description").toObject(),
   ];

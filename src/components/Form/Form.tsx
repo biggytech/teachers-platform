@@ -1,11 +1,11 @@
 import React, { forwardRef, useImperativeHandle, useRef } from "react";
 import { Input } from "@components/fields";
-import { ColumnDefinition } from "@db/Schema";
+import { ColumnDefinitionWithValue } from "@db/Schema";
 
 type FormProps = {
   name: string;
   action?: string;
-  columns: Array<ColumnDefinition>;
+  columns: Array<ColumnDefinitionWithValue>;
   encType?: string;
 };
 
@@ -26,9 +26,6 @@ const Form = forwardRef((props: FormProps, ref) => {
       getValues: () => {
         const result = {};
         if (formRef.current) {
-          // for (var value of new FormData(formRef.current).entries()) {
-          //   result[value[0]] = value[1];
-          // }
           const els = formRef.current.querySelectorAll("[data-input-name]");
           Array.prototype.forEach.call(els, (el) => {
             result[el.dataset.inputName] =
@@ -61,6 +58,7 @@ const Form = forwardRef((props: FormProps, ref) => {
           type={column.type.htmlType}
           isRequired={column.isRequired}
           data-input-name={column.name}
+          value={column.value}
         />
       ))}
       {action && (
