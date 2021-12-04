@@ -4,6 +4,8 @@ import { Table, Header } from "../../components";
 import { getTeachersProps } from "../../services/pages/teachers";
 import { checkAuthentication } from "../../services/pages";
 
+import { LinkButton } from "@components";
+
 const TeachersList = ({ data }) => {
   return (
     <>
@@ -11,13 +13,12 @@ const TeachersList = ({ data }) => {
       <Head>
         <title>Teachers</title>
       </Head>
-      <Link href="/teachers/add">
-        <button className="m-1 float-right cursor-pointer bg-green-500 hover:bg-green-400 text-white py-2 px-4 rounded inline-flex items-center">
-          &#43;&nbsp;&nbsp;
-          <span>Add</span>
-        </button>
-      </Link>
-
+      <LinkButton
+        link="/teachers/add"
+        text="Add"
+        icon="&#43;&nbsp;&nbsp;"
+        className="float-right"
+      />
       <Table
         pathName="/teachers"
         columns={data.columns}

@@ -3,6 +3,7 @@ import Link from "next/Link";
 import { Table, Header } from "../../components";
 import { getStudentsProps } from "../../services/pages/students";
 import { checkAuthentication } from "../../services/pages";
+import { LinkButton } from "@components";
 
 const StudentsList = ({ data }) => {
   return (
@@ -11,13 +12,12 @@ const StudentsList = ({ data }) => {
         <title>Students</title>
       </Head>
       <Header />
-      <Link href="/students/add">
-        <button className="m-1 float-right cursor-pointer bg-green-500 hover:bg-green-400 text-white py-2 px-4 rounded inline-flex items-center">
-          &#43;&nbsp;&nbsp;
-          <span>Add</span>
-        </button>
-      </Link>
-
+      <LinkButton
+        link="/students/add"
+        text="Add"
+        icon="&#43;&nbsp;&nbsp;"
+        className="float-right"
+      />
       <Table
         pathName="/students"
         columns={data.columns}

@@ -1,0 +1,45 @@
+// import { addStudent } from "../../../db/students/index";
+// import schema from "../../../db/students/schema";
+// import { cookCreatedUserData } from "../../../services/users/index";
+import { checkAuthentication } from "@services/api";
+import { addProgram } from "@db/programs/index";
+import { cookCreatedProgramData } from "@services/pages/programs";
+
+async function handler(req, res) {
+  try {
+    return await checkAuthentication({
+      req,
+      res,
+      cb: async (user) => {
+        const { program, points } = req.body;
+        console.log(req.body);
+        console.log(program, points);
+        const { columns, children } = cookCreatedProgramData({
+          program,
+          points,
+          userId: user.id,
+        });
+        await addProgram({ columns, children });
+        // console.log(data.columns);
+        // await addStudent({
+        //   columns: data.columns.concat({
+        //     name: schema.columns.teacher_id.name,
+        //     value: user.id,
+        //   }),
+        // });
+        // res.redirect("/students");
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send(err);
+  }
+}
+
+export const config = {
+  api: {
+    bodyParser: true,
+  },
+};
+
+export default handler;
