@@ -1,6 +1,3 @@
-// import { addStudent } from "../../../db/students/index";
-// import schema from "../../../db/students/schema";
-// import { cookCreatedUserData } from "../../../services/users/index";
 import { checkAuthentication } from "@services/api";
 import { addProgram } from "@db/programs/index";
 import { cookCreatedProgramData } from "@services/pages/programs";

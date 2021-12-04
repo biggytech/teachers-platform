@@ -1,46 +1,35 @@
 import teachersSchema from "@db/teachers/schema";
-const { pool } = require("../index");
-const schema = require("../../db/students/schema");
+import schema from "@db/students/schema";
+import {
+  executeQuery,
+  createSimpleInsertQuery,
+  createPaginatedSelectQuery,
+  createLimitedSelectQuery,
+} from "@services/db";
 
-const getStudents = ({ columns, page, limit }) => {
+const getStudents = async ({ columns, page, limit }) => {
   const offset = (+page - 1) * +limit;
 
-  return new Promise((resolve, reject) => {
-    const query = {
-      text: `
-      SELECT 
-        (SELECT COUNT(*) FROM "${schema.name}") as total_records,
-          (SELECT json_agg(t.*) FROM (
-            SELECT ${columns.map(({ name }) => name).join(",")} FROM "${
-        schema.name
-      }" ORDER BY ${
-        schema.columns.id.name
-      } ASC OFFSET ${offset} LIMIT ${limit}) 
-            AS t
-          ) AS rows
-        ;
-      `,
-      values: [],
-    };
+  const query = createPaginatedSelectQuery({ schema, columns, offset, limit });
 
-    pool.query(query, (error, results) => {
-      if (error) {
-        return reject(error);
-      }
+  const results = await executeQuery(query);
 
-      resolve({
-        rows: results.rows[0]?.rows ?? [],
-        totalRecords: results.rows[0]?.total_records ?? 0,
-      });
-    });
-  });
+  return {
+    rows: results.rows[0]?.rows ?? [],
+    totalRecords: results.rows[0]?.total_records ?? 0,
+  };
 };
 
-const getStudentsWithTeachers = ({ columns, page, limit, teacherColumn }) => {
+const getStudentsWithTeachers = async ({
+  columns,
+  page,
+  limit,
+  teacherColumn,
+  teacherId,
+}) => {
   const offset = (+page - 1) * +limit;
-  return new Promise((resolve, reject) => {
-    const query = {
-      text: `
+  const query = {
+    text: `
       SELECT 
         (SELECT COUNT(*) FROM "${schema.name}") as total_records,
           (SELECT json_agg(t.*) FROM (
@@ -48,101 +37,58 @@ const getStudentsWithTeachers = ({ columns, page, limit, teacherColumn }) => {
               .map(({ name }) => `${schema.name}.${name}`)
               .join(",")}, 
             ${teachersSchema.name}.${
-        teachersSchema.column("firstname").name
-      } || ' ' || ${teachersSchema.name}.${
-        teachersSchema.column("lastname").name
-      } ${teacherColumn} 
+      teachersSchema.column("firstname").name
+    } || ' ' || ${teachersSchema.name}.${
+      teachersSchema.column("lastname").name
+    } ${teacherColumn} 
             FROM "${schema.name}" INNER JOIN ${teachersSchema.name} ON ${
-        schema.name
-      }.${schema.columns.teacher_id.name} = ${teachersSchema.name}.${
-        teachersSchema.column("id").name
-      } 
+      schema.name
+    }.${schema.column("teacher_id").name} = ${teachersSchema.name}.${
+      teachersSchema.column("id").name
+    } AND ${schema.name}.${schema.column("teacher_id").name}=$1
       ORDER BY ${schema.name}.${
-        schema.columns.id.name
-      } ASC OFFSET ${offset} LIMIT ${limit}) 
+      schema.column("id").name
+    } ASC OFFSET ${offset} LIMIT ${limit}) 
             AS t
           ) AS rows
         ;
       `,
-      values: [],
-    };
+    values: [teacherId],
+  };
 
-    console.log(query.text);
+  const results = await executeQuery(query);
 
-    pool.query(query, (error, results) => {
-      if (error) {
-        return reject(error);
-      }
-
-      resolve({
-        rows: results.rows[0]?.rows ?? [],
-        totalRecords: results.rows[0]?.total_records ?? 0,
-      });
-    });
-  });
+  return {
+    rows: results.rows[0]?.rows ?? [],
+    totalRecords: results.rows[0]?.total_records ?? 0,
+  };
 };
 
-const getStudent = ({ id, columns }) => {
-  return new Promise((resolve, reject) => {
-    const query = {
-      text: `
-      SELECT ${columns.map(({ name }) => name).join(",")} FROM "${
-        schema.name
-      }" WHERE ${schema.columns.id.name}=$1 LIMIT 1;
-      `,
-      values: [id],
-    };
+const getStudent = async ({ id, columns }) => {
+  const query = createLimitedSelectQuery({ schema, columns, searchValue: id });
 
-    pool.query(query, (error, results) => {
-      if (error) {
-        return reject(error);
-      }
+  const results = await executeQuery(query);
 
-      resolve(results.rows[0] ?? null);
-    });
-  });
+  return results.rows[0] ?? null;
 };
 
-const getStudentByUsername = ({ username, columns }) => {
-  return new Promise((resolve, reject) => {
-    const query = {
-      text: `
-      SELECT ${columns.map(({ name }) => name).join(",")} FROM "${
-        schema.name
-      }" WHERE ${schema.columns.username.name}=$1 LIMIT 1;
-      `,
-      values: [username],
-    };
-
-    pool.query(query, (error, results) => {
-      if (error) {
-        return reject(error);
-      }
-
-      resolve(results.rows[0] ?? null);
-    });
+const getStudentByUsername = async ({ username, columns }) => {
+  const query = createLimitedSelectQuery({
+    schema,
+    columns,
+    searchValue: username,
+    searchColumn: schema.column("username").name,
   });
+
+  const results = await executeQuery(query);
+
+  return results.rows[0] ?? null;
 };
 
-const addStudent = ({ columns }) => {
-  return new Promise((resolve, reject) => {
-    const query = {
-      text: `INSERT INTO "${schema.name}" (${columns
-        .map(({ name }) => name)
-        .join(",")}) VALUES (${columns.map((_, index) => `$${index + 1}`)})`,
-      values: columns.map(({ value }) => value),
-    };
+const addStudent = async ({ columns }) => {
+  const query = createSimpleInsertQuery({ schema, columns });
 
-    console.log(query);
-
-    pool.query(query, (error, results) => {
-      if (error) {
-        return reject(error);
-      }
-
-      resolve();
-    });
-  });
+  await executeQuery(query);
 };
 
 module.exports = {

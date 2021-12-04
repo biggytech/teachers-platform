@@ -1,16 +1,27 @@
-export type DBDataType = "integer" | "text" | "bytea";
+export type DBDataType = "integer" | "text" | "bytea" | "date";
 export type HtmlType =
   | "number"
   | "text"
   | "password"
   | "file"
   | "hidden"
-  | "url";
+  | "url"
+  | "date"
+  | "select";
 
 export type DataTypeDefinition = {
   dataType: DBDataType;
   htmlType: HtmlType;
 };
+
+export type SelectableOption = {
+  name: string;
+  displayName: string;
+};
+
+export interface SelectableDataTypeDefinition extends DataTypeDefinition {
+  options: Array<SelectableOption>;
+}
 
 export class DataType implements DataTypeDefinition {
   dataType: DBDataType;
@@ -27,6 +38,13 @@ export class DataType implements DataTypeDefinition {
       htmlType: this.htmlType,
     };
   }
+
+  asSelectable(options: Array<SelectableOption>): SelectableDataTypeDefinition {
+    return Object.assign(this.toObject(), {
+      htmlType: "select",
+      options,
+    });
+  }
 }
 
 export class DataTypes {
@@ -36,6 +54,7 @@ export class DataTypes {
   static readonly PASSWORD = new DataType("text", "password");
   static readonly BYTEA = new DataType("bytea", "file");
   static readonly FOREIGN_KEY = new DataType("integer", "hidden");
+  static readonly DATE = new DataType("date", "date");
 }
 
-module.exports = DataTypes;
+export default DataTypes;

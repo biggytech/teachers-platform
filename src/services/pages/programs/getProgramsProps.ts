@@ -1,7 +1,7 @@
 import { getProgramsWithOwners } from "@db/programs/index";
 import schema from "@db/programs/schema";
 
-const getProgramsProps = async ({ page, limit }) => {
+const getProgramsProps = async ({ page, limit, ownerId }) => {
   const columns = [
     schema.column("id").toObject(),
     schema.column("title").toObject(),
@@ -12,6 +12,7 @@ const getProgramsProps = async ({ page, limit }) => {
     page,
     limit,
     ownerColumn: schema.column("owner_id").columnName,
+    ownerId,
   });
   console.log(data);
 

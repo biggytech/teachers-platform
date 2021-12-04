@@ -1,5 +1,5 @@
 import Schema, { Column } from "@db/Schema";
-const DataTypes = require("../dataTypes");
+import DataTypes from "@db/dataTypes";
 
 const schema = new Schema({
   name: "teachers",

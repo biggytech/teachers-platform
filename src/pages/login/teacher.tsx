@@ -20,7 +20,6 @@ const Login = ({ columns, isInvalid }) => {
 };
 
 const getServerSideProps = ({ query }) => {
-  console.log(query);
   return {
     props: getTeacherLoginProps({ isInvalid: !!query.invalid }),
   };

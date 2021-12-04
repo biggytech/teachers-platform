@@ -1,6 +1,6 @@
-import { getStudentByUsername } from "../../../db/students/index";
-import studentsSchema from "../../../db/students/schema";
-import { authenticateUser } from "../../../services/tokens";
+import { getStudentByUsername } from "@db/students/index";
+import studentsSchema from "@db/students/schema";
+import { authenticateUser } from "@services/tokens";
 var bcrypt = require("bcryptjs");
 
 // const cookieOptions = {
@@ -18,9 +18,9 @@ async function handler(req, res) {
     let user;
 
     const columns = [
-      studentsSchema.columns.id,
-      studentsSchema.columns.username,
-      studentsSchema.columns.password,
+      studentsSchema.column("id").toObject(),
+      studentsSchema.column("username").toObject(),
+      studentsSchema.column("password").toObject(),
     ];
 
     user = await getStudentByUsername({

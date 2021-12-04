@@ -1,12 +1,12 @@
-import schema from "../../../db/students/schema";
+import schema from "@db/students/schema";
 
 const getAddStudentProps = async () => {
   const columns = [
-    schema.columns.firstname,
-    schema.columns.lastname,
-    schema.columns.username,
-    schema.columns.password,
-    schema.columns.picture,
+    schema.column("firstname").toObject(),
+    schema.column("lastname").toObject(),
+    schema.column("username").toObject(),
+    schema.column("password").toObject(),
+    schema.column("picture").toObject(),
   ];
 
   return {

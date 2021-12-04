@@ -33,11 +33,12 @@ const StudentsList = ({ data }) => {
 const getServerSideProps = async ({ query, req, res }) => {
   return await checkAuthentication({
     req,
-    cb: () => {
+    cb: (user) => {
       return {
         props: getStudentsProps({
           page: +query.page || 1,
           limit: +query.limit || 20,
+          teacherId: user.id,
         }),
       };
     },

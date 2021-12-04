@@ -8,12 +8,7 @@ const Header = () => {
           {/* <img className="h-9" src="logo.png" alt="logo" />
           Logo Here. */}
         </a>
-        <ul className="hidden md:flex px-4 font-semibold font-heading space-x-12">
-          {/* <li>
-            <a className="hover:text-gray-200" href="#">
-              Home
-            </a>
-          </li> */}
+        <ul className="flex px-4 font-semibold font-heading space-x-12">
           <li>
             <Link href="/students">
               <a className="hover:text-gray-200 mr-4" href="#">

@@ -1,52 +1,47 @@
-const DataTypes = require("../dataTypes");
+import Schema, { Column } from "@db/Schema";
 
-const schema = {
+import DataTypes from "@db/dataTypes";
+
+const schema = new Schema({
   name: "students",
-  columns: {
-    id: {
-      name: "id",
-      displayName: "Id",
-      type: DataTypes.INTEGER,
-      isRequired: true,
-      constraints: "SERIAL PRIMARY KEY",
-    },
-    firstname: {
+  columns: [
+    new Column({
       name: "firstname",
       isRequired: true,
       displayName: "Firstname",
       type: DataTypes.TEXT,
-    },
-    lastname: {
+    }),
+    new Column({
       name: "lastname",
       isRequired: true,
       displayName: "Lastname",
       type: DataTypes.TEXT,
-    },
-    username: {
+    }),
+    new Column({
       name: "username",
       isRequired: true,
       displayName: "Username",
       type: DataTypes.TEXT,
       constraints: "UNIQUE",
-    },
-    password: {
+    }),
+    new Column({
       name: "password",
       isRequired: true,
       displayName: "Password",
       type: DataTypes.PASSWORD,
-    },
-    picture: {
+    }),
+    new Column({
       name: "picture",
       displayName: "User picture",
       type: DataTypes.BYTEA,
-    },
-    teacher_id: {
+    }),
+    new Column({
       name: "teacher_id",
       columnName: "teacher",
       displayName: "Teacher",
       type: DataTypes.FOREIGN_KEY,
-    },
-  },
-};
+    }),
+  ],
+});
 
-module.exports = schema;
+export default schema;

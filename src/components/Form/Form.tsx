@@ -50,17 +50,41 @@ const Form = forwardRef((props: FormProps, ref) => {
       <h1 className="mb-2 text-gray-600 font-bold md:text-2xl text-xl">
         {name}
       </h1>
-      {columns.map((column) => (
-        <Input
-          key={column.name}
-          name={column.name}
-          displayName={column.displayName}
-          type={column.type.htmlType}
-          isRequired={column.isRequired}
-          data-input-name={column.name}
-          value={column.value}
-        />
-      ))}
+      {columns.map((column) => {
+        if (column.type.htmlType !== "select") {
+          return (
+            <Input
+              key={column.name}
+              name={column.name}
+              displayName={column.displayName}
+              type={column.type.htmlType}
+              isRequired={column.isRequired}
+              data-input-name={column.name}
+              value={column.value}
+            />
+          );
+        } else {
+          return (
+            <label key={column.name}>
+              {column.displayName}
+              <select
+                name={column.name}
+                required={column.isRequired}
+                data-input-name={column.name}
+                value={column.value}
+              >
+                {column.type.options.map((option) => {
+                  return (
+                    <option key={option.name} value={option.name}>
+                      {option.displayName}
+                    </option>
+                  );
+                })}
+              </select>
+            </label>
+          );
+        }
+      })}
       {action && (
         <button
           type="submit"

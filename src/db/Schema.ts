@@ -1,4 +1,9 @@
-import DataTypes from "@db/dataTypes";
+import DataTypes, {
+  DataType,
+  DataTypeDefinition,
+  SelectableOption,
+  SelectableDataTypeDefinition,
+} from "@db/dataTypes";
 
 export type SchemaDefinition = {
   name: string;
@@ -8,7 +13,7 @@ export type SchemaDefinition = {
 export type ColumnDefinition = {
   name: string;
   displayName: string;
-  type: any;
+  type: DataTypeDefinition | SelectableDataTypeDefinition;
   isRequired?: boolean;
   constraints?: string;
   columnName?: string;
@@ -21,7 +26,7 @@ export interface ColumnDefinitionWithValue extends ColumnDefinition {
 export class Column implements ColumnDefinition {
   name: string;
   displayName: string;
-  type: any;
+  type: DataType;
   isRequired?: boolean = false;
   constraints: string | null = null;
   columnName: string | null = null;
@@ -44,6 +49,14 @@ export class Column implements ColumnDefinition {
   withValue(value?: string): ColumnDefinitionWithValue {
     return Object.assign(this.toObject(), {
       value: value ?? null,
+    });
+  }
+
+  asSelectable(options: Array<SelectableOption>): ColumnDefinition {
+    return Object.assign(this.toObject(), {
+      type: this.type.asSelectable
+        ? this.type.asSelectable(options)
+        : this.type,
     });
   }
 }

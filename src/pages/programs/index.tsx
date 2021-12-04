@@ -32,11 +32,12 @@ const ProgramsList = ({ data }) => {
 const getServerSideProps = async ({ query, req, res }) => {
   return await checkAuthentication({
     req,
-    cb: () => {
+    cb: (user) => {
       return {
         props: getProgramsProps({
           page: +query.page || 1,
           limit: +query.limit || 20,
+          ownerId: user.id,
         }),
       };
     },

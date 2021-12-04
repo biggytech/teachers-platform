@@ -1,7 +1,7 @@
-import { addStudent } from "../../../db/students/index";
-import schema from "../../../db/students/schema";
-import { cookCreatedUserData } from "../../../services/users/index";
-import { checkAuthentication } from "../../../services/api";
+import { addStudent } from "@db/students/index";
+import schema from "@db/students/schema";
+import { cookCreatedUserData } from "@services/users/index";
+import { checkAuthentication } from "@services/api";
 
 async function handler(req, res) {
   try {
@@ -13,7 +13,7 @@ async function handler(req, res) {
         console.log(data.columns);
         await addStudent({
           columns: data.columns.concat({
-            name: schema.columns.teacher_id.name,
+            name: schema.column("teacher_id").name,
             value: user.id,
           }),
         });
