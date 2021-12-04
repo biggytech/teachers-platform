@@ -4,7 +4,7 @@ import { getPointsProps } from "@services/pages/points";
 import { checkAuthentication } from "@services/pages";
 import { LinkButton } from "@components";
 
-const PointsList = ({ data }) => {
+const PointsList = ({ data, programId }) => {
   console.log(data);
   return (
     <>
@@ -12,12 +12,12 @@ const PointsList = ({ data }) => {
         <title>Points</title>
       </Head>
       <Header />
-      {/* <LinkButton
-        link="/programs/add"
+      <LinkButton
+        link={`/points/add?program_id=${programId}`}
         text="Add"
         icon="&#43;&nbsp;&nbsp;"
         className="float-right"
-      /> */}
+      />
       <Table columns={data.columns} rows={data.rows} isUsePagination={false} />
     </>
   );

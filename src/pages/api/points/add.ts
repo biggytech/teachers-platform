@@ -1,7 +1,6 @@
-import { checkAuthentication } from "@services/api";
-import { addProgram } from "@db/programs/index";
-// import { cookCreatedProgramData } from "@services/pages/programs";
+import { addPoint } from "@db/points/index";
 import { cookSimpleBodyData } from "@services/pages";
+import { checkAuthentication } from "@services/api";
 
 async function handler(req, res) {
   try {
@@ -12,7 +11,7 @@ async function handler(req, res) {
         const columns = await cookSimpleBodyData({
           body: req.body,
         });
-        await addProgram({
+        await addPoint({
           columns,
         });
         res.redirect("/programs");
@@ -23,11 +22,5 @@ async function handler(req, res) {
     return res.status(400).send(err);
   }
 }
-
-export const config = {
-  api: {
-    bodyParser: true,
-  },
-};
 
 export default handler;

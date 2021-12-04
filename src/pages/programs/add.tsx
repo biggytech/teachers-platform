@@ -7,23 +7,23 @@ import { useCallback, useRef } from "react";
 // action="/api/programs/add"
 
 const AddProgram = ({ columns, steps }) => {
-  const formRef = useRef(null);
-  const stepsRef = useRef(null);
+  // const formRef = useRef(null);
+  // const stepsRef = useRef(null);
 
-  const handleSubmit = useCallback(() => {
-    const formValues = formRef.current?.getValues();
-    const stepValues = stepsRef.current?.getValues();
-    fetch("/api/programs/add", {
-      method: "POST",
-      body: JSON.stringify({
-        program: formValues,
-        points: stepValues,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-  }, [stepsRef, stepsRef.current]);
+  // const handleSubmit = useCallback(() => {
+  //   const formValues = formRef.current?.getValues();
+  //   const stepValues = stepsRef.current?.getValues();
+  //   fetch("/api/programs/add", {
+  //     method: "POST",
+  //     body: JSON.stringify({
+  //       program: formValues,
+  //       points: stepValues,
+  //     }),
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  // }, [stepsRef, stepsRef.current]);
 
   return (
     <>
@@ -31,9 +31,9 @@ const AddProgram = ({ columns, steps }) => {
         <title>Programs | Add</title>
       </Head>
       <Header />
-      <Form ref={formRef} name="Add a program" columns={columns} />
-      <Steps ref={stepsRef} title="Points of the program" fields={steps} />
-      <Button text="Submit" onClick={handleSubmit} />
+      <Form action="/api/programs/add" name="Add a program" columns={columns} />
+      {/* <Steps ref={stepsRef} title="Points of the program" fields={steps} />
+      <Button text="Submit" onClick={handleSubmit} /> */}
     </>
   );
 };
@@ -41,9 +41,11 @@ const AddProgram = ({ columns, steps }) => {
 const getServerSideProps = async ({ req }) => {
   return await checkAuthentication({
     req,
-    cb: () => {
+    cb: (user) => {
       return {
-        props: getAddProgramProps(),
+        props: getAddProgramProps({
+          ownerId: user.id,
+        }),
       };
     },
   });

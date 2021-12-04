@@ -24,6 +24,7 @@ const getPointsProps = async ({ program_id }) => {
       columns: newColumns,
       rows: data,
     },
+    programId: program_id,
   };
 };
 

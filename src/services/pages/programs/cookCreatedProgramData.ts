@@ -2,6 +2,7 @@ import { ColumnValue } from "@db/Schema";
 import schema from "@db/programs/schema";
 import pointsSchema from "@db/points/schema";
 
+// TODO: remove
 const cookCreatedProgramData = ({
   program,
   points,

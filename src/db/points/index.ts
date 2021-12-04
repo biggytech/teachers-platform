@@ -1,8 +1,8 @@
 import schema from "@db/points/schema";
 import programsSchema from "@db/programs/schema";
 import { executeQuery } from "@services/db";
-
-const { pool } = require("@db/index");
+import { ColumnValue } from "@db/Schema";
+import { createSimpleInsertQuery } from "@services/db";
 
 const getPointsWithPrograms = async ({ programId, columns, programColumn }) => {
   const query = {
@@ -24,6 +24,16 @@ const getPointsWithPrograms = async ({ programId, columns, programColumn }) => {
   };
 
   return (await executeQuery(query)).rows;
+};
+
+export const addPoint = async ({
+  columns,
+}: {
+  columns: Array<ColumnValue>;
+}) => {
+  const query = createSimpleInsertQuery({ schema, columns });
+
+  await executeQuery(query);
 };
 
 export { getPointsWithPrograms };
