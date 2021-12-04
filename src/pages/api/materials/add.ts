@@ -1,6 +1,6 @@
 import { addMaterial } from "@db/materials/index";
 import schema from "@db/materials/schema";
-import { cookSimpleBodyData } from "@services/pages;
+import { cookSimpleBodyData } from "@services/pages";
 import { checkAuthentication } from "@services/api";
 
 async function handler(req, res) {

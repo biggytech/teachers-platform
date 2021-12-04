@@ -1,20 +1,16 @@
-import { getProgramsProps } from "@services/pages/programs";
-
+import { getTeachersProps } from "@services/pages/teachers";
 import { createQueryPage } from "@components/pages";
 
 const { runGetServerSideProps, QueryPage } = createQueryPage({
-  title: "Programs",
-  addLink: "/programs/add",
-  pathName: "/programs",
+  title: "Teachers",
+  addLink: "/teachers/add",
+  pathName: "/teachers",
 });
 
 const getServerSideProps = async (data) => {
   const props = await runGetServerSideProps(data);
   return {
-    props: await getProgramsProps({
-      ...props,
-      ownerId: props.userId,
-    }),
+    props: await getTeachersProps(props),
   };
 };
 

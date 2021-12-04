@@ -1,5 +1,5 @@
 import Schema, { Column } from "@db/Schema";
-const DataTypes = require("../dataTypes");
+import DataTypes from "@db/DataTypes";
 
 const schema = new Schema({
   name: "materials",
@@ -27,7 +27,6 @@ const schema = new Schema({
       name: "program_id",
       displayName: "Program",
       type: DataTypes.FOREIGN_KEY,
-      columnName: "program",
     }),
   ],
 });

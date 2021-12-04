@@ -7,6 +7,7 @@ const getTeachersProps = async ({ page, limit }) => {
     schema.column("lastname").toObject(),
     schema.column("username").toObject(),
   ];
+  console.log(page, limit);
 
   const data = await getTeachers({
     columns,

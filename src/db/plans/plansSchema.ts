@@ -1,4 +1,4 @@
-import DataTypes, { DataType } from "@db/dataTypes";
+import DataTypes, { DataType } from "@db/DataTypes";
 import Schema, { Column } from "@db/Schema";
 
 const plansSchema = new Schema({
@@ -15,14 +15,12 @@ const plansSchema = new Schema({
       displayName: "Student",
       type: DataTypes.FOREIGN_KEY,
       isRequired: true,
-      columnName: "student",
     }),
     new Column({
       name: "program_id",
       displayName: "Program",
       type: DataTypes.FOREIGN_KEY,
       isRequired: true,
-      columnName: "program",
     }),
   ],
 });

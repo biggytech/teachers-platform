@@ -1,28 +1,21 @@
-import Schema, { Column } from "@db/Schema";
 import DataTypes from "@db/DataTypes";
+import Schema, { Column } from "@db/Schema";
 
-const schema = new Schema({
-  name: "programs",
+const tasksSchema = new Schema({
+  name: "tasks",
   columns: [
     new Column({
       name: "title",
-      isRequired: true,
       displayName: "Title",
       type: DataTypes.TEXT,
+      isRequired: true,
     }),
-
     new Column({
       name: "description",
       displayName: "Description",
       type: DataTypes.TEXT,
     }),
-
-    new Column({
-      name: "owner_id",
-      displayName: "Owner",
-      type: DataTypes.FOREIGN_KEY,
-    }),
   ],
 });
 
-export default schema;
+export default tasksSchema;

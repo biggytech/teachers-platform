@@ -1,6 +1,6 @@
 import Schema, { Column } from "@db/Schema";
 
-import DataTypes from "@db/dataTypes";
+import DataTypes from "@db/DataTypes";
 
 const schema = new Schema({
   name: "students",
@@ -37,7 +37,6 @@ const schema = new Schema({
     }),
     new Column({
       name: "teacher_id",
-      columnName: "teacher",
       displayName: "Teacher",
       type: DataTypes.FOREIGN_KEY,
     }),

@@ -1,5 +1,5 @@
 import Schema, { SchemaDefinition, Column, ColumnDefinition } from "@db/Schema";
-import DataTypes from "@db/dataTypes";
+import DataTypes from "@db/DataTypes";
 
 const schema = new Schema({
   name: "points",
@@ -25,7 +25,6 @@ const schema = new Schema({
 
     new Column({
       name: "program_id",
-      columnName: "program",
       displayName: "Program",
       type: DataTypes.FOREIGN_KEY,
     }),

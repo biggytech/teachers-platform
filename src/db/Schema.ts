@@ -3,7 +3,7 @@ import DataTypes, {
   DataTypeDefinition,
   SelectableOption,
   SelectableDataTypeDefinition,
-} from "@db/dataTypes";
+} from "@db/DataTypes";
 
 export type SchemaDefinition = {
   name: string;
@@ -33,6 +33,10 @@ export class Column implements ColumnDefinition {
 
   constructor(columnDefinition: ColumnDefinition) {
     Object.assign(this, columnDefinition);
+
+    if (columnDefinition.type === DataTypes.FOREIGN_KEY) {
+      this.columnName = this.name;
+    }
   }
 
   toObject(): ColumnDefinition {

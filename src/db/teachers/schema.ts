@@ -1,5 +1,5 @@
 import Schema, { Column } from "@db/Schema";
-import DataTypes from "@db/dataTypes";
+import DataTypes from "@db/DataTypes";
 
 const schema = new Schema({
   name: "teachers",
