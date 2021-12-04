@@ -3,23 +3,15 @@ import { serialize } from "cookie";
 
 const cookieOptions = {
   httpOnly: true,
-  // maxAge: 2592000,
   path: "/",
-  //   domain: "localhost.com",
   sameSite: "Strict",
-  //   domain: "localhost",
   secure: process.env.NODE_ENV === "production",
-  //   secure: false,
 };
 
 function setCookie(res, name, value, options = {}) {
   const stringValue =
     typeof value === "object" ? `j:${JSON.stringify(value)}` : String(value);
 
-  console.log("options");
-  //   console.log(serialize(name, String(stringValue), options));
-  //   res.setHeader("Set-Cookie", "__Host-ID=123; Secure; Path=/");
-  //   res.cookie("cookieName", 1, { maxAge: 900000, httpOnly: true, path: "/" });
   res.setHeader("Set-Cookie", serialize(name, String(stringValue), options));
 }
 
@@ -54,14 +46,6 @@ export async function userFromRequest(req) {
     const data = jwt.verify(token, process.env.JWT_TOKEN_KEY);
 
     if (!data) return null;
-
-    //   const user = await prisma.user.findUnique({
-    //     where: { email: (data as any).email },
-    //   });
-
-    //   if (user) user.password = "";
-
-    //   return user;
     return data;
   } catch (error) {
     console.log("ERROR!!!");
