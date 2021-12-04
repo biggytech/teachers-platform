@@ -28,7 +28,7 @@ export class Column implements ColumnDefinition {
     return {
       name: this.name,
       displayName: this.displayName,
-      type: this.type,
+      type: this.type.toObject ? this.type.toObject() : this.type,
       isRequired: this.isRequired,
       constraints: this.constraints,
       columnName: this.columnName,

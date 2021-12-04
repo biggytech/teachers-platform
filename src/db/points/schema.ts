@@ -1,8 +1,8 @@
 import Schema, { SchemaDefinition, Column, ColumnDefinition } from "@db/Schema";
 
-const dataTypes = require("../dataTypes");
+const DataTypes = require("../dataTypes");
 
-const definition = new Schema({
+const schema = new Schema({
   name: "points",
   columns: new Map<string, Column>([
     [
@@ -10,7 +10,7 @@ const definition = new Schema({
       new Column({
         name: "id",
         displayName: "Id",
-        type: dataTypes.integer,
+        type: DataTypes.INTEGER,
         isRequired: true,
         constraints: "SERIAL PRIMARY KEY",
       }),
@@ -21,7 +21,7 @@ const definition = new Schema({
         name: "title",
         isRequired: true,
         displayName: "Title",
-        type: dataTypes.text,
+        type: DataTypes.TEXT,
       }),
     ],
     [
@@ -29,7 +29,7 @@ const definition = new Schema({
       new Column({
         name: "description",
         displayName: "Description",
-        type: dataTypes.text,
+        type: DataTypes.TEXT,
       }),
     ],
     [
@@ -37,7 +37,7 @@ const definition = new Schema({
       new Column({
         name: "duration_days",
         displayName: "Duration (days)",
-        type: dataTypes.integer,
+        type: DataTypes.INTEGER,
       }),
     ],
     [
@@ -46,12 +46,10 @@ const definition = new Schema({
         name: "program_id",
         columnName: "program",
         displayName: "Program",
-        type: dataTypes.foreignKey,
+        type: DataTypes.FOREIGN_KEY,
       }),
     ],
   ]),
 });
-
-const schema = new Schema(definition);
 
 module.exports = schema;

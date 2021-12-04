@@ -1,5 +1,5 @@
 import { addTeacher } from "../../db/teachers/index";
-import schema from "../../db/teachers/schema";
+import schema from "@db/teachers/schema";
 import { cookCreatedUserData } from "../../services/users/index";
 
 async function handler(req, res) {

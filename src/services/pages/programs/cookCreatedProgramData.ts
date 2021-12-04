@@ -17,7 +17,7 @@ const cookCreatedProgramData = ({
     });
   }
   columns.push({
-    name: schema.columns.owner_id.name,
+    name: schema.column("owner_id").name,
     value: userId,
   });
 

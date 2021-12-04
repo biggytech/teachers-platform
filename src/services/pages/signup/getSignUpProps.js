@@ -1,12 +1,14 @@
-import schema from "../../../db/teachers/schema";
+import schema from "@db/teachers/schema";
 
 const getSignUpProps = ({}) => {
   const columns = [
-    schema.columns.username,
-    schema.columns.firstname,
-    schema.columns.lastname,
-    schema.columns.password,
+    schema.column("username").toObject(),
+    schema.column("firstname").toObject(),
+    schema.column("lastname").toObject(),
+    schema.column("password").toObject(),
   ];
+
+  console.log(columns);
 
   return { columns };
 };

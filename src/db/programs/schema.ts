@@ -1,33 +1,47 @@
-const dataTypes = require("../dataTypes");
+import Schema, { Column } from "@db/Schema";
 
-const schema = {
+const DataTypes = require("../dataTypes");
+
+const schema = new Schema({
   name: "programs",
-  columns: {
-    id: {
-      name: "id",
-      displayName: "Id",
-      type: dataTypes.integer,
-      isRequired: true,
-      constraints: "SERIAL PRIMARY KEY",
-    },
-    title: {
-      name: "title",
-      isRequired: true,
-      displayName: "Title",
-      type: dataTypes.text,
-    },
-    description: {
-      name: "description",
-      displayName: "Description",
-      type: dataTypes.text,
-    },
-    owner_id: {
-      name: "owner_id",
-      columnName: "owner",
-      displayName: "Owner",
-      type: dataTypes.foreignKey,
-    },
-  },
-};
+  columns: new Map<string, Column>([
+    [
+      "id",
+      new Column({
+        name: "id",
+        displayName: "Id",
+        type: DataTypes.INTEGER,
+        isRequired: true,
+        constraints: "SERIAL PRIMARY KEY",
+      }),
+    ],
+    [
+      "title",
+      new Column({
+        name: "title",
+        isRequired: true,
+        displayName: "Title",
+        type: DataTypes.TEXT,
+      }),
+    ],
+    [
+      "description",
+      new Column({
+        name: "description",
+        displayName: "Description",
+        type: DataTypes.TEXT,
+      }),
+    ],
+    [
+      "owner_id",
+      new Column({
+        name: "owner_id",
+        columnName: "owner",
+        displayName: "Owner",
+        type: DataTypes.FOREIGN_KEY,
+      }),
+    ],
+  ]),
+});
 
-module.exports = schema;
+export default schema;

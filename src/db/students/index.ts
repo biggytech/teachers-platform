@@ -1,6 +1,6 @@
+import teachersSchema from "@db/teachers/schema";
 const { pool } = require("../index");
 const schema = require("../../db/students/schema");
-const teachersSchema = require("../../db/teachers/schema");
 
 const getStudents = ({ columns, page, limit }) => {
   const offset = (+page - 1) * +limit;
@@ -38,10 +38,6 @@ const getStudents = ({ columns, page, limit }) => {
 
 const getStudentsWithTeachers = ({ columns, page, limit, teacherColumn }) => {
   const offset = (+page - 1) * +limit;
-  // SELECT students.username,
-  // teachers.firstname || ' ' || teachers.lastname teacher
-  // FROM students
-  // INNER JOIN teachers ON students.teacher_id = teachers.id;
   return new Promise((resolve, reject) => {
     const query = {
       text: `
@@ -52,14 +48,14 @@ const getStudentsWithTeachers = ({ columns, page, limit, teacherColumn }) => {
               .map(({ name }) => `${schema.name}.${name}`)
               .join(",")}, 
             ${teachersSchema.name}.${
-        teachersSchema.columns.firstname.name
+        teachersSchema.column("firstname").name
       } || ' ' || ${teachersSchema.name}.${
-        teachersSchema.columns.lastname.name
+        teachersSchema.column("lastname").name
       } ${teacherColumn} 
             FROM "${schema.name}" INNER JOIN ${teachersSchema.name} ON ${
         schema.name
       }.${schema.columns.teacher_id.name} = ${teachersSchema.name}.${
-        teachersSchema.columns.id.name
+        teachersSchema.column("id").name
       } 
       ORDER BY ${schema.name}.${
         schema.columns.id.name

@@ -1,5 +1,6 @@
+import schema from "@db/teachers/schema";
+
 const { pool } = require("../index");
-const schema = require("../../db/teachers/schema");
 
 const getTeachers = ({ columns, page, limit }) => {
   const offset = (+page - 1) * +limit;
@@ -13,7 +14,7 @@ const getTeachers = ({ columns, page, limit }) => {
             SELECT ${columns.map(({ name }) => name).join(",")} FROM "${
         schema.name
       }" ORDER BY ${
-        schema.columns.id.name
+        schema.column("id").name
       } ASC OFFSET ${offset} LIMIT ${limit}) 
             AS t
           ) AS rows
@@ -43,7 +44,7 @@ const getTeacher = ({ id, columns }) => {
       text: `
       SELECT ${columns.map(({ name }) => name).join(",")} FROM "${
         schema.name
-      }" WHERE ${schema.columns.id.name}=$1 LIMIT 1;
+      }" WHERE ${schema.column("id").name}=$1 LIMIT 1;
       `,
       values: [id],
     };
@@ -64,7 +65,7 @@ const getTeacherByUsername = ({ username, columns }) => {
       text: `
       SELECT ${columns.map(({ name }) => name).join(",")} FROM "${
         schema.name
-      }" WHERE ${schema.columns.username.name}=$1 LIMIT 1;
+      }" WHERE ${schema.column("username").name}=$1 LIMIT 1;
       `,
       values: [username],
     };

@@ -1,6 +1,5 @@
-import { getStudent } from "../../../db/students/index";
-import schema from "../../../db/students/schema";
-import dataTypes from "../../../db/dataTypes";
+import { getStudent } from "@db/students/index";
+import schema from "@db/students/schema";
 
 const getSingleStudentProps = async ({ id }) => {
   const columns = [

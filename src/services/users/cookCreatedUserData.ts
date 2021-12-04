@@ -1,3 +1,5 @@
+import Schema from "@db/Schema";
+
 var fs = require("fs");
 var bcrypt = require("bcryptjs");
 const formidable = require("formidable");
@@ -8,7 +10,7 @@ const hashPassword = (password) => {
   return hash;
 };
 
-const cookCreatedUserData = (req, schema) => {
+const cookCreatedUserData = (req, schema: Schema) => {
   return new Promise(function (resolve, reject) {
     const form = new formidable.IncomingForm({
       keepExtensions: true,
@@ -22,7 +24,7 @@ const cookCreatedUserData = (req, schema) => {
         const columns = Object.keys(fields)
           .map((name) => {
             const value =
-              name === schema.columns.password.name
+              name === schema.column("password").name
                 ? hashPassword(fields[name])
                 : fields[name];
 

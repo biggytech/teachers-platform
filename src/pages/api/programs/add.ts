@@ -20,14 +20,7 @@ async function handler(req, res) {
           userId: user.id,
         });
         await addProgram({ columns, children });
-        // console.log(data.columns);
-        // await addStudent({
-        //   columns: data.columns.concat({
-        //     name: schema.columns.teacher_id.name,
-        //     value: user.id,
-        //   }),
-        // });
-        // res.redirect("/students");
+        res.redirect("/programs");
       },
     });
   } catch (err) {

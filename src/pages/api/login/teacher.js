@@ -1,5 +1,5 @@
 import { getTeacherByUsername } from "../../../db/teachers/index";
-import teachersSchema from "../../../db/teachers/schema";
+import teachersSchema from "@db/teachers/schema";
 import { authenticateUser } from "../../../services/tokens";
 var bcrypt = require("bcryptjs");
 
@@ -18,9 +18,9 @@ async function handler(req, res) {
     let user;
 
     const columns = [
-      teachersSchema.columns.id,
-      teachersSchema.columns.username,
-      teachersSchema.columns.password,
+      teachersSchema.column("id").toObject(),
+      teachersSchema.column("username").toObject(),
+      teachersSchema.column("password").toObject(),
     ];
 
     user = await getTeacherByUsername({

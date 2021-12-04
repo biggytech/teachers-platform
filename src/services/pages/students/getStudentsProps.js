@@ -1,6 +1,5 @@
 import { getStudentsWithTeachers } from "../../../db/students/index";
 import schema from "../../../db/students/schema";
-import dataTypes from "../../../db/dataTypes";
 
 const getStudentsProps = async ({ page, limit }) => {
   const columns = [

@@ -1,12 +1,11 @@
-import { getTeachers } from "../../../db/teachers/index";
-import schema from "../../../db/teachers/schema";
-import dataTypes from "../../../db/dataTypes";
+import { getTeachers } from "@db/teachers/index";
+import schema from "@db/teachers/schema";
 
 const getTeachersProps = async ({ page, limit }) => {
   const columns = [
-    schema.columns.firstname,
-    schema.columns.lastname,
-    schema.columns.username,
+    schema.column("firstname").toObject(),
+    schema.column("lastname").toObject(),
+    schema.column("username").toObject(),
   ];
 
   const data = await getTeachers({

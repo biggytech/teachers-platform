@@ -1,7 +1,10 @@
-import schema from "../../../db/teachers/schema";
+import schema from "@db/teachers/schema";
 
 const getTeacherLoginProps = ({ isInvalid }) => {
-  const columns = [schema.columns.username, schema.columns.password];
+  const columns = [
+    schema.column("username").toObject(),
+    schema.column("password").toObject(),
+  ];
 
   return { columns, isInvalid };
 };
