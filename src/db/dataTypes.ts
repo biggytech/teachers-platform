@@ -54,6 +54,7 @@ export class DataTypes {
   static readonly PASSWORD = new DataType("text", "password");
   static readonly BYTEA = new DataType("bytea", "file");
   static readonly FOREIGN_KEY = new DataType("integer", "hidden");
+  static readonly MULTIPLE_FOREIGN_KEY = new DataType("integer", "hidden");
   static readonly DATE = new DataType("date", "date");
 }
 

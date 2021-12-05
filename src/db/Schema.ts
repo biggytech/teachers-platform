@@ -8,6 +8,7 @@ import DataTypes, {
 export type SchemaDefinition = {
   name: string;
   columns: Array<ColumnDefinition>;
+  withoutIdentifier?: boolean;
 };
 
 export type ColumnDefinition = {
@@ -74,19 +75,22 @@ export type ColumnValue = {
 export class Schema implements SchemaDefinition {
   name: string;
   columns: Array<Column> = [];
+  withoutIdentifier?: boolean = false;
 
   constructor(schemaDefinition: SchemaDefinition) {
     Object.assign(this, schemaDefinition);
-    this.columns = [
-      ...this.columns,
-      new Column({
-        name: "id",
-        displayName: "Id",
-        type: DataTypes.INTEGER,
-        isRequired: true,
-        constraints: "SERIAL PRIMARY KEY",
-      }),
-    ];
+    if (!this.withoutIdentifier) {
+      this.columns = [
+        ...this.columns,
+        new Column({
+          name: "id",
+          displayName: "Id",
+          type: DataTypes.INTEGER,
+          isRequired: true,
+          constraints: "SERIAL PRIMARY KEY",
+        }),
+      ];
+    }
   }
 
   column(columnName: string): Column {

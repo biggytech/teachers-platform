@@ -1,36 +1,20 @@
-import Head from "next/head";
+import { getAddStudentProps } from "@services/pages/students";
 
-import { Form, Header } from "../../components";
-import { getAddStudentProps } from "../../services/pages/students";
-import { checkAuthentication } from "../../services/pages";
+import { createEditPage } from "@components/pages";
 
-const AddStudent = ({ columns }) => {
-  return (
-    <>
-      <Head>
-        <title>Students | Add</title>
-      </Head>
-      <Header />
-      <Form
-        name="Add a student"
-        encType="multipart/form-data"
-        action="/api/students/add"
-        columns={columns}
-      />
-    </>
-  );
-};
+const { runGetServerSideProps, EditPage } = createEditPage({
+  title: "Students",
+  name: "student",
+  action: "/api/students/add",
+  encType: "multipart/form-data",
+});
 
-const getServerSideProps = async ({ req }) => {
-  return await checkAuthentication({
-    req,
-    cb: () => {
-      return {
-        props: getAddStudentProps(),
-      };
-    },
-  });
+const getServerSideProps = async (data) => {
+  const props = await runGetServerSideProps(data);
+  return {
+    props: await getAddStudentProps(),
+  };
 };
 
 export { getServerSideProps };
-export default AddStudent;
+export default EditPage;

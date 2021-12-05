@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { FieldsProfile } from "@components";
 
 const UserProfile = ({ pageType, data }) => {
   return (
@@ -25,6 +26,7 @@ const UserProfile = ({ pageType, data }) => {
                 <h1 className="text-gray-900 font-bold text-xl leading-8 my-1">
                   {data.firstname} {data.lastname}
                 </h1>
+                <FieldsProfile data={data} />
                 {/* <h3 className="text-gray-600 font-lg text-semibold leading-6">
                   Owner at Her Company Inc.
                 </h3>

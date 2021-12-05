@@ -6,6 +6,7 @@ const { runGetServerSideProps, QueryPage } = createQueryPage({
   title: "Points",
   addLink: (contextId) => `/points/add?program_id=${contextId}`,
   isUsePagination: false,
+  pathName: "/points",
 });
 
 const getServerSideProps = async (data) => {

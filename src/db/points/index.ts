@@ -2,7 +2,10 @@ import schema from "@db/points/schema";
 import programsSchema from "@db/programs/schema";
 import { executeQuery } from "@services/db";
 import { ColumnValue } from "@db/Schema";
-import { createSimpleInsertQuery } from "@services/db";
+import {
+  createSimpleInsertQuery,
+  createLimitedSelectQuery,
+} from "@services/db";
 
 const getPointsWithPrograms = async ({ programId, columns, programColumn }) => {
   const query = {
@@ -34,6 +37,14 @@ export const addPoint = async ({
   const query = createSimpleInsertQuery({ schema, columns });
 
   await executeQuery(query);
+};
+
+export const getPoint = async ({ id, columns }) => {
+  const query = createLimitedSelectQuery({ schema, columns, searchValue: id });
+
+  const results = await executeQuery(query);
+
+  return results.rows[0] ?? null;
 };
 
 export { getPointsWithPrograms };

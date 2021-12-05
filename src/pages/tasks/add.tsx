@@ -1,19 +1,19 @@
-import { getAddPointProps } from "@services/pages/points";
+import { getAddTaskProps } from "@services/pages/tasks";
 
 import { createEditPage } from "@components/pages";
 
 const { runGetServerSideProps, EditPage } = createEditPage({
-  title: "Points",
-  name: "point",
-  action: "/api/points/add",
+  title: "Tasks",
+  name: "task",
+  action: "/api/tasks/add",
 });
 
 const getServerSideProps = async (data) => {
   const props = await runGetServerSideProps(data);
   return {
-    props: await getAddPointProps({
+    props: await getAddTaskProps({
       ...props,
-      programId: +props.query.program_id || null,
+      pointId: +props.query.point_id || null,
     }),
   };
 };

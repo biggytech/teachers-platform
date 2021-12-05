@@ -6,59 +6,12 @@ import {
   createSimpleInsertQuery,
   createSelectByQuery,
 } from "@services/db";
-// const { pool } = require("@db/index");
-// const pointsSchema = require("@db/points/schema");
 
 const addProgram = async ({ columns }: { columns: Array<ColumnValue> }) => {
   const query = createSimpleInsertQuery({ schema, columns });
 
   await executeQuery(query);
 };
-
-// const addProgram = async ({
-//   columns,
-//   children,
-// }: {
-//   columns: Array<ColumnValue>;
-// }) => {
-//   console.log(columns);
-//   let index = 1;
-//   let query;
-//   if (children.length) {
-//     query = {
-//       text: `WITH program_ids AS (
-//           INSERT INTO ${schema.name} (${columns
-//         .map(({ name }) => name)
-//         .join(",")})
-//           values (${columns.map((_, i) => `$${index++}`).join(",")})
-//           RETURNING ${schema.column("id").name} AS program_id)
-//       ${
-//         children.length
-//           ? `INSERT INTO ${pointsSchema.name} (${children[0]
-//               .map(({ name }) => name)
-//               .concat(pointsSchema.column("program_id").name)
-//               .join(",")})
-//       ${children
-//         .map((point) => {
-//           return `SELECT ${point
-//             .map(({ type }, i) =>
-//               type ? `$${index++}::${type}` : `$${index++}`
-//             )
-//             .join(",")}, program_ids.program_id FROM program_ids`;
-//         })
-//         .join(" UNION ")};`
-//           : ";"
-//       }`,
-//       values: columns
-//         .map(({ value }) => value)
-//         .concat(...children.map((child) => child.map(({ value }) => value))),
-//     };
-//   } else {
-//     query = createSimpleInsertQuery({ schema, columns });
-//   }
-
-//   await executeQuery(query);
-// };
 
 const getProgramsWithOwners = async ({
   columns,

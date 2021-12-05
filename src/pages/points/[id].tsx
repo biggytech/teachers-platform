@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { Header, FieldsProfile } from "@components";
-import { getSingleProgramProps } from "@services/pages/programs";
+import { Header } from "@components";
+import { getSinglePointProps } from "@services/pages/points";
 import { checkAuthentication } from "@services/pages";
+import { FieldsProfile } from "@components";
 
-const SingleProgram = ({ data, id }) => {
+const SinglePoint = ({ data, id }) => {
   if (!data) {
     return <div>not found</div>;
   }
@@ -16,11 +17,12 @@ const SingleProgram = ({ data, id }) => {
           {data.title}
         </h2>
         <FieldsProfile data={data} />
-        <Link href={`/points?program_id=${id}`}>
+
+        {/* <Link href={`/points?program_id=${id}`}>
           <a href={`/points?program_id=${id}`}>Points</a>
-        </Link>
-        <Link href={`/materials?program_id=${id}`}>
-          <a href={`/materials?program_id=${id}`}>Materials</a>
+        </Link> */}
+        <Link href={`/tasks?point_id=${id}`}>
+          <a href={`/tasks?point_id=${id}`}>Tasks</a>
         </Link>
       </section>
     </>
@@ -32,11 +34,11 @@ const getServerSideProps = async ({ params, req }) => {
     req,
     cb: () => {
       return {
-        props: getSingleProgramProps({ id: +params.id }),
+        props: getSinglePointProps({ id: +params.id }),
       };
     },
   });
 };
 
 export { getServerSideProps };
-export default SingleProgram;
+export default SinglePoint;

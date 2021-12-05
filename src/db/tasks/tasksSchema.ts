@@ -15,6 +15,12 @@ const tasksSchema = new Schema({
       displayName: "Description",
       type: DataTypes.TEXT,
     }),
+    new Column({
+      name: "point_id",
+      displayName: "Point",
+      type: DataTypes.MULTIPLE_FOREIGN_KEY,
+      isRequired: true,
+    }),
   ],
 });
 

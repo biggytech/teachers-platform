@@ -1,8 +1,8 @@
 import Head from "next/head";
 import Link from "next/link";
-import { UserProfile, Header } from "../../components";
-import { getSingleStudentProps } from "../../services/pages/students";
-import { checkAuthentication } from "../../services/pages";
+import { UserProfile, Header } from "@components";
+import { getSingleStudentProps } from "@services/pages/students";
+import { checkAuthentication } from "@services/pages";
 
 const SingleStudent = ({ data, id }) => {
   if (!data) {

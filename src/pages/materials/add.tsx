@@ -1,38 +1,22 @@
-import Head from "next/head";
-
-import { Form, Header } from "@components";
 import { getAddMaterialProps } from "@services/pages/materials";
-import { checkAuthentication } from "@services/pages";
 
-const AddMaterial = ({ columns }) => {
-  console.log(columns);
-  return (
-    <>
-      <Head>
-        <title>Materials | Add</title>
-      </Head>
-      <Header />
-      <Form
-        name="Add a material"
-        action="/api/materials/add"
-        columns={columns}
-      />
-    </>
-  );
-};
+import { createEditPage } from "@components/pages";
 
-const getServerSideProps = async ({ req, query }) => {
-  return await checkAuthentication({
-    req,
-    cb: () => {
-      return {
-        props: getAddMaterialProps({
-          programId: +query.program_id || null,
-        }),
-      };
-    },
-  });
+const { runGetServerSideProps, EditPage } = createEditPage({
+  title: "Materials",
+  name: "material",
+  action: "/api/materials/add",
+});
+
+const getServerSideProps = async (data) => {
+  const props = await runGetServerSideProps(data);
+  return {
+    props: await getAddMaterialProps({
+      ...props,
+      programId: +props.query.program_id || null,
+    }),
+  };
 };
 
 export { getServerSideProps };
-export default AddMaterial;
+export default EditPage;
