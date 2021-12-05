@@ -7,6 +7,7 @@ import {
   createLimitedSelectQuery,
   createJoinedQuery,
 } from "@services/db";
+import plansSchema from "@db/plans/plansSchema";
 
 const getPointsWithPrograms = async ({ programId, columns, programColumn }) => {
   const query = createJoinedQuery({
@@ -27,6 +28,27 @@ const getPointsWithPrograms = async ({ programId, columns, programColumn }) => {
   });
 
   return (await executeQuery(query)).rows;
+};
+
+export const getPointsByPlans = async ({ columns, planId }) => {
+  const query = {
+    text: `select ${columns.map(({ name }) => `${schema.name}.${name}`)},
+    ${plansSchema.name}.${plansSchema.column("id").name} as plan_id
+    from ${schema.name}
+    inner join ${plansSchema.name}
+    on ${schema.name}.${schema.column("program_id").name} = ${
+      plansSchema.name
+    }.${plansSchema.column("program_id").name} 
+    where ${plansSchema.name}.${plansSchema.column("id").name} = $1;`,
+    values: [planId],
+  };
+
+  const results = await executeQuery(query);
+
+  return results.rows.map((r) => ({
+    ...r,
+    start_date: r.start_date ? r.start_date.toString() : null,
+  }));
 };
 
 export const addPoint = async ({

@@ -11,6 +11,8 @@ type TableProps = {
   pageSize?: number;
   page?: number;
   isUsePagination?: boolean;
+  queryParams?: Function;
+  contextId?: string | number;
 };
 
 const Table = (props: TableProps) => {
@@ -22,6 +24,8 @@ const Table = (props: TableProps) => {
     pageSize,
     page,
     isUsePagination = true,
+    queryParams,
+    contextId,
   } = props;
 
   console.log(rows);
@@ -61,7 +65,12 @@ const Table = (props: TableProps) => {
 
             if (pathName) {
               return (
-                <Link key={row.id} href={`${pathName}/${row.id}`}>
+                <Link
+                  key={row.id}
+                  href={`${pathName}/${row.id}${
+                    queryParams ? queryParams(contextId) : ""
+                  }`}
+                >
                   {content}
                 </Link>
               );

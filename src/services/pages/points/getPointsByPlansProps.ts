@@ -1,27 +1,23 @@
-import { getPoint } from "@db/points/index";
+import { getPointsByPlans } from "@db/points/index";
 import schema from "@db/points/schema";
 
-const getSinglePointProps = async ({ id }) => {
+export const getPointsByPlansProps = async ({ planId }) => {
   const columns = [
     schema.column("id").toObject(),
     schema.column("title").toObject(),
     schema.column("description").toObject(),
     schema.column("duration_days").toObject(),
   ];
-
-  console.log(id);
-
-  const data = await getPoint({
-    id,
+  const data = await getPointsByPlans({
     columns,
+    planId,
   });
 
-  console.log(data);
-
   return {
-    data,
-    id,
+    data: {
+      columns,
+      rows: data,
+    },
+    planId,
   };
 };
-
-export default getSinglePointProps;

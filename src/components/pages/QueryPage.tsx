@@ -9,7 +9,8 @@ type QueryPageCreatorProps = {
   addLink?: string | null | Function;
   pathName?: string | null;
   isUsePagination?: boolean;
-  contextId?: string | null;
+  contextId?: string | Array<string> | null;
+  queryParams: any;
 };
 
 interface QueryPageProps extends QueryPageCreatorProps {
@@ -24,6 +25,7 @@ const QueryPage = (props: QueryPageProps) => {
     pathName,
     isUsePagination = true,
     contextId = null,
+    queryParams,
   } = props;
 
   console.log("context id", contextId);
@@ -50,6 +52,8 @@ const QueryPage = (props: QueryPageProps) => {
         pageSize={data.pageSize}
         page={data.page}
         isUsePagination={isUsePagination}
+        contextId={Array.isArray(contextId) ? contextId[0] : contextId}
+        queryParams={queryParams}
       />
     </>
   );

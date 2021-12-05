@@ -1,5 +1,9 @@
 import plansSchema from "./plansSchema";
-import { executeQuery, createSimpleInsertQuery } from "@services/db";
+import {
+  executeQuery,
+  createSimpleInsertQuery,
+  createLimitedSelectQuery,
+} from "@services/db";
 import studentsSchema from "@db/students/schema";
 import programsSchema from "@db/programs/schema";
 
@@ -48,6 +52,26 @@ const getPlansWithStudentsAndPrograms = async ({
   };
 
   return (await executeQuery(query)).rows;
+};
+
+export const getPlan = async ({ columns, id }) => {
+  const query = createLimitedSelectQuery({
+    schema: plansSchema,
+    columns,
+    searchColumn: plansSchema.column("id").name,
+    searchValue: id,
+  });
+
+  const results = await executeQuery(query);
+
+  return results.rows[0]
+    ? {
+        ...results.rows[0],
+        start_date: results.rows[0].start_date
+          ? results.rows[0].start_date.toString()
+          : null,
+      }
+    : null;
 };
 
 export { addPlan, getPlansWithStudentsAndPrograms };

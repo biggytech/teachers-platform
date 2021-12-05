@@ -1,4 +1,10 @@
-export type DBDataType = "integer" | "text" | "bytea" | "date" | "boolean";
+export type DBDataType =
+  | "integer"
+  | "text"
+  | "bytea"
+  | "date"
+  | "boolean"
+  | "smallint";
 export type HtmlType =
   | "number"
   | "text"
@@ -50,6 +56,7 @@ export class DataType implements DataTypeDefinition {
 
 export class DataTypes {
   static readonly INTEGER = new DataType("integer", "number");
+  static readonly SMALL_INTEGER = new DataType("smallint", "number");
   static readonly TEXT = new DataType("text", "text");
   static readonly URL = new DataType("text", "url");
   static readonly PASSWORD = new DataType("text", "password");
