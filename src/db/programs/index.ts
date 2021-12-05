@@ -5,6 +5,7 @@ import {
   executeQuery,
   createSimpleInsertQuery,
   createSelectByQuery,
+  createJoinedQuery,
 } from "@services/db";
 
 const addProgram = async ({ columns }: { columns: Array<ColumnValue> }) => {
@@ -59,23 +60,26 @@ const getProgramsWithOwners = async ({
 };
 
 const getProgram = async ({ id, columns, ownerColumn }) => {
-  const query = {
-    text: `
-      SELECT ${columns.map(({ name }) => `${schema.name}.${name}`).join(",")}, 
-        ${teachersSchema.name}.${
-      teachersSchema.column("firstname").name
-    } || ' ' || ${teachersSchema.name}.${
-      teachersSchema.column("lastname").name
-    } ${ownerColumn} 
-        FROM "${schema.name}" INNER JOIN ${teachersSchema.name} ON ${
-      schema.name
-    }.${schema.column("owner_id").name} = ${teachersSchema.name}.${
-      teachersSchema.column("id").name
-    } 
-        WHERE ${schema.name}.${schema.column("id").name}=$1 LIMIT 1;
-      `,
-    values: [id],
-  };
+  const query = createJoinedQuery({
+    schema1: schema,
+    schema2: teachersSchema,
+    field1: schema.column("owner_id"),
+    field2: teachersSchema.column("id"),
+    columns1: columns,
+    columns2: [
+      {
+        name: `${teachersSchema.column("firstname").name} || 
+        ' ' || 
+        ${teachersSchema.name}.${teachersSchema.column("lastname").name} 
+        ${ownerColumn}`,
+      },
+    ],
+    where: {
+      column: schema.column("id"),
+      value: id,
+    },
+    limit: 1,
+  });
 
   const results = await executeQuery(query);
 

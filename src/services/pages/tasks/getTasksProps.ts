@@ -1,4 +1,4 @@
-import { getPointsWithPrograms } from "@db/points/index";
+import { getTasks } from "@db/tasks/tasksQueries";
 import schema from "@db/tasks/tasksSchema";
 
 const getTasksProps = async ({ pointId }) => {
@@ -8,23 +8,15 @@ const getTasksProps = async ({ pointId }) => {
     schema.column("description").toObject(),
   ];
 
-  // TODO: get tasks
-
-  //   const data = await getPointsWithPrograms({
-  //     programId: program_id,
-  //     columns,
-  //     programColumn: schema.column("program_id").columnName,
-  //   });
-
-  //   const newColumns = columns.concat({
-  //     name: schema.column("program_id").columnName,
-  //     displayName: schema.column("program_id").displayName,
-  //   });
+  const data = await getTasks({
+    columns: columns,
+    pointId,
+  });
 
   return {
     data: {
       columns: columns,
-      rows: [],
+      rows: data,
     },
     pointId,
   };
