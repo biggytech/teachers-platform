@@ -24,7 +24,6 @@ export const getQuestion = async ({ columns, id }) => {
   const query = createLimitedSelectQuery({
     schema: questionsSchema,
     columns,
-    searchColumn: questionsSchema.column("id"),
     searchValue: id,
     limit: 1,
   });

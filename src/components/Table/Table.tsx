@@ -24,6 +24,8 @@ const Table = (props: TableProps) => {
     isUsePagination = true,
   } = props;
 
+  console.log(rows);
+
   let pagination = null;
 
   if (isUsePagination) {
@@ -51,7 +53,7 @@ const Table = (props: TableProps) => {
                     key={name}
                     className="py-3 px-6 text-left whitespace-nowrap"
                   >
-                    {row[name]}
+                    {row[name].toString ? row[name].toString() : row[name]}
                   </td>
                 ))}
               </tr>

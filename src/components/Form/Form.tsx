@@ -28,8 +28,20 @@ const Form = forwardRef((props: FormProps, ref) => {
         if (formRef.current) {
           const els = formRef.current.querySelectorAll("[data-input-name]");
           Array.prototype.forEach.call(els, (el) => {
-            result[el.dataset.inputName] =
-              el.type === "number" ? Number(el.value) : el.value;
+            let value;
+            console.log(el.type);
+            switch (el.type) {
+              case "number":
+                value = Number(el.value);
+                break;
+              case "checkbox":
+                console.log("check value", el.checked);
+                value = el.checked;
+                break;
+              default:
+                value = el.value;
+            }
+            result[el.dataset.inputName] = value;
           });
         }
         return result;
@@ -58,7 +70,9 @@ const Form = forwardRef((props: FormProps, ref) => {
               name={column.name}
               displayName={column.displayName}
               type={column.type.htmlType}
-              isRequired={column.isRequired}
+              isRequired={
+                column.type.htmlType === "checkbox" ? false : column.isRequired
+              }
               data-input-name={column.name}
               value={column.value}
             />

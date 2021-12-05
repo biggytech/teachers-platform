@@ -1,4 +1,4 @@
-export type DBDataType = "integer" | "text" | "bytea" | "date";
+export type DBDataType = "integer" | "text" | "bytea" | "date" | "boolean";
 export type HtmlType =
   | "number"
   | "text"
@@ -7,7 +7,8 @@ export type HtmlType =
   | "hidden"
   | "url"
   | "date"
-  | "select";
+  | "select"
+  | "checkbox";
 
 export type DataTypeDefinition = {
   dataType: DBDataType;
@@ -56,6 +57,7 @@ export class DataTypes {
   static readonly FOREIGN_KEY = new DataType("integer", "hidden");
   static readonly MULTIPLE_FOREIGN_KEY = new DataType("integer", "hidden");
   static readonly DATE = new DataType("date", "date");
+  static readonly BOOLEAN = new DataType("boolean", "checkbox");
 }
 
 export default DataTypes;
