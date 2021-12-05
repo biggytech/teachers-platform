@@ -18,11 +18,11 @@ const SinglePoint = ({ data, id }) => {
         </h2>
         <FieldsProfile data={data} />
 
-        {/* <Link href={`/points?program_id=${id}`}>
-          <a href={`/points?program_id=${id}`}>Points</a>
-        </Link> */}
         <Link href={`/tasks?point_id=${id}`}>
           <a href={`/tasks?point_id=${id}`}>Tasks</a>
+        </Link>
+        <Link href={`/tests?point_id=${id}`}>
+          <a href={`/tests?point_id=${id}`}>Tests</a>
         </Link>
       </section>
     </>
