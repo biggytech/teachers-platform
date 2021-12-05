@@ -5,6 +5,7 @@ import { createQueryPage } from "@components/pages";
 const { runGetServerSideProps, QueryPage } = createQueryPage({
   title: "Tests",
   addLink: (contextId) => `/tests/add?point_id=${contextId}`,
+  pathName: "/tests",
   isUsePagination: false,
 });
 

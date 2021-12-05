@@ -25,8 +25,9 @@ const QueryPage = (props: QueryPageProps) => {
     isUsePagination = true,
     contextId = null,
   } = props;
-  console.log("contextId");
-  console.log(contextId);
+
+  console.log("context id", contextId);
+
   return (
     <>
       <Header />

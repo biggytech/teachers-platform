@@ -1,8 +1,8 @@
 const createLimitedSelectQuery = ({
   schema,
   columns,
-  searchValue,
   searchColumn = schema.column("id").name,
+  searchValue,
   limit = 1,
 }) => {
   const query = {

@@ -1,10 +1,12 @@
 import { ColumnValue } from "@db/Schema";
+import testsSchema from "@db/tests/testsSchema";
 import schema from "@db/tests/testsSchema";
 import testsPointsSchema from "@db/tests_points/testsPointsSchema";
 import {
   executeQuery,
   createSimpleInsertQuery,
   createJoinedQuery,
+  createLimitedSelectQuery,
 } from "@services/db";
 
 export const addTest = async ({ columns, pointId }) => {
@@ -48,4 +50,17 @@ export const getTests = async ({ columns, pointId }) => {
   const results = await executeQuery(query);
 
   return results.rows;
+};
+
+export const getTest = async ({ columns, id }) => {
+  const query = createLimitedSelectQuery({
+    schema: testsSchema,
+    columns,
+    searchValue: id,
+    limit: 1,
+  });
+
+  const results = await executeQuery(query);
+
+  return results.rows[0] ?? null;
 };
