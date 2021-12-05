@@ -13,9 +13,7 @@ export const addTask = async ({ columns, pointId }) => {
   const query = createSimpleInsertQuery({ schema, columns });
 
   const results = await executeQuery(query);
-  console.log(results);
   const taskId = results.rows[0].id;
-  console.log(taskId);
 
   const query2 = createSimpleInsertQuery({
     schema: tasksPointsSchema,
@@ -70,8 +68,6 @@ export const getAvailableTasksToMark = async ({ planId, pointId }) => {
     ${taskMarksSchema.column("plan_id").name} is null;`,
     values: [planId, pointId],
   };
-
-  console.log(query);
 
   const results = await executeQuery(query);
 

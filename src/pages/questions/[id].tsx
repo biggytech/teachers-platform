@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Header, FieldsProfile } from "@components";
+import { Header, FieldsProfile, LinkButton } from "@components";
 import { getSingleQuestionProps } from "@services/pages/questions/getSingleQuestionProps";
 import { checkAuthentication } from "@services/pages";
 
@@ -16,9 +16,7 @@ const SingleQuestion = ({ data, id }) => {
           {data.title}
         </h2>
         <FieldsProfile data={data} />
-        <Link href={`/answers?question_id=${id}`}>
-          <a href={`/answers?question_id=${id}`}>Answers</a>
-        </Link>
+        <LinkButton link={`/answers?question_id=${id}`} text="Answers" />
       </section>
     </>
   );

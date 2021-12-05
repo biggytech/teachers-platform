@@ -43,8 +43,6 @@ const getTeacherByUsername = async ({ username, columns }) => {
 const addTeacher = async ({ columns }) => {
   const query = createSimpleInsertQuery({ schema, columns });
 
-  console.log(query);
-
   await executeQuery(query);
 };
 

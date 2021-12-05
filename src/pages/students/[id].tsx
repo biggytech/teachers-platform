@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import { UserProfile, Header } from "@components";
+import { UserProfile, Header, LinkButton } from "@components";
 import { getSingleStudentProps } from "@services/pages/students";
 import { checkAuthentication } from "@services/pages";
 
@@ -11,10 +11,9 @@ const SingleStudent = ({ data, id }) => {
   return (
     <>
       <Header />
-      <Link href={`/plans?student_id=${id}`}>
-        <a href={`/plans?student_id=${id}`}>Plans</a>
-      </Link>
+
       <UserProfile pageType="Student" data={data} />
+      <LinkButton link={`/plans?student_id=${id}`} text="Plans" />
     </>
   );
 };

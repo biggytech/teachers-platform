@@ -29,13 +29,11 @@ const Form = forwardRef((props: FormProps, ref) => {
           const els = formRef.current.querySelectorAll("[data-input-name]");
           Array.prototype.forEach.call(els, (el) => {
             let value;
-            console.log(el.type);
             switch (el.type) {
               case "number":
                 value = Number(el.value);
                 break;
               case "checkbox":
-                console.log("check value", el.checked);
                 value = el.checked;
                 break;
               default:

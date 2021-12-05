@@ -9,14 +9,10 @@ const getSinglePointProps = async ({ id }) => {
     schema.column("duration_days").toObject(),
   ];
 
-  console.log(id);
-
   const data = await getPoint({
     id,
     columns,
   });
-
-  console.log(data);
 
   return {
     data,

@@ -45,10 +45,7 @@ export const getPointsByPlans = async ({ columns, planId }) => {
 
   const results = await executeQuery(query);
 
-  return results.rows.map((r) => ({
-    ...r,
-    start_date: r.start_date ? r.start_date.toString() : null,
-  }));
+  return results.rows;
 };
 
 export const addPoint = async ({

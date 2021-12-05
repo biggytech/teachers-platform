@@ -2,8 +2,6 @@ import { getMaterialsWithPrograms } from "@db/materials/index";
 import schema from "@db/materials/schema";
 
 const getMaterialsProps = async ({ program_id }) => {
-  console.log("SCHEMA");
-  console.log(schema);
   const columns = [
     schema.column("id").toObject(),
     schema.column("title").toObject(),

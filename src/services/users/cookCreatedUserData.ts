@@ -28,8 +28,6 @@ const cookCreatedUserData = (req, schema: Schema) => {
                 ? hashPassword(fields[name])
                 : fields[name];
 
-            console.log(value, name);
-
             return {
               name,
               value,
@@ -41,7 +39,6 @@ const cookCreatedUserData = (req, schema: Schema) => {
               value: fs.readFileSync(files[name].filepath),
             }))
           );
-        console.log(columns);
 
         resolve({
           columns,

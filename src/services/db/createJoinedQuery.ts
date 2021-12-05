@@ -38,8 +38,6 @@ const createJoinedQuery = ({
     values: [where.value],
   };
 
-  console.log(query);
-
   return query;
 };
 

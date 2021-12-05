@@ -11,7 +11,6 @@ async function handler(req, res) {
         const columns = await cookSimpleBodyData({
           body: req.body,
         });
-        // console.log(columns);
         await addTaskMark({
           columns,
         });

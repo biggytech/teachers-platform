@@ -13,7 +13,6 @@ async function handler(req, res) {
             description: req.body.description,
           },
         });
-        console.log(req.body);
         await addQuestion({
           columns,
           testId: req.body.test_id,

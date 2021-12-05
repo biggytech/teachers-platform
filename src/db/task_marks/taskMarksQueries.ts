@@ -6,15 +6,12 @@ import {
 import { taskMarksSchema } from "./taskMarksSchema";
 
 export const getTaskMarks = async ({ columns, planId }) => {
-  console.log(planId);
   const query = createSelectByQuery({
     schema: taskMarksSchema,
     columns,
     searchColumn: taskMarksSchema.column("plan_id").name,
     searchValue: planId,
   });
-
-  console.log(query);
 
   const results = await executeQuery(query);
   return results.rows;

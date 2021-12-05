@@ -22,7 +22,6 @@ const getProgramsWithOwners = async ({
   ownerId,
 }) => {
   const offset = (+page - 1) * +limit;
-  console.log(schema);
   const query = {
     text: `
       SELECT 

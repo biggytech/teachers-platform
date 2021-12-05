@@ -6,7 +6,6 @@ export const getAddTaskMarkProps = async ({ planId, pointId }) => {
     planId,
     pointId,
   });
-  console.log(tasks);
   const columns = [
     taskMarksSchema.column("mark").toObject(),
     taskMarksSchema.column("task_id").asSelectable(
@@ -17,8 +16,6 @@ export const getAddTaskMarkProps = async ({ planId, pointId }) => {
     ),
     taskMarksSchema.column("plan_id").withValue(planId),
   ];
-
-  console.log(columns);
 
   return { columns, planId, pointId };
 };

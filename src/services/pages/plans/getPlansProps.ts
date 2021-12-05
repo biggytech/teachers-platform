@@ -2,8 +2,6 @@ import { getPlansWithStudentsAndPrograms } from "@db/plans/plansQueries";
 import schema from "@db/plans/plansSchema";
 
 const getPlansProps = async ({ studentId }) => {
-  console.log(schema.column("id"));
-  console.log(schema.column("start_date"));
   const columns = [
     schema.column("id").toObject(),
     schema.column("start_date").toObject(),
@@ -14,8 +12,6 @@ const getPlansProps = async ({ studentId }) => {
     programColumn: schema.column("program_id").columnName,
     studentColumn: schema.column("student_id").columnName,
   });
-
-  console.log(columns);
 
   const newColumns = columns
     .concat({
@@ -30,10 +26,7 @@ const getPlansProps = async ({ studentId }) => {
   return {
     data: {
       columns: newColumns,
-      rows: data.map((row) => ({
-        ...row,
-        start_date: row.start_date ? row.start_date.toString() : null,
-      })),
+      rows: data,
     },
     studentId,
   };

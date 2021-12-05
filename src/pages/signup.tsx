@@ -15,7 +15,6 @@ const SignUp = ({ columns }) => {
 };
 
 const getServerSideProps = ({ query }) => {
-  console.log(query);
   return {
     props: getSignUpProps({}),
   };

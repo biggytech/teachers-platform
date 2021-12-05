@@ -26,8 +26,6 @@ const Steps = forwardRef((props: StepsProps, ref) => {
   const [steps, setSteps] = useState<Array<StepValue>>([]);
 
   const formRef = useRef(null);
-  // const stepsRefs = useRef([]);
-  // console.log(stepsRefs);
 
   const [stepsRefs, setStepsRefs] = useState([]);
 
@@ -40,14 +38,9 @@ const Steps = forwardRef((props: StepsProps, ref) => {
     () => ({
       getValues: () => {
         if (formRef.current) {
-          // const stepsElements =
-          //   formRef.current.querySelectorAll("[data-step-index]");
-
-          console.log(stepsRefs);
           const result = Array.prototype.map.call(stepsRefs, (element) => {
-            console.log(element);
             const value = element.getValues();
-            console.log(value);
+
             return value;
           });
           return result;

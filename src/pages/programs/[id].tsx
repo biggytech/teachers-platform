@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Header, FieldsProfile } from "@components";
+import { Header, FieldsProfile, LinkButton } from "@components";
 import { getSingleProgramProps } from "@services/pages/programs";
 import { checkAuthentication } from "@services/pages";
 
@@ -16,12 +16,9 @@ const SingleProgram = ({ data, id }) => {
           {data.title}
         </h2>
         <FieldsProfile data={data} />
-        <Link href={`/points?program_id=${id}`}>
-          <a href={`/points?program_id=${id}`}>Points</a>
-        </Link>
-        <Link href={`/materials?program_id=${id}`}>
-          <a href={`/materials?program_id=${id}`}>Materials</a>
-        </Link>
+        <LinkButton link={`/points?program_id=${id}`} text="Points" />
+
+        <LinkButton link={`/materials?program_id=${id}`} text="Materials" />
       </section>
     </>
   );

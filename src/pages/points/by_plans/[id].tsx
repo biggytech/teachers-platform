@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Header } from "@components";
+import { Header, LinkButton } from "@components";
 import { getSinglePointProps } from "@services/pages/points";
 import { checkAuthentication } from "@services/pages";
 import { FieldsProfile } from "@components";
@@ -18,11 +18,10 @@ const SinglePoint = ({ data, id, planId }) => {
         </h2>
         <FieldsProfile data={data} />
 
-        <Link href={`/task_marks?plan_id=${planId}&point_id=${id}`}>
-          <a href={`/task_marks?plan_id=${planId}&point_id=${id}`}>
-            Tasks marks
-          </a>
-        </Link>
+        <LinkButton
+          link={`/task_marks?plan_id=${planId}&point_id=${id}`}
+          text="Tasks marks"
+        />
       </section>
     </>
   );

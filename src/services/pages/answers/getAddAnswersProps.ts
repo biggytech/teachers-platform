@@ -7,8 +7,6 @@ export const getAddAnswersProps = ({ questionId }) => {
     answersSchema.column("question_id").withValue(questionId),
   ];
 
-  console.log(columns);
-
   return {
     columns,
   };

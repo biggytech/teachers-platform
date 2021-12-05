@@ -14,13 +14,11 @@ const getProgramsProps = async ({ page, limit, ownerId }) => {
     ownerColumn: schema.column("owner_id").columnName,
     ownerId,
   });
-  console.log(data);
 
   const newColumns = columns.concat({
     name: schema.column("owner_id").columnName,
     displayName: schema.column("owner_id").displayName,
   });
-  console.log(newColumns);
 
   return {
     data: {

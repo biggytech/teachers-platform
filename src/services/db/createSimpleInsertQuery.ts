@@ -7,8 +7,6 @@ const createSimpleInsertQuery = ({ schema, columns, returnId = true }) => {
     values: columns.map(({ value }) => value),
   };
 
-  console.log(query);
-
   return query;
 };
 

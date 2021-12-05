@@ -4,7 +4,7 @@ const checkAuthentication = async ({ req, res, cb }) => {
   const user = await userFromRequest(req);
   console.log(user);
   if (!user) {
-    return res.redirect("/login/teacher");
+    return res.redirect("/");
   } else {
     return cb(user);
   }

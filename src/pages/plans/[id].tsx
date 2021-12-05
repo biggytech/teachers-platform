@@ -1,15 +1,17 @@
-import Link from "next/link";
-import { Header } from "@components";
+import { Button, Header, LinkButton } from "@components";
 import { getSinglePlanProps } from "@services/pages/plans/getSinglePlanProps";
 import { checkAuthentication } from "@services/pages";
 import { FieldsProfile } from "@components";
+import { useCallback } from "react";
 
 const SinglePlan = ({ data, id }) => {
   if (!data) {
     return <div>not found</div>;
   }
 
-  console.log(id);
+  const handleGenerateReport = useCallback(() => {
+    window.open(`/api/generateReport?plan_id=${id}`, "_blank").focus();
+  }, [id]);
 
   return (
     <>
@@ -20,9 +22,12 @@ const SinglePlan = ({ data, id }) => {
         </h2>
         <FieldsProfile data={data} />
 
-        <Link href={`/points/by_plans?plan_id=${id}`}>
-          <a href={`/points/by_plans?plan_id=${id}`}>Points by plans</a>
-        </Link>
+        <Button text="Generate report" onClick={handleGenerateReport} />
+
+        <LinkButton
+          link={`/points/by_plans?plan_id=${id}`}
+          text="Points by plans"
+        />
       </section>
     </>
   );

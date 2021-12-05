@@ -9,7 +9,6 @@ async function handler(req, res) {
       req,
       res,
       cb: async (user) => {
-        console.log(req.body);
         const columns = await cookSimpleBodyData({
           body: req.body,
         });

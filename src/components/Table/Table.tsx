@@ -28,8 +28,6 @@ const Table = (props: TableProps) => {
     contextId,
   } = props;
 
-  console.log(rows);
-
   let pagination = null;
 
   if (isUsePagination) {

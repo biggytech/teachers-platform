@@ -8,8 +8,6 @@ export const getTaskMarksProps = async ({ planId }) => {
     taskMarksSchema.column("plan_id").toObject(),
   ];
 
-  console.log(planId);
-
   const data = await getTaskMarks({ columns, planId });
   return {
     data: {

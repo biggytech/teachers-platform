@@ -28,8 +28,6 @@ const QueryPage = (props: QueryPageProps) => {
     queryParams,
   } = props;
 
-  console.log("context id", contextId);
-
   return (
     <>
       <Header />

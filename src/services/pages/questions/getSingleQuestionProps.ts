@@ -8,15 +8,10 @@ export const getSingleQuestionProps = async ({ id }) => {
     questionsSchema.column("test_id").toObject(),
   ];
 
-  console.log(columns);
-  console.log(id);
-
   const data = await getQuestion({
     columns,
     id,
   });
-
-  console.log(data);
 
   return { data, id };
 };
