@@ -1,7 +1,7 @@
 import Head from "next/head";
 
-import { Form } from "../../components";
-import { getStudentLoginProps } from "../../services/pages/login";
+import { Form } from "@components";
+import { getStudentLoginProps } from "@services/pages/login";
 
 const Login = ({ columns, isInvalid }) => {
   return (
@@ -11,7 +11,7 @@ const Login = ({ columns, isInvalid }) => {
       </Head>
       {isInvalid && <div>Invalid credentials</div>}
       <Form
-        name="Login | Student"
+        name="Войти | Студент"
         action="/api/login/student"
         columns={columns}
       />

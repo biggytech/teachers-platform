@@ -1,5 +1,6 @@
 import testsSchema from "@db/tests/testsSchema";
 import {
+  createJoinedQuery,
   createLimitedSelectQuery,
   createSelectByQuery,
   createSimpleInsertQuery,
@@ -21,10 +22,17 @@ export const getQuestions = async ({ columns, testId }) => {
 };
 
 export const getQuestion = async ({ columns, id }) => {
-  const query = createLimitedSelectQuery({
-    schema: questionsSchema,
-    columns,
-    searchValue: id,
+  const query = createJoinedQuery({
+    schema1: questionsSchema,
+    schema2: testsSchema,
+    field1: questionsSchema.column("test_id"),
+    field2: testsSchema.column("id"),
+    columns1: columns,
+    columns2: [testsSchema.column("title")],
+    where: {
+      column: questionsSchema.column("id"),
+      value: id,
+    },
     limit: 1,
   });
 

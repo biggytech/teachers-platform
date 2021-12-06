@@ -3,7 +3,7 @@ import { getProgramsProps } from "@services/pages/programs";
 import { createQueryPage } from "@components/pages";
 
 const { runGetServerSideProps, QueryPage } = createQueryPage({
-  title: "Programs",
+  title: "Учебные программы",
   addLink: "/programs/add",
   pathName: "/programs",
 });

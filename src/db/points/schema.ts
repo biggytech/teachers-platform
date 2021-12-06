@@ -7,25 +7,25 @@ const schema = new Schema({
     new Column({
       name: "title",
       isRequired: true,
-      displayName: "Title",
+      displayName: "Название",
       type: DataTypes.TEXT,
     }),
 
     new Column({
       name: "description",
-      displayName: "Description",
+      displayName: "Описание",
       type: DataTypes.TEXT,
     }),
 
     new Column({
       name: "duration_days",
-      displayName: "Duration (days)",
+      displayName: "Продолжительность (дней)",
       type: DataTypes.INTEGER,
     }),
 
     new Column({
       name: "program_id",
-      displayName: "Program",
+      displayName: "Программа",
       type: DataTypes.FOREIGN_KEY,
     }),
   ],

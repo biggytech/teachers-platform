@@ -2,8 +2,8 @@ import { createEditPage } from "@components/pages";
 import getAddQuestionProps from "@services/pages/questions/getAddQuestionProps";
 
 const { runGetServerSideProps, EditPage } = createEditPage({
-  title: "Question",
-  name: "question",
+  title: "Вопрос",
+  name: "вопрос",
   action: "/api/questions/add",
 });
 

@@ -8,8 +8,6 @@ const getSignUpProps = ({}) => {
     schema.column("password").toObject(),
   ];
 
-  console.log(columns);
-
   return { columns };
 };
 

@@ -1,5 +1,4 @@
 import schema from "@db/tests/testsSchema";
-import { Column } from "@db/Schema";
 
 const getAddTestProps = async ({ pointId }) => {
   const columns = [

@@ -1,6 +1,5 @@
 const cookCreatedPlanData = ({ body }) => {
   const columns = [];
-  const children = [];
 
   for (const key in body) {
     columns.push({

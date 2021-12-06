@@ -13,6 +13,7 @@ type TableProps = {
   isUsePagination?: boolean;
   queryParams?: Function;
   contextId?: string | number;
+  onClick: any;
 };
 
 const Table = (props: TableProps) => {
@@ -26,6 +27,7 @@ const Table = (props: TableProps) => {
     isUsePagination = true,
     queryParams,
     contextId,
+    onClick,
   } = props;
 
   let pagination = null;
@@ -49,11 +51,27 @@ const Table = (props: TableProps) => {
         <tbody className="text-gray-600 text-sm font-light">
           {rows.map((row) => {
             const content = (
-              <tr className="cursor-pointer border-b border-gray-200 hover:bg-gray-100">
+              <tr
+                className="cursor-pointer border-b border-gray-200 hover:bg-gray-100"
+                onClick={
+                  onClick
+                    ? () => window.open(onClick(row), "_blank").focus()
+                    : undefined
+                }
+              >
                 {columns.map(({ name }) => (
                   <td
                     key={name}
-                    className="py-3 px-6 text-left whitespace-nowrap"
+                    className="py-3 px-6 text-left"
+                    style={{
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      maxWidth: "150px",
+                    }}
+                    title={
+                      row[name].toString ? row[name].toString() : row[name]
+                    }
                   >
                     {row[name].toString ? row[name].toString() : row[name]}
                   </td>
@@ -83,8 +101,8 @@ const Table = (props: TableProps) => {
         <>
           <div>
             <p className="text-sm leading-5 text-blue-700 text-right py-1 px-3">
-              Showing <span className="font-medium">{pageSize}</span> of{" "}
-              <span className="font-medium">{totalRecords}</span> results
+              Показано <span className="font-medium">{pageSize}</span> из{" "}
+              <span className="font-medium">{totalRecords}</span> записей
             </p>
           </div>
           <div className="w-full flex justify-center border-t border-gray-100 py-2  items-center">

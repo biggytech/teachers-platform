@@ -6,19 +6,19 @@ const answersSchema = new Schema({
   columns: [
     new Column({
       name: "description",
-      displayName: "Description",
+      displayName: "Описание",
       isRequired: true,
       type: DataTypes.TEXT,
     }),
     new Column({
       name: "is_correct",
-      displayName: "Is Correct",
+      displayName: "Верный?",
       isRequired: true,
       type: DataTypes.BOOLEAN,
     }),
     new Column({
       name: "question_id",
-      displayName: "Question",
+      displayName: "Вопрос",
       isRequired: true,
       type: DataTypes.FOREIGN_KEY,
     }),

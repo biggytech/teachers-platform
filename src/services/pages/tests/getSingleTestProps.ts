@@ -1,5 +1,6 @@
 import { getTest } from "@db/tests/testsQueries";
 import schema from "@db/tests/testsSchema";
+import mapColumnsToDisplayNames from "@services/mapColumnsToDisplayNames";
 
 const getSingleTestProps = async ({ id }) => {
   const columns = [
@@ -14,6 +15,7 @@ const getSingleTestProps = async ({ id }) => {
   return {
     data,
     id,
+    mapData: mapColumnsToDisplayNames(columns),
   };
 };
 

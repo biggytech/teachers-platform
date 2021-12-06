@@ -7,13 +7,13 @@ const tasksPointsSchema = new Schema({
   columns: [
     new Column({
       name: "task_id",
-      displayName: "Task",
+      displayName: "Практическое задание",
       isRequired: true,
       type: DataTypes.FOREIGN_KEY,
     }),
     new Column({
       name: "point_id",
-      displayName: "Point",
+      displayName: "Пункт программы",
       isRequired: true,
       type: DataTypes.FOREIGN_KEY,
     }),

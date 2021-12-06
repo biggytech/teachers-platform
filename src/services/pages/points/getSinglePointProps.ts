@@ -1,5 +1,6 @@
 import { getPoint } from "@db/points/index";
 import schema from "@db/points/schema";
+import mapColumnsToDisplayNames from "@services/mapColumnsToDisplayNames";
 
 const getSinglePointProps = async ({ id }) => {
   const columns = [
@@ -17,6 +18,7 @@ const getSinglePointProps = async ({ id }) => {
   return {
     data,
     id,
+    mapData: mapColumnsToDisplayNames(columns),
   };
 };
 

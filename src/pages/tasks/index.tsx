@@ -3,7 +3,7 @@ import { getTasksProps } from "@services/pages/tasks";
 import { createQueryPage } from "@components/pages";
 
 const { runGetServerSideProps, QueryPage } = createQueryPage({
-  title: "Tasks",
+  title: "Практические задания",
   addLink: (contextId) => `/tasks/add?point_id=${contextId}`,
   isUsePagination: false,
 });

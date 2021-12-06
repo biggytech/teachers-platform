@@ -4,7 +4,6 @@ export { default as Form } from "./Form";
 export { default as UserProfile } from "./UserProfile";
 export { default as LinkButton } from "./LinkButton";
 export { default as Button } from "./Button";
-export { default as Steps } from "./Steps";
 export { default as SingleField } from "./SingleField";
 export { default as FieldsProfile } from "./FieldsProfile";
 export * from "./fields";

@@ -6,17 +6,22 @@ const getAnswersProps = async ({ questionId }) => {
     answersSchema.column("id").toObject(),
     answersSchema.column("description").toObject(),
     answersSchema.column("is_correct").toObject(),
-    answersSchema.column("question_id").toObject(),
   ];
 
   const data = await getAnswers({
     columns,
     questionId,
+    questionColumn: answersSchema.column("question_id").columnName,
+  });
+
+  const newColumns = columns.concat({
+    name: answersSchema.column("question_id").columnName,
+    displayName: answersSchema.column("question_id").displayName,
   });
 
   return {
     data: {
-      columns,
+      columns: newColumns,
       rows: data,
     },
   };

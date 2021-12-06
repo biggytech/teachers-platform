@@ -2,7 +2,7 @@ import { getTeachersProps } from "@services/pages/teachers";
 import { createQueryPage } from "@components/pages";
 
 const { runGetServerSideProps, QueryPage } = createQueryPage({
-  title: "Teachers",
+  title: "Инструктор",
   addLink: "/teachers/add",
   pathName: "/teachers",
 });

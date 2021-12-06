@@ -1,15 +1,19 @@
 import Head from "next/head";
 
-import { Form } from "../components";
-import { getSignUpProps } from "../services/pages/signup";
+import { Form } from "@components";
+import { getSignUpProps } from "@services/pages/signup";
 
 const SignUp = ({ columns }) => {
   return (
     <>
       <Head>
-        <title>Sign Up</title>
+        <title>Зарегистрироваться</title>
       </Head>
-      <Form name="Sign Up | Teacher" action="/api/signup" columns={columns} />
+      <Form
+        name="Зарегистрироваться | Инструктор"
+        action="/api/signup"
+        columns={columns}
+      />
     </>
   );
 };

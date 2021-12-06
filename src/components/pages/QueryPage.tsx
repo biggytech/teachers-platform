@@ -11,6 +11,7 @@ type QueryPageCreatorProps = {
   isUsePagination?: boolean;
   contextId?: string | Array<string> | null;
   queryParams: any;
+  onClick?: Function;
 };
 
 interface QueryPageProps extends QueryPageCreatorProps {
@@ -26,6 +27,7 @@ const QueryPage = (props: QueryPageProps) => {
     isUsePagination = true,
     contextId = null,
     queryParams,
+    onClick,
   } = props;
 
   return (
@@ -37,7 +39,7 @@ const QueryPage = (props: QueryPageProps) => {
       {addLink ? (
         <LinkButton
           link={addLink instanceof Function ? addLink(contextId) : addLink}
-          text="Add"
+          text="Добавить"
           icon="&#43;&nbsp;&nbsp;"
           className="float-right"
         />
@@ -52,6 +54,7 @@ const QueryPage = (props: QueryPageProps) => {
         isUsePagination={isUsePagination}
         contextId={Array.isArray(contextId) ? contextId[0] : contextId}
         queryParams={queryParams}
+        onClick={onClick}
       />
     </>
   );
@@ -80,19 +83,4 @@ export const createQueryPage = (props: QueryPageCreatorProps) => {
   };
 };
 
-// const getServerSideProps = async ({ query, req }) => {
-//   return await checkAuthentication({
-//     req,
-//     cb: () => {
-//       return {
-//         props: getTeachersProps({
-//           page: +query.page || 1,
-//           limit: +query.limit || 20,
-//         }),
-//       };
-//     },
-//   });
-// };
-
-// export { getServerSideProps };
 export default createQueryPage;

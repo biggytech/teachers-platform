@@ -4,7 +4,7 @@ import { getSinglePointProps } from "@services/pages/points";
 import { checkAuthentication } from "@services/pages";
 import { FieldsProfile } from "@components";
 
-const SinglePoint = ({ data, id, planId }) => {
+const SinglePoint = ({ data, id, planId, mapData }) => {
   if (!data) {
     return <div>not found</div>;
   }
@@ -12,15 +12,15 @@ const SinglePoint = ({ data, id, planId }) => {
   return (
     <>
       <Header />
-      <section>
+      <section style={{ padding: 10 }}>
         <h2 className="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">
           {data.title}
         </h2>
-        <FieldsProfile data={data} />
+        <FieldsProfile data={data} mapData={mapData} />
 
         <LinkButton
           link={`/task_marks?plan_id=${planId}&point_id=${id}`}
-          text="Tasks marks"
+          text="Оценки задач в этом пункте программы"
         />
       </section>
     </>

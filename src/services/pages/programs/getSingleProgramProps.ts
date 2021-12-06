@@ -1,5 +1,6 @@
 import { getProgram } from "@db/programs/index";
 import schema from "@db/programs/schema";
+import mapColumnsToDisplayNames from "@services/mapColumnsToDisplayNames";
 
 const getSingleProgramProps = async ({ id }) => {
   const columns = [
@@ -15,6 +16,9 @@ const getSingleProgramProps = async ({ id }) => {
   return {
     data,
     id,
+    mapData: mapColumnsToDisplayNames(
+      columns.concat(schema.column("owner_id"))
+    ),
   };
 };
 

@@ -1,10 +1,8 @@
-import Head from "next/head";
-import Link from "next/link";
 import { UserProfile, Header, LinkButton } from "@components";
 import { getSingleStudentProps } from "@services/pages/students";
 import { checkAuthentication } from "@services/pages";
 
-const SingleStudent = ({ data, id }) => {
+const SingleStudent = ({ data, id, mapData }) => {
   if (!data) {
     return <div>not found</div>;
   }
@@ -12,8 +10,8 @@ const SingleStudent = ({ data, id }) => {
     <>
       <Header />
 
-      <UserProfile pageType="Student" data={data} />
-      <LinkButton link={`/plans?student_id=${id}`} text="Plans" />
+      <UserProfile pageType="Студент" data={data} mapData={mapData} />
+      <LinkButton link={`/plans?student_id=${id}`} text="Учебные планы" />
     </>
   );
 };

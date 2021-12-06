@@ -3,8 +3,8 @@ import { getAddTestProps } from "@services/pages/tests";
 import { createEditPage } from "@components/pages";
 
 const { runGetServerSideProps, EditPage } = createEditPage({
-  title: "Tests",
-  name: "test",
+  title: "Тесты",
+  name: "тест",
   action: "/api/tests/add",
 });
 

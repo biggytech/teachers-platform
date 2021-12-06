@@ -4,7 +4,7 @@ import { checkAuthentication } from "@services/pages";
 import { FieldsProfile } from "@components";
 import { useCallback } from "react";
 
-const SinglePlan = ({ data, id }) => {
+const SinglePlan = ({ data, id, mapData }) => {
   if (!data) {
     return <div>not found</div>;
   }
@@ -20,13 +20,13 @@ const SinglePlan = ({ data, id }) => {
         <h2 className="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">
           {data.title}
         </h2>
-        <FieldsProfile data={data} />
+        <FieldsProfile data={data} mapData={mapData} />
 
-        <Button text="Generate report" onClick={handleGenerateReport} />
+        <Button text="Скачать отчет" onClick={handleGenerateReport} />
 
         <LinkButton
           link={`/points/by_plans?plan_id=${id}`}
-          text="Points by plans"
+          text="Пункты учебной программы"
         />
       </section>
     </>

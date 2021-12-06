@@ -3,8 +3,7 @@ import { getPointsByPlansProps } from "@services/pages/points/getPointsByPlansPr
 import { createQueryPage } from "@components/pages";
 
 const { runGetServerSideProps, QueryPage } = createQueryPage({
-  title: "Points by plans",
-  //   addLink: (contextId) => `/points/add?program_id=${contextId}`,
+  title: "Пункты учебной программы (план)",
   isUsePagination: false,
   pathName: "/points/by_plans",
   queryParams: (contextId) => `?plan_id=${contextId}`,

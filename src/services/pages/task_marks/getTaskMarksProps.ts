@@ -11,7 +11,11 @@ export const getTaskMarksProps = async ({ planId }) => {
   const data = await getTaskMarks({ columns, planId });
   return {
     data: {
-      columns,
+      columns: [
+        taskMarksSchema.column("mark").toObject(),
+        { name: "task_title", displayName: "Практическое задание" },
+        { name: "program_title", displayName: "Учебный план" },
+      ],
       rows: data,
     },
   };

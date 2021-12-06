@@ -3,8 +3,8 @@ import { getAddProgramProps } from "@services/pages/programs";
 import { createEditPage } from "@components/pages";
 
 const { runGetServerSideProps, EditPage } = createEditPage({
-  title: "Programs",
-  name: "program",
+  title: "Учебные программы",
+  name: "учебную программу",
   action: "/api/programs/add",
 });
 

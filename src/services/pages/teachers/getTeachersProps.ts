@@ -3,11 +3,11 @@ import schema from "@db/teachers/schema";
 
 const getTeachersProps = async ({ page, limit }) => {
   const columns = [
+    schema.column("id").toObject(),
     schema.column("firstname").toObject(),
     schema.column("lastname").toObject(),
     schema.column("username").toObject(),
   ];
-  console.log(page, limit);
 
   const data = await getTeachers({
     columns,

@@ -57,6 +57,17 @@ export class Column implements ColumnDefinition {
     });
   }
 
+  withDisplayName(displayName: string): ColumnDefinition {
+    return {
+      name: this.name,
+      displayName: displayName,
+      type: this.type.toObject ? this.type.toObject() : this.type,
+      isRequired: this.isRequired,
+      constraints: this.constraints,
+      columnName: this.columnName,
+    };
+  }
+
   asSelectable(options: Array<SelectableOption>): ColumnDefinition {
     return Object.assign(this.toObject(), {
       type: this.type.asSelectable
@@ -69,7 +80,7 @@ export class Column implements ColumnDefinition {
 export type ColumnValue = {
   name: string;
   value: string | number;
-  type?: string; // TODO: data types here
+  type?: string;
 };
 
 export class Schema implements SchemaDefinition {

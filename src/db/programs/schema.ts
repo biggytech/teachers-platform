@@ -7,19 +7,19 @@ const schema = new Schema({
     new Column({
       name: "title",
       isRequired: true,
-      displayName: "Title",
+      displayName: "Название",
       type: DataTypes.TEXT,
     }),
 
     new Column({
       name: "description",
-      displayName: "Description",
+      displayName: "Описание",
       type: DataTypes.TEXT,
     }),
 
     new Column({
       name: "owner_id",
-      displayName: "Owner",
+      displayName: "Владелец",
       type: DataTypes.FOREIGN_KEY,
     }),
   ],

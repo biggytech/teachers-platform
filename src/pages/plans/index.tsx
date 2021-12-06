@@ -3,7 +3,7 @@ import { getPlansProps } from "@services/pages/plans";
 import { createQueryPage } from "@components/pages";
 
 const { runGetServerSideProps, QueryPage } = createQueryPage({
-  title: "Plans",
+  title: "Учебные планы",
   addLink: (contextId) => `/plans/add?student_id=${contextId}`,
   isUsePagination: false,
   pathName: "/plans",

@@ -3,8 +3,8 @@ import { getAddMaterialProps } from "@services/pages/materials";
 import { createEditPage } from "@components/pages";
 
 const { runGetServerSideProps, EditPage } = createEditPage({
-  title: "Materials",
-  name: "material",
+  title: "Учебные материалы",
+  name: "учебный материал",
   action: "/api/materials/add",
 });
 

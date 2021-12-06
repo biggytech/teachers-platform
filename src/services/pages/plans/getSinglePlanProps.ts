@@ -1,5 +1,6 @@
 import { getPlan } from "@db/plans/plansQueries";
 import plansSchema from "@db/plans/plansSchema";
+import mapColumnsToDisplayNames from "@services/mapColumnsToDisplayNames";
 
 export const getSinglePlanProps = async ({ id }) => {
   const columns = [
@@ -14,5 +15,16 @@ export const getSinglePlanProps = async ({ id }) => {
     id,
   });
 
-  return { data, id };
+  return {
+    data,
+    id,
+    mapData: mapColumnsToDisplayNames(
+      columns
+        .filter(({ name }) => name !== "student_id" && name !== "program_id")
+        .concat([
+          { name: "student_name", displayName: "Студент" },
+          { name: "program_title", displayName: "Программа" },
+        ])
+    ),
+  };
 };

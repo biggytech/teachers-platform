@@ -6,26 +6,26 @@ const schema = new Schema({
   columns: [
     new Column({
       name: "title",
-      displayName: "Title",
+      displayName: "Название",
       type: DataTypes.TEXT,
       isRequired: true,
     }),
 
     new Column({
       name: "description",
-      displayName: "Description",
+      displayName: "Описание",
       type: DataTypes.TEXT,
     }),
 
     new Column({
       name: "link",
-      displayName: "Link",
+      displayName: "Ссылка",
       type: DataTypes.URL,
     }),
 
     new Column({
       name: "program_id",
-      displayName: "Program",
+      displayName: "Программа",
       type: DataTypes.FOREIGN_KEY,
     }),
   ],

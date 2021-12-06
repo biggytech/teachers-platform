@@ -2,9 +2,10 @@ import { getMaterialsProps } from "@services/pages/materials";
 import { createQueryPage } from "@components/pages";
 
 const { runGetServerSideProps, QueryPage } = createQueryPage({
-  title: "Materials",
+  title: "Учебные материалы",
   addLink: (contextId) => `/materials/add?program_id=${contextId}`,
   isUsePagination: false,
+  onClick: (row) => row.link,
 });
 
 const getServerSideProps = async (data) => {

@@ -7,21 +7,21 @@ const schema = new Schema({
     new Column({
       name: "firstname",
       isRequired: true,
-      displayName: "Firstname",
+      displayName: "Имя",
       type: DataTypes.TEXT,
     }),
 
     new Column({
       name: "lastname",
       isRequired: true,
-      displayName: "Lastname",
+      displayName: "Фамилия",
       type: DataTypes.TEXT,
     }),
 
     new Column({
       name: "username",
       isRequired: true,
-      displayName: "Username",
+      displayName: "Логин",
       type: DataTypes.TEXT,
       constraints: "UNIQUE",
     }),
@@ -29,13 +29,13 @@ const schema = new Schema({
     new Column({
       name: "password",
       isRequired: true,
-      displayName: "Password",
+      displayName: "Пароль",
       type: DataTypes.PASSWORD,
     }),
 
     new Column({
       name: "picture",
-      displayName: "User picture",
+      displayName: "Изображение",
       type: DataTypes.BYTEA,
     }),
   ],

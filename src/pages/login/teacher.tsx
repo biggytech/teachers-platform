@@ -7,11 +7,11 @@ const Login = ({ columns, isInvalid }) => {
   return (
     <>
       <Head>
-        <title>Login | Teacher</title>
+        <title>Войти | Инструктор</title>
       </Head>
-      {isInvalid && <div>Invalid credentials</div>}
+      {isInvalid && <div>Неверные данные</div>}
       <Form
-        name="Login | Teacher"
+        name="Войти | Инструктор"
         action="/api/login/teacher"
         columns={columns}
       />

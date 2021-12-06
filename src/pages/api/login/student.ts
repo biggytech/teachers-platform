@@ -3,14 +3,6 @@ import studentsSchema from "@db/students/schema";
 import { authenticateUser } from "@services/tokens";
 var bcrypt = require("bcryptjs");
 
-// const cookieOptions = {
-//   httpOnly: true,
-//   maxAge: 2592000,
-//   path: "/",
-//   sameSite: "Strict",
-//   secure: process.env.NODE_ENV === "production",
-// };
-
 async function handler(req, res) {
   try {
     const { username, password } = req.body;

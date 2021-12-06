@@ -1,18 +1,18 @@
 import Head from "next/head";
 
-import { Form, Header } from "../../components";
-import { getAddTeacherProps } from "../../services/pages/teachers";
-import { checkAuthentication } from "../../services/pages";
+import { Form, Header } from "@components";
+import { getAddTeacherProps } from "@services/pages/teachers";
+import { checkAuthentication } from "@services/pages";
 
 const AddTeacher = ({ columns }) => {
   return (
     <>
       <Header />
       <Head>
-        <title>Teachers | Add</title>
+        <title>Инструкторы | Добавить</title>
       </Head>
       <Form
-        name="Add a teacher"
+        name="Добавить инструктора"
         encType="multipart/form-data"
         action="/api/teachers/add"
         columns={columns}

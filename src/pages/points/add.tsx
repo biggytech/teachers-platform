@@ -3,8 +3,8 @@ import { getAddPointProps } from "@services/pages/points";
 import { createEditPage } from "@components/pages";
 
 const { runGetServerSideProps, EditPage } = createEditPage({
-  title: "Points",
-  name: "point",
+  title: "Пункты учебной программы",
+  name: "пункт",
   action: "/api/points/add",
 });
 

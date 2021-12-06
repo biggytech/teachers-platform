@@ -7,13 +7,13 @@ const testsPointsSchema = new Schema({
   columns: [
     new Column({
       name: "test_id",
-      displayName: "Test",
+      displayName: "Тест",
       isRequired: true,
       type: DataTypes.FOREIGN_KEY,
     }),
     new Column({
       name: "point_id",
-      displayName: "Point",
+      displayName: "Пункт программы",
       isRequired: true,
       type: DataTypes.FOREIGN_KEY,
     }),

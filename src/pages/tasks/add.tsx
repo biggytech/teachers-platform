@@ -3,8 +3,8 @@ import { getAddTaskProps } from "@services/pages/tasks";
 import { createEditPage } from "@components/pages";
 
 const { runGetServerSideProps, EditPage } = createEditPage({
-  title: "Tasks",
-  name: "task",
+  title: "Практические задания",
+  name: "практическое задание",
   action: "/api/tasks/add",
 });
 

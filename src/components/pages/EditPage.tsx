@@ -20,11 +20,11 @@ const EditPage = (props: EditPageProps) => {
   return (
     <>
       <Head>
-        <title>{title} | Add</title>
+        <title>{title} | Добавить</title>
       </Head>
       <Header />
       <Form
-        name={`Add a ${name}`}
+        name={`Добавить ${name}`}
         action={action}
         columns={columns}
         encType={encType}

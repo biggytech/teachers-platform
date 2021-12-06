@@ -6,13 +6,13 @@ const questionsSchema = new Schema({
   columns: [
     new Column({
       name: "description",
-      displayName: "Description",
+      displayName: "Описание",
       isRequired: true,
       type: DataTypes.TEXT,
     }),
     new Column({
       name: "test_id",
-      displayName: "Test",
+      displayName: "Тест",
       isRequired: true,
       type: DataTypes.FOREIGN_KEY,
     }),

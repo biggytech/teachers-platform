@@ -1,16 +1,27 @@
+import questionsSchema from "@db/questions/questionsSchema";
 import {
-  createSelectByQuery,
+  createJoinedQuery,
   createSimpleInsertQuery,
   executeQuery,
 } from "@services/db";
 import answersSchema from "./answersSchema";
 
-export const getAnswers = async ({ columns, questionId }) => {
-  const query = createSelectByQuery({
-    schema: answersSchema,
-    columns,
-    searchColumn: answersSchema.column("question_id").name,
-    searchValue: questionId,
+export const getAnswers = async ({ columns, questionId, questionColumn }) => {
+  const query = createJoinedQuery({
+    schema1: answersSchema,
+    schema2: questionsSchema,
+    columns1: columns,
+    columns2: [
+      {
+        name: `${questionsSchema.column("description").name} ${questionColumn}`,
+      },
+    ],
+    field1: answersSchema.column("question_id"),
+    field2: questionsSchema.column("id"),
+    where: {
+      column: answersSchema.column("question_id"),
+      value: questionId,
+    },
   });
 
   const results = await executeQuery(query);

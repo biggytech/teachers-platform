@@ -2,7 +2,7 @@ import { createQueryPage } from "@components/pages";
 import getAnswersProps from "@services/pages/answers/getAnswersProps";
 
 const { runGetServerSideProps, QueryPage } = createQueryPage({
-  title: "Answers",
+  title: "Ответы на вопросы тестов",
   addLink: (contextId) => `/answers/add?question_id=${contextId}`,
   isUsePagination: false,
 });

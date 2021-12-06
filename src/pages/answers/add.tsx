@@ -2,8 +2,8 @@ import { createEditPage } from "@components/pages";
 import { getAddAnswersProps } from "@services/pages/answers/getAddAnswersProps";
 
 const { runGetServerSideProps, EditPage } = createEditPage({
-  title: "Answers",
-  name: "answer",
+  title: "Ответы на вопросы тестов",
+  name: "ответ",
   action: "/api/answers/add",
 });
 

@@ -7,19 +7,19 @@ export const taskMarksSchema = new Schema({
   columns: [
     new Column({
       name: "mark",
-      displayName: "Mark",
+      displayName: "Балл",
       isRequired: true,
       type: DataTypes.SMALL_INTEGER,
     }),
     new Column({
       name: "task_id",
-      displayName: "Task",
+      displayName: "Практическое задание",
       isRequired: true,
       type: DataTypes.FOREIGN_KEY,
     }),
     new Column({
       name: "plan_id",
-      displayName: "Plan",
+      displayName: "Учебный план",
       isRequired: true,
       type: DataTypes.FOREIGN_KEY,
     }),

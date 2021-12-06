@@ -1,16 +1,15 @@
-import Head from "next/head";
-import { UserProfile, Header } from "../../components";
-import { checkAuthentication } from "../../services/pages";
-import { getSingleTeacherProps } from "../../services/pages/teachers";
+import { UserProfile, Header } from "@components";
+import { checkAuthentication } from "@services/pages";
+import { getSingleTeacherProps } from "@services/pages/teachers";
 
-const SingleTeacher = ({ data }) => {
+const SingleTeacher = ({ data, mapData }) => {
   if (!data) {
     return <div>not found</div>;
   }
   return (
     <>
       <Header />
-      <UserProfile pageType="Teacher" data={data} />
+      <UserProfile pageType="Инструктор" data={data} mapData={mapData} />
     </>
   );
 };

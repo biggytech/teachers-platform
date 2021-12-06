@@ -6,18 +6,18 @@ const tasksSchema = new Schema({
   columns: [
     new Column({
       name: "title",
-      displayName: "Title",
+      displayName: "Название",
       type: DataTypes.TEXT,
       isRequired: true,
     }),
     new Column({
       name: "description",
-      displayName: "Description",
+      displayName: "Описание",
       type: DataTypes.TEXT,
     }),
     new Column({
       name: "point_id",
-      displayName: "Point",
+      displayName: "Пункт программы",
       type: DataTypes.MULTIPLE_FOREIGN_KEY,
       isRequired: true,
     }),

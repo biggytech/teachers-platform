@@ -1,9 +1,8 @@
-import Link from "next/link";
 import { Header, FieldsProfile, LinkButton } from "@components";
 import { getSingleTestProps } from "@services/pages/tests";
 import { checkAuthentication } from "@services/pages";
 
-const SingleTest = ({ data, id }) => {
+const SingleTest = ({ data, id, mapData }) => {
   if (!data) {
     return <div>not found</div>;
   }
@@ -11,12 +10,12 @@ const SingleTest = ({ data, id }) => {
   return (
     <>
       <Header />
-      <section>
+      <section style={{ padding: 10 }}>
         <h2 className="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">
           {data.title}
         </h2>
-        <FieldsProfile data={data} />
-        <LinkButton link={`/questions?test_id=${id}`} text="Questions" />
+        <FieldsProfile data={data} mapData={mapData} />
+        <LinkButton link={`/questions?test_id=${id}`} text="Вопросы к тесту" />
       </section>
     </>
   );

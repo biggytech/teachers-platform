@@ -1,5 +1,6 @@
 import { getTeacher } from "@db/teachers/index";
 import schema from "@db/teachers/schema";
+import mapColumnsToDisplayNames from "@services/mapColumnsToDisplayNames";
 
 const getSingleTeacherProps = async ({ id }) => {
   const columns = [
@@ -7,7 +8,6 @@ const getSingleTeacherProps = async ({ id }) => {
     schema.column("firstname").toObject(),
     schema.column("lastname").toObject(),
     schema.column("username").toObject(),
-    schema.column("password").toObject(),
     schema.column("picture").toObject(),
   ];
 
@@ -20,6 +20,10 @@ const getSingleTeacherProps = async ({ id }) => {
   }
   return {
     data,
+    id,
+    mapData: mapColumnsToDisplayNames(
+      columns.filter(({ name }) => name !== "picture")
+    ),
   };
 };
 
