@@ -1,7 +1,7 @@
-import { userFromRequest } from "../tokens";
+import { Authenticator } from "../Authenticator";
 
 const checkAuthentication = async ({ req, res, cb }) => {
-  const user = await userFromRequest(req);
+  const user = await Authenticator.userFromRequest(req);
   if (!user) {
     return res.redirect("/");
   } else {

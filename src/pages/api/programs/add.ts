@@ -1,5 +1,5 @@
 import { checkAuthentication } from "@services/api";
-import { addProgram } from "@db/programs/index";
+import { addProgram } from "@db/programs/programsQueries";
 import { cookSimpleBodyData } from "@services/pages";
 
 async function handler(req, res) {

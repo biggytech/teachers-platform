@@ -1,5 +1,5 @@
 import { addPlan } from "@db/plans/plansQueries";
-import schema from "@db/materials/schema";
+import schema from "@db/materials/materialsSchema";
 import { cookCreatedPlanData } from "@services/pages/plans/index";
 import { checkAuthentication } from "@services/api";
 

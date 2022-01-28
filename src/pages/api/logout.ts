@@ -1,8 +1,8 @@
-import { clearUser } from "@services/tokens";
+import { Authenticator } from "@services/Authenticator";
 
 async function handler(req, res) {
   try {
-    clearUser(res);
+    Authenticator.clearUser(res);
 
     res.redirect("/login/teacher");
   } catch (err) {

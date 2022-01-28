@@ -3,16 +3,29 @@ import * as fs from "fs";
 import * as path from "path";
 import getConfig from "next/config";
 
-export const generateReport = async ({ reportData, planId }) => {
+namespace Utils {
   const { serverRuntimeConfig } = getConfig();
-  const templatePath = path.join(
-    serverRuntimeConfig.PROJECT_ROOT,
-    "./src/services/pdf/template.html"
-  );
-  const outputPath = path.join(
-    serverRuntimeConfig.PROJECT_ROOT,
-    `./src/services/pdf/temp/${planId}.pdf`
-  );
+
+  export const getTemplatePath = () => {
+    const templatePath = path.join(
+      serverRuntimeConfig.PROJECT_ROOT,
+      "./src/services/pdf/template.html"
+    );
+    return templatePath;
+  };
+
+  export const getOutputPath = (planId) => {
+    const outputPath = path.join(
+      serverRuntimeConfig.PROJECT_ROOT,
+      `./src/services/pdf/temp/${planId}.pdf`
+    );
+    return outputPath;
+  };
+}
+
+export const generateReport = async ({ reportData, planId }) => {
+  const templatePath = Utils.getTemplatePath(),
+    outputPath = Utils.getOutputPath(planId);
 
   var html = fs.readFileSync(templatePath, "utf8");
 

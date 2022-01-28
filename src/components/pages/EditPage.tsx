@@ -50,8 +50,13 @@ export const createEditPage = (props: EditPageCreatorProps) => {
         });
       });
     },
-    EditPage: function Component({ ...otherProps }) {
-      return <EditPage {...props} {...otherProps} />;
+    EditPage: function Component({ columns, ...otherProps }) {
+      const newProps: EditPageProps = {
+        ...props,
+        columns,
+        ...otherProps,
+      };
+      return <EditPage {...newProps} />;
     },
   };
 };

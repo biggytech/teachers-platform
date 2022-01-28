@@ -1,5 +1,6 @@
 import Schema, { Column } from "@db/Schema";
 import DataTypes from "@db/DataTypes";
+import { DisplayNames } from "@services/DisplayNames";
 
 const schema = new Schema({
   name: "programs",
@@ -7,19 +8,19 @@ const schema = new Schema({
     new Column({
       name: "title",
       isRequired: true,
-      displayName: "Название",
+      displayName: DisplayNames.title,
       type: DataTypes.TEXT,
     }),
 
     new Column({
       name: "description",
-      displayName: "Описание",
+      displayName: DisplayNames.description,
       type: DataTypes.TEXT,
     }),
 
     new Column({
       name: "owner_id",
-      displayName: "Владелец",
+      displayName: DisplayNames.owner_id,
       type: DataTypes.FOREIGN_KEY,
     }),
   ],

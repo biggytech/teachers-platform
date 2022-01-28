@@ -72,7 +72,7 @@ const getStudent = async ({ id, columns }) => {
   return results.rows[0] ?? null;
 };
 
-const getStudentByUsername = async ({ username, columns }) => {
+export const getStudentByUsername = async ({ username, columns }) => {
   const query = createLimitedSelectQuery({
     schema,
     columns,

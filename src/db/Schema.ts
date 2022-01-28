@@ -24,15 +24,37 @@ export interface ColumnDefinitionWithValue extends ColumnDefinition {
   value?: string | null;
 }
 
-export class Column implements ColumnDefinition {
-  name: string;
-  displayName: string;
-  type: DataType;
-  isRequired?: boolean = false;
-  constraints: string | null = null;
-  columnName: string | null = null;
+abstract class ColumnAbstract {
+  abstract toObject(): ColumnDefinition;
+}
+
+abstract class ColumnWithDisplayName {
+  abstract withDisplayName(displayName: string): ColumnDefinition;
+}
+
+interface ColumnWithOptions {
+  asSelectable(options: Array<SelectableOption>): ColumnDefinition;
+}
+
+interface ColumnWithValue {
+  withValue(value?: string): ColumnDefinitionWithValue;
+}
+
+// !!! interface can extends multiple interfaces via comma
+
+export class Column
+  extends ColumnAbstract
+  implements Readonly<ColumnDefinition>, ColumnWithOptions, ColumnWithValue
+{
+  readonly name: string;
+  readonly displayName: string;
+  readonly type: DataType;
+  readonly isRequired?: boolean = false;
+  readonly constraints: string | null = null;
+  readonly columnName: string | null = null;
 
   constructor(columnDefinition: ColumnDefinition) {
+    super();
     Object.assign(this, columnDefinition);
 
     if (columnDefinition.type === DataTypes.FOREIGN_KEY) {
@@ -83,10 +105,10 @@ export type ColumnValue = {
   type?: string;
 };
 
-export class Schema implements SchemaDefinition {
-  name: string;
-  columns: Array<Column> = [];
-  withoutIdentifier?: boolean = false;
+export class Schema implements Readonly<SchemaDefinition> {
+  readonly name: string;
+  readonly columns: Array<Column> = [];
+  readonly withoutIdentifier?: boolean = false;
 
   constructor(schemaDefinition: SchemaDefinition) {
     Object.assign(this, schemaDefinition);

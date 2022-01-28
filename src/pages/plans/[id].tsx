@@ -4,14 +4,16 @@ import { checkAuthentication } from "@services/pages";
 import { FieldsProfile } from "@components";
 import { useCallback } from "react";
 
+declare var open: (url: string, target: string) => { focus: () => void };
+
 const SinglePlan = ({ data, id, mapData }) => {
+  const handleGenerateReport = useCallback(() => {
+    open(`/api/generateReport?plan_id=${id}`, "_blank").focus();
+  }, [id]);
+
   if (!data) {
     return <div>not found</div>;
   }
-
-  const handleGenerateReport = useCallback(() => {
-    window.open(`/api/generateReport?plan_id=${id}`, "_blank").focus();
-  }, [id]);
 
   return (
     <>

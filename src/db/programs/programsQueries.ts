@@ -1,5 +1,5 @@
 import { ColumnValue } from "@db/Schema";
-import schema from "@db/programs/schema";
+import schema from "@db/programs/programsSchema";
 import teachersSchema from "@db/teachers/schema";
 import {
   executeQuery,

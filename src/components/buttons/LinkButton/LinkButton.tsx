@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { Button } from "@components";
-import { ButtonProps } from "@components/Button";
+import { ButtonProps } from "@components/buttons/Button";
 
 interface LinkButtonProps extends ButtonProps {
   link: string;

@@ -1,20 +1,23 @@
-export type DBDataType =
-  | "integer"
-  | "text"
-  | "bytea"
-  | "date"
-  | "boolean"
-  | "smallint";
-export type HtmlType =
-  | "number"
-  | "text"
-  | "password"
-  | "file"
-  | "hidden"
-  | "url"
-  | "date"
-  | "select"
-  | "checkbox";
+export enum DBDataType {
+  integer,
+  text,
+  bytea,
+  date,
+  boolean,
+  smallint,
+}
+
+export enum HtmlType {
+  number,
+  text,
+  password,
+  file,
+  hidden,
+  url,
+  date,
+  select,
+  checkbox,
+}
 
 export type DataTypeDefinition = {
   dataType: DBDataType;
@@ -31,13 +34,7 @@ export interface SelectableDataTypeDefinition extends DataTypeDefinition {
 }
 
 export class DataType implements DataTypeDefinition {
-  dataType: DBDataType;
-  htmlType: HtmlType;
-
-  constructor(dt: DBDataType, ht: HtmlType) {
-    this.dataType = dt;
-    this.htmlType = ht;
-  }
+  constructor(readonly dataType: DBDataType, readonly htmlType: HtmlType) {}
 
   toObject(): DataTypeDefinition {
     return {
@@ -48,23 +45,32 @@ export class DataType implements DataTypeDefinition {
 
   asSelectable(options: Array<SelectableOption>): SelectableDataTypeDefinition {
     return Object.assign(this.toObject(), {
-      htmlType: "select",
+      htmlType: HtmlType.select,
       options,
     });
   }
 }
 
 export class DataTypes {
-  static readonly INTEGER = new DataType("integer", "number");
-  static readonly SMALL_INTEGER = new DataType("smallint", "number");
-  static readonly TEXT = new DataType("text", "text");
-  static readonly URL = new DataType("text", "url");
-  static readonly PASSWORD = new DataType("text", "password");
-  static readonly BYTEA = new DataType("bytea", "file");
-  static readonly FOREIGN_KEY = new DataType("integer", "hidden");
-  static readonly MULTIPLE_FOREIGN_KEY = new DataType("integer", "hidden");
-  static readonly DATE = new DataType("date", "date");
-  static readonly BOOLEAN = new DataType("boolean", "checkbox");
+  static readonly INTEGER = new DataType(DBDataType.integer, HtmlType.number);
+  static readonly SMALL_INTEGER = new DataType(
+    DBDataType.smallint,
+    HtmlType.number
+  );
+  static readonly TEXT = new DataType(DBDataType.text, HtmlType.text);
+  static readonly URL = new DataType(DBDataType.text, HtmlType.url);
+  static readonly PASSWORD = new DataType(DBDataType.text, HtmlType.password);
+  static readonly BYTEA = new DataType(DBDataType.bytea, HtmlType.file);
+  static readonly FOREIGN_KEY = new DataType(
+    DBDataType.integer,
+    HtmlType.hidden
+  );
+  static readonly MULTIPLE_FOREIGN_KEY = new DataType(
+    DBDataType.integer,
+    HtmlType.hidden
+  );
+  static readonly DATE = new DataType(DBDataType.date, HtmlType.date);
+  static readonly BOOLEAN = new DataType(DBDataType.boolean, HtmlType.checkbox);
 }
 
 export default DataTypes;

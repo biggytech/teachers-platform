@@ -1,4 +1,4 @@
-import schema from "@db/materials/schema";
+import schema from "@db/materials/materialsSchema";
 
 const getAddMaterialProps = async ({ programId }) => {
   const columns = [

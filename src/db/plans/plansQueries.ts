@@ -5,7 +5,7 @@ import {
   createLimitedSelectQuery,
 } from "@services/db";
 import studentsSchema from "@db/students/schema";
-import programsSchema from "@db/programs/schema";
+import programsSchema from "@db/programs/programsSchema";
 
 const addPlan = async ({ columns }) => {
   const query = createSimpleInsertQuery({ schema: plansSchema, columns });

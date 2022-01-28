@@ -1,6 +1,6 @@
 import { ColumnValue } from "@db/Schema";
-import schema from "@db/materials/schema";
-import programsSchema from "@db/programs/schema";
+import schema from "@db/materials/materialsSchema";
+import programsSchema from "@db/programs/programsSchema";
 import {
   executeQuery,
   createSimpleInsertQuery,

@@ -1,5 +1,5 @@
 import { addTask } from "@db/tasks/tasksQueries";
-import schema from "@db/materials/schema";
+import schema from "@db/materials/materialsSchema";
 import { cookSimpleBodyData } from "@services/pages";
 import { checkAuthentication } from "@services/api";
 

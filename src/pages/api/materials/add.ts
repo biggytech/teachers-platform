@@ -1,5 +1,5 @@
 import { addMaterial } from "@db/materials/index";
-import schema from "@db/materials/schema";
+import schema from "@db/materials/materialsSchema";
 import { cookSimpleBodyData } from "@services/pages";
 import { checkAuthentication } from "@services/api";
 

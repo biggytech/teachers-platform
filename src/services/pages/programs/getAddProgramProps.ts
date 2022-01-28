@@ -1,4 +1,4 @@
-import schema from "@db/programs/schema";
+import schema from "@db/programs/programsSchema";
 
 const getAddProgramProps = ({ ownerId }) => {
   const columns = [

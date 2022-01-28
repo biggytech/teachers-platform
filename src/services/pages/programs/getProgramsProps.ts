@@ -1,5 +1,5 @@
-import { getProgramsWithOwners } from "@db/programs/index";
-import schema from "@db/programs/schema";
+import { getProgramsWithOwners } from "@db/programs/programsQueries";
+import schema from "@db/programs/programsSchema";
 
 const getProgramsProps = async ({ page, limit, ownerId }) => {
   const columns = [

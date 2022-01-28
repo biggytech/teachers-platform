@@ -1,5 +1,5 @@
-import { getProgram } from "@db/programs/index";
-import schema from "@db/programs/schema";
+import { getProgram } from "@db/programs/programsQueries";
+import schema from "@db/programs/programsSchema";
 import mapColumnsToDisplayNames from "@services/mapColumnsToDisplayNames";
 
 const getSingleProgramProps = async ({ id }) => {

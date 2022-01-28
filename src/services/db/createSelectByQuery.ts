@@ -1,4 +1,8 @@
 import { createLimitedSelectQuery } from ".";
+import { LimitedQuery } from "./createLimitedSelectQuery";
+
+// type SelectByQuery = Exclude<keyof LimitedQuery, "limit">;
+// type SelectByQuery = Pick<LimitedQuery, 'schema', 'columns'>;
 
 const createSelectByQuery = ({
   schema,

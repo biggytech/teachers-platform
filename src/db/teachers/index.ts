@@ -27,7 +27,7 @@ const getTeacher = async ({ id, columns }) => {
   return results.rows[0] ?? null;
 };
 
-const getTeacherByUsername = async ({ username, columns }) => {
+export const getTeacherByUsername = async ({ username, columns }) => {
   const query = createLimitedSelectQuery({
     schema,
     columns,

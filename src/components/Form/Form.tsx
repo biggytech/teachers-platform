@@ -1,13 +1,21 @@
-import React, { forwardRef, useImperativeHandle, useRef } from "react";
+import React, {
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  FormHTMLAttributes,
+} from "react";
 import { Input } from "@components/fields";
 import { ColumnDefinitionWithValue } from "@db/Schema";
+import { HtmlType } from "@db/DataTypes";
 
 type FormProps = {
   name: string;
   action?: string;
   columns: Array<ColumnDefinitionWithValue>;
-  encType?: string;
+  encType?: FormHTMLAttributes<HTMLFormElement>["encType"];
 };
+
+type t = keyof FormHTMLAttributes<HTMLFormElement>;
 
 const Form = forwardRef((props: FormProps, ref) => {
   const {
@@ -61,15 +69,17 @@ const Form = forwardRef((props: FormProps, ref) => {
         {name}
       </h1>
       {columns.map((column) => {
-        if (column.type.htmlType !== "select") {
+        if (column.type.htmlType !== HtmlType.select) {
           return (
             <Input
               key={column.name}
               name={column.name}
               displayName={column.displayName}
-              type={column.type.htmlType}
+              type={HtmlType[column.type.htmlType]}
               isRequired={
-                column.type.htmlType === "checkbox" ? false : column.isRequired
+                column.type.htmlType === HtmlType.checkbox
+                  ? false
+                  : column.isRequired
               }
               data-input-name={column.name}
               value={column.value}
@@ -90,13 +100,15 @@ const Form = forwardRef((props: FormProps, ref) => {
                   marginBottom: "10px",
                 }}
               >
-                {column.type.options.map((option) => {
-                  return (
-                    <option key={option.name} value={option.name}>
-                      {option.displayName}
-                    </option>
-                  );
-                })}
+                {"options" in column.type
+                  ? column.type.options.map((option) => {
+                      return (
+                        <option key={option.name} value={option.name}>
+                          {option.displayName}
+                        </option>
+                      );
+                    })
+                  : null}
               </select>
             </label>
           );

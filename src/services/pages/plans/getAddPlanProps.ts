@@ -1,6 +1,6 @@
 import schema from "@db/plans/plansSchema";
-import programsSchema from "@db/programs/schema";
-import { getProgramsByTeacher } from "@db/programs";
+import programsSchema from "@db/programs/programsSchema";
+import { getProgramsByTeacher } from "@db/programs/programsQueries";
 import { checkAuthentication } from "@services/api";
 
 const getAddPlanProps = ({ req, res, studentId }) => {

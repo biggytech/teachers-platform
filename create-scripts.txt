@@ -1,0 +1,158 @@
+CREATE TABLE IF NOT EXISTS teachers (
+	id SERIAL PRIMARY KEY,
+	username VARCHAR(30) NOT NULL UNIQUE,
+	firstname VARCHAR(30) NOT NULL,
+	lastname VARCHAR(30) NOT NULL,
+	password text NOT NULL,
+	picture bytea
+);
+
+CREATE TABLE IF NOT EXISTS students (
+	id SERIAL PRIMARY KEY,
+	username VARCHAR(30) NOT NULL UNIQUE,
+	firstname VARCHAR(30) NOT NULL,
+	lastname VARCHAR(30) NOT NULL,
+	password text NOT NULL,
+	picture bytea,
+	teacher_id integer NOT NULL,
+	foreign key (teacher_id) references teachers(id) on delete cascade
+	on update cascade
+);
+
+CREATE TABLE IF NOT EXISTS programs (
+	id SERIAL PRIMARY KEY,
+	title VARCHAR(30) NOT NULL,
+	description text,
+	owner_id integer NOT NULL,
+	foreign key (owner_id) references teachers(id) on delete cascade
+	on update cascade
+);
+
+CREATE TABLE IF NOT EXISTS plans (
+	id SERIAL PRIMARY KEY,
+	start_date date NOT NULL,
+	student_id integer NOT NULL,
+	program_id integer NOT NULL,
+	foreign key (student_id) references students(id) on delete cascade
+	on update cascade,
+	foreign key (program_id) references programs(id) on delete cascade
+	on update cascade
+);
+
+CREATE TABLE IF NOT EXISTS materials (
+	id SERIAL PRIMARY KEY,
+	title VARCHAR(30) NOT NULL,
+	description text,
+	link text,
+	program_id integer NOT NULL,
+	foreign key (program_id) references programs(id) on delete cascade
+	on update cascade
+);
+
+CREATE TABLE IF NOT EXISTS points (
+	id SERIAL PRIMARY KEY,
+	title VARCHAR(60) NOT NULL,
+	description text,
+	duration_days integer NOT NULL,
+	program_id integer NOT NULL,
+	foreign key (program_id) references programs(id) on delete cascade
+	on update cascade
+);
+
+CREATE TABLE IF NOT EXISTS tasks (
+	id SERIAL PRIMARY KEY,
+	title VARCHAR(30) NOT NULL,
+	description text
+);
+
+CREATE TABLE IF NOT EXISTS tasks_points (
+	task_id integer NOT NULL,
+	point_id integer NOT NULL,
+	PRIMARY KEY(task_id, point_id),
+	foreign key (task_id) references tasks(id) on delete cascade
+	on update cascade,
+	foreign key (point_id) references points(id) on delete cascade
+	on update cascade
+);
+
+CREATE TABLE IF NOT EXISTS task_marks (
+	mark smallint NOT NULL CHECK (mark >= 1 AND mark <= 10),
+	task_id integer NOT NULL,
+	plan_id integer NOT NULL,
+	PRIMARY KEY(task_id, plan_id),
+	foreign key (task_id) references tasks(id) on delete cascade
+	on update cascade,
+	foreign key (plan_id) references plans(id) on delete cascade
+	on update cascade
+);
+
+CREATE TABLE IF NOT EXISTS tests (
+	id SERIAL PRIMARY KEY,
+	title VARCHAR(30) NOT NULL,
+	description text
+);
+
+CREATE TABLE IF NOT EXISTS tests_points (
+	test_id integer NOT NULL,
+	point_id integer NOT NULL,
+	PRIMARY KEY(test_id, point_id),
+	foreign key (test_id) references tests(id) on delete cascade
+	on update cascade,
+	foreign key (point_id) references points(id) on delete cascade
+	on update cascade
+);
+
+CREATE TABLE IF NOT EXISTS questions (
+	id SERIAL PRIMARY KEY,
+	description text NOT NULL,
+	test_id integer NOT NULL,
+	foreign key (test_id) references tests(id) on delete cascade
+	on update cascade
+);
+
+CREATE TABLE IF NOT EXISTS answers (
+	id SERIAL PRIMARY KEY,
+	description text NOT NULL,
+	is_correct boolean NOT NULL,
+	question_id integer NOT NULL,
+	foreign key (question_id) references questions(id) on delete cascade
+	on update cascade
+);
+
+CREATE TABLE IF NOT EXISTS test_marks (
+	mark smallint NOT NULL CHECK (mark >= 1 AND mark <= 10),
+	test_id integer NOT NULL,
+	plan_id integer NOT NULL,
+	PRIMARY KEY(test_id, plan_id),
+	foreign key (test_id) references tests(id) on delete cascade
+	on update cascade,
+	foreign key (plan_id) references plans(id) on delete cascade
+	on update cascade
+);
+
+CREATE TABLE IF NOT EXISTS progs_log (
+    operation         char(1)   NOT NULL,
+    stamp             timestamp NOT NULL,
+    userid            text      NOT NULL,
+    program_title           text      NOT NULL
+);
+
+CREATE OR REPLACE FUNCTION programs_log() RETURNS TRIGGER AS $prog_log$
+    BEGIN
+        IF (TG_OP = 'DELETE') THEN
+            INSERT INTO progs_log SELECT 'D', now(), user, OLD.title;
+            RETURN OLD;
+        ELSIF (TG_OP = 'UPDATE') THEN
+            INSERT INTO progs_log SELECT 'U', now(), user, NEW.title;
+            RETURN NEW;
+        ELSIF (TG_OP = 'INSERT') THEN
+            INSERT INTO progs_log SELECT 'I', now(), user, NEW.title;
+            RETURN NEW;
+        END IF;
+        RETURN NULL;
+    END;
+$prog_log$ LANGUAGE plpgsql;
+
+CREATE TRIGGER prog_log
+AFTER INSERT OR UPDATE OR DELETE ON programs
+    FOR EACH ROW EXECUTE PROCEDURE programs_log();
