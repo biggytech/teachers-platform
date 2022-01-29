@@ -116,16 +116,6 @@ export const getPointsByPlans = async ({ columns, planId }) => {
   return results.rows;
 };
 
-export const addPoint = async ({
-  columns,
-}: {
-  columns: Array<ColumnValue>;
-}) => {
-  const query = createSimpleInsertQuery({ schema, columns });
-
-  await executeQuery(query);
-};
-
 export const getPoint = async ({ id, columns }) => {
   const query = createLimitedSelectQuery({ schema, columns, searchValue: id });
 

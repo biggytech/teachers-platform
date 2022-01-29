@@ -40,15 +40,8 @@ export const getTeacherByUsername = async ({ username, columns }) => {
   return results.rows[0] ?? null;
 };
 
-const addTeacher = async ({ columns }) => {
-  const query = createSimpleInsertQuery({ schema, columns });
-
-  await executeQuery(query);
-};
-
 module.exports = {
   getTeachers,
   getTeacher,
-  addTeacher,
   getTeacherByUsername,
 };

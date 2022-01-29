@@ -1,13 +1,28 @@
-import { addTeacher } from "@db/teachers/index";
-import schema from "@db/teachers/schema";
-import { cookCreatedUserData } from "@services/users/index";
+import teachersService from "@db/teachers/teachersService";
+import getFormData from "@services/getFormData";
+import fs from "fs";
+
+interface TeacherFields {
+  username: string;
+  firstname: string;
+  lastname: string;
+  password: string;
+}
+
+interface TeacherFiles {
+  picture?: Buffer;
+}
 
 async function handler(req, res) {
   try {
-    const data = await cookCreatedUserData(req, schema);
-    await addTeacher({
-      columns: data.columns,
-    });
+    const { fields, files } = await getFormData<TeacherFields, TeacherFiles>(
+      req
+    );
+    const teacher = {
+      ...fields,
+      picture: files.picture ? fs.readFileSync(files.picture.filepath) : null,
+    };
+    await teachersService.add(teacher);
     res.redirect("/login/teacher");
   } catch (err) {
     console.log(err);

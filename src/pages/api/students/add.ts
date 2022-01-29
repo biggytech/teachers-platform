@@ -1,7 +1,18 @@
-import { addStudent } from "@db/students/index";
-import schema from "@db/students/schema";
-import { cookCreatedUserData } from "@services/users/index";
 import { checkAuthentication } from "@services/api";
+import getFormData from "@services/getFormData";
+import fs from "fs";
+import studentsService from "@db/students/studentsService";
+
+interface StudentFields {
+  username: string;
+  firstname: string;
+  lastname: string;
+  password: string;
+}
+
+interface StudentFiles {
+  picture?: Buffer;
+}
 
 async function handler(req, res) {
   try {
@@ -9,14 +20,23 @@ async function handler(req, res) {
       req,
       res,
       cb: async (user) => {
-        const data = await cookCreatedUserData(req, schema);
-        await addStudent({
-          columns: data.columns.concat({
-            name: schema.column("teacher_id").name,
-            value: user.id,
-          }),
-        });
-        res.redirect("/students");
+        const { fields, files } = await getFormData<
+          StudentFields,
+          StudentFiles
+        >(req);
+        const student = {
+          ...fields,
+          teacher_id: user.id,
+          picture: files.picture
+            ? fs.readFileSync(files.picture.filepath)
+            : null,
+        };
+
+        const {
+          dataValues: { id },
+        } = await studentsService.add(student);
+
+        res.redirect(`/students/${id}`);
       },
     });
   } catch (err) {

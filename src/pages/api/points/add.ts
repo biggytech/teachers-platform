@@ -1,7 +1,5 @@
-import { addPoint } from "@db/points/index";
-import { cookSimpleBodyData } from "@services/pages";
 import { checkAuthentication } from "@services/api";
-import Points from "@services/Points";
+import pointsService from "@db/points/pointsService";
 
 async function handler(req, res) {
   try {
@@ -10,9 +8,8 @@ async function handler(req, res) {
       res,
       cb: async (user) => {
         const {
-          // @ts-ignore TODO: fix type error
           dataValues: { id },
-        } = await Points.add(req.body);
+        } = await pointsService.add(req.body);
         res.redirect(`/points/${id}`);
       },
     });
