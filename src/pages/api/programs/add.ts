@@ -16,9 +16,7 @@ async function handler(req, res) {
           ...(req.body as ProgramBody),
           owner_id: user.id,
         };
-        const {
-          dataValues: { id },
-        } = await programsService.add(program);
+        const { id } = await programsService.add(program);
 
         res.redirect(`/programs/${id}`);
       },

@@ -1,5 +1,5 @@
 import Students from "@db/students/Students";
-import { Returning } from "@db/types";
+import { SequelizeReturning } from "@db/types";
 import hashPassword from "@services/hashPassword";
 
 interface Student {
@@ -13,7 +13,7 @@ interface Student {
 }
 
 const studentsService = {
-  add: (student: Omit<Student, "id">): Promise<Returning<Student>> => {
+  add: async (student: Omit<Student, "id">): Promise<Student> => {
     const preparedStudent = {
       ...student,
       password: hashPassword(student.password),
@@ -28,10 +28,15 @@ const studentsService = {
       "teacher_id",
     ];
 
-    return Students.create(preparedStudent, {
-      fields,
-      returning: true,
-    }) as unknown as Promise<Returning<Student>>;
+    const created: SequelizeReturning<Student> = (await Students.create(
+      preparedStudent,
+      {
+        fields,
+        returning: true,
+      }
+    )) as unknown as SequelizeReturning<Student>;
+
+    return created.dataValues;
   },
 };
 

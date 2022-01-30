@@ -1,7 +1,13 @@
-import { getTeachers } from "@db/teachers/index";
 import schema from "@db/teachers/schema";
+import teachersService from "@db/teachers/teachersService";
 
-const getTeachersProps = async ({ page, limit }) => {
+const getTeachersProps = async ({
+  page,
+  limit,
+}: {
+  page: number;
+  limit: number;
+}) => {
   const columns = [
     schema.column("id").toObject(),
     schema.column("firstname").toObject(),
@@ -9,11 +15,8 @@ const getTeachersProps = async ({ page, limit }) => {
     schema.column("username").toObject(),
   ];
 
-  const data = await getTeachers({
-    columns,
-    page,
-    limit,
-  });
+  const data = await teachersService.getAll(page, limit);
+
   return {
     data: {
       columns,

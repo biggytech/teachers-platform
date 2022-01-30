@@ -16,9 +16,7 @@ async function handler(req, res) {
       cb: async (user) => {
         const point: PointBody = req.body;
 
-        const {
-          dataValues: { id },
-        } = await pointsService.add(point);
+        const { id } = await pointsService.add(point);
         res.redirect(`/points/${id}`);
       },
     });

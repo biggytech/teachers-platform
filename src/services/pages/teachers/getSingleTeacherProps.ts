@@ -1,6 +1,6 @@
-import { getTeacher } from "@db/teachers/index";
 import schema from "@db/teachers/schema";
 import mapColumnsToDisplayNames from "@services/mapColumnsToDisplayNames";
+import teachersService from "@db/teachers/teachersService";
 
 const getSingleTeacherProps = async ({ id }) => {
   const columns = [
@@ -11,15 +11,15 @@ const getSingleTeacherProps = async ({ id }) => {
     schema.column("picture").toObject(),
   ];
 
-  const data = await getTeacher({
-    id,
-    columns,
-  });
-  if (data.picture) {
-    data.picture = Buffer.from(data.picture).toString("base64");
-  }
+  const data = await teachersService.get(id);
+
   return {
-    data,
+    data: {
+      ...data,
+      picture: data.picture
+        ? Buffer.from(data.picture).toString("base64")
+        : null,
+    },
     id,
     mapData: mapColumnsToDisplayNames(
       columns.filter(({ name }) => name !== "picture")

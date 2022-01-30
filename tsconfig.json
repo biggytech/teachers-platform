@@ -1,14 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
+    "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "incremental": true,
@@ -20,35 +17,15 @@
     "jsx": "preserve",
     "baseUrl": "src",
     "paths": {
-      "@components": [
-        "components/index.ts"
-      ],
-      "@components/*": [
-        "components/*"
-      ],
-      "@constants": [
-        "constants/index"
-      ],
-      "@db": [
-        "db/index"
-      ],
-      "@db/*": [
-        "db/*"
-      ],
-      "@services": [
-        "services/index"
-      ],
-      "@services/*": [
-        "services/*"
-      ]
+      "@components": ["components/index.ts"],
+      "@components/*": ["components/*"],
+      "@constants": ["constants/index"],
+      "@db": ["db/index"],
+      "@db/*": ["db/*"],
+      "@services": ["services/index"],
+      "@services/*": ["services/*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }

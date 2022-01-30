@@ -1,5 +1,5 @@
 import Points from "@db/points/Points";
-import { Returning } from "@db/types";
+import { SequelizeReturning } from "@db/types";
 
 interface Point {
   id: number;
@@ -10,7 +10,7 @@ interface Point {
 }
 
 const pointsService = {
-  add: (point: Omit<Point, "id">): Promise<Returning<Point>> => {
+  add: async (point: Omit<Point, "id">): Promise<Point> => {
     const fields: Array<keyof Omit<Point, "id">> = [
       "title",
       "description",
@@ -18,10 +18,12 @@ const pointsService = {
       "program_id",
     ];
 
-    return Points.create(point, {
+    const created: SequelizeReturning<Point> = (await Points.create(point, {
       fields,
       returning: true,
-    }) as unknown as Promise<Returning<Point>>;
+    })) as unknown as SequelizeReturning<Point>;
+
+    return created.dataValues;
   },
 };
 

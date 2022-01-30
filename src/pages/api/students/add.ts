@@ -32,9 +32,7 @@ async function handler(req, res) {
             : null,
         };
 
-        const {
-          dataValues: { id },
-        } = await studentsService.add(student);
+        const { id } = await studentsService.add(student);
 
         res.redirect(`/students/${id}`);
       },

@@ -30,9 +30,7 @@ async function handler(req, res) {
             ? fs.readFileSync(files.picture.filepath)
             : null,
         };
-        const {
-          dataValues: { id },
-        } = await teachersService.add(teacher);
+        const { id } = await teachersService.add(teacher);
         res.redirect(`/teachers/${id}`);
       },
     });

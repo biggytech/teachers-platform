@@ -1,33 +1,21 @@
-import { getTeacherByUsername } from "@db/teachers/index";
-import teachersSchema from "@db/teachers/schema";
 import { Authenticator } from "@services/Authenticator";
-var bcrypt = require("bcryptjs");
+import teachersService from "@db/teachers/teachersService";
+import bcrypt from "bcryptjs";
 
 async function handler(req, res) {
   try {
     const { username, password } = req.body;
 
-    let user;
+    const teacher = await teachersService.getOneBy("username", username);
 
-    const columns = [
-      teachersSchema.column("id").toObject(),
-      teachersSchema.column("username").toObject(),
-      teachersSchema.column("password").toObject(),
-    ];
-
-    user = await getTeacherByUsername({
-      username,
-      columns,
-    });
-
-    if (!user) {
+    if (!teacher) {
       throw new Error("not found");
     }
 
-    var val = bcrypt.compareSync(password, user.password); // true
+    const isPasswordValid = bcrypt.compareSync(password, teacher.password); // true
 
-    if (val) {
-      await Authenticator.authenticateUser(res, { username, id: user.id });
+    if (isPasswordValid) {
+      await Authenticator.authenticateUser(res, { username, id: teacher.id });
 
       res.redirect("/students");
     } else {
