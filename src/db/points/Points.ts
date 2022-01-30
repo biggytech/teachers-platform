@@ -26,6 +26,4 @@ Points.init(
   { sequelize, tableName: "points", timestamps: false }
 );
 
-// Points.belongsTo()
-
 export default Points;

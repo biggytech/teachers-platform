@@ -8,12 +8,6 @@ import {
   createJoinedQuery,
 } from "@services/db";
 
-const addProgram = async ({ columns }: { columns: Array<ColumnValue> }) => {
-  const query = createSimpleInsertQuery({ schema, columns });
-
-  await executeQuery(query);
-};
-
 const getProgramsWithOwners = async ({
   columns,
   page,
@@ -98,4 +92,4 @@ export const getProgramsByTeacher = async ({ columns, teacherId }) => {
   return results.rows;
 };
 
-export { addProgram, getProgramsWithOwners, getProgram };
+export { getProgramsWithOwners, getProgram };

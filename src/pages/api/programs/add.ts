@@ -1,6 +1,10 @@
 import { checkAuthentication } from "@services/api";
-import { addProgram } from "@db/programs/programsQueries";
-import { cookSimpleBodyData } from "@services/pages";
+import programsService from "@db/programs/programsService";
+
+interface ProgramBody {
+  title: string;
+  description: string;
+}
 
 async function handler(req, res) {
   try {
@@ -8,13 +12,15 @@ async function handler(req, res) {
       req,
       res,
       cb: async (user) => {
-        const columns = await cookSimpleBodyData({
-          body: req.body,
-        });
-        await addProgram({
-          columns,
-        });
-        res.redirect("/programs");
+        const program = {
+          ...(req.body as ProgramBody),
+          owner_id: user.id,
+        };
+        const {
+          dataValues: { id },
+        } = await programsService.add(program);
+
+        res.redirect(`/programs/${id}`);
       },
     });
   } catch (err) {
