@@ -1,5 +1,9 @@
 import Students from "@db/students/Students";
-import { SequelizeReturning } from "@db/types";
+import {
+  PaginatedResult,
+  SequelizeReturning,
+  SequelizeRowsAndCount,
+} from "@db/types";
 import hashPassword from "@services/hashPassword";
 
 interface Student {
@@ -37,6 +41,63 @@ const studentsService = {
     )) as unknown as SequelizeReturning<Student>;
 
     return created.dataValues;
+  },
+  getAll: async (
+    page: number,
+    limit: number
+  ): Promise<PaginatedResult<Omit<Student, "password" | "picture">>> => {
+    const attributes: Array<keyof Omit<Student, "password" | "picture">> = [
+      "id",
+      "username",
+      "firstname",
+      "lastname",
+      "teacher_id",
+    ];
+
+    const data: SequelizeRowsAndCount<Omit<Student, "picture" | "password">> =
+      (await Students.findAndCountAll({
+        attributes,
+        offset: (page - 1) * limit,
+        limit,
+      })) as unknown as SequelizeRowsAndCount<
+        Omit<Student, "picture" | "password">
+      >;
+
+    return {
+      rows: data.rows.map(({ dataValues }) => dataValues),
+      totalRecords: data.count,
+    };
+  },
+  getAllBy: async <T extends keyof Omit<Student, "password" | "picture">>(
+    field: T,
+    value: Student[T],
+    page: number,
+    limit: number
+  ): Promise<PaginatedResult<Omit<Student, "password" | "picture">>> => {
+    const attributes: Array<keyof Omit<Student, "password" | "picture">> = [
+      "id",
+      "username",
+      "firstname",
+      "lastname",
+      "teacher_id",
+    ];
+
+    const data: SequelizeRowsAndCount<Omit<Student, "password" | "picture">> =
+      (await Students.findAndCountAll({
+        attributes,
+        offset: (page - 1) * limit,
+        limit,
+        where: {
+          [field]: value,
+        },
+      })) as unknown as SequelizeRowsAndCount<
+        Omit<Student, "password" | "picture">
+      >;
+
+    return {
+      rows: data.rows.map(({ dataValues }) => dataValues),
+      totalRecords: data.count,
+    };
   },
 };
 

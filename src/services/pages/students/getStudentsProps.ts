@@ -1,5 +1,5 @@
-import { getStudentsWithTeachers } from "@db/students/index";
 import schema from "@db/students/schema";
+import studentsService from "@db/students/studentsService";
 
 const getStudentsProps = async ({ page, limit, teacherId }) => {
   const columns = [
@@ -9,19 +9,16 @@ const getStudentsProps = async ({ page, limit, teacherId }) => {
     schema.column("username").toObject(),
   ];
 
-  const data = await getStudentsWithTeachers({
-    columns,
-    page,
-    limit,
-    teacherColumn: schema.column("teacher_id").columnName,
+  const data = await studentsService.getAllBy(
+    "teacher_id",
     teacherId,
-  });
+    page,
+    limit
+  );
+
   return {
     data: {
-      columns: columns.concat({
-        name: schema.column("teacher_id").columnName,
-        displayName: schema.column("teacher_id").displayName,
-      }),
+      columns,
       rows: data.rows,
       totalRecords: data.totalRecords,
       pageSize: limit,
