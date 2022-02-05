@@ -1,24 +1,12 @@
-import { getStudentByUsername } from "@db/students/index";
-import studentsSchema from "@db/students/schema";
 import { Authenticator } from "@services/Authenticator";
-var bcrypt = require("bcryptjs");
+import studentsService from "@db/students/studentsService";
+const bcrypt = require("bcryptjs");
 
 async function handler(req, res) {
   try {
     const { username, password } = req.body;
 
-    let user;
-
-    const columns = [
-      studentsSchema.column("id").toObject(),
-      studentsSchema.column("username").toObject(),
-      studentsSchema.column("password").toObject(),
-    ];
-
-    user = await getStudentByUsername({
-      username,
-      columns,
-    });
+    const user = await studentsService.getOneBy("username", username);
 
     if (!user) {
       throw new Error("not found");

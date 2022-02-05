@@ -99,6 +99,35 @@ const studentsService = {
       totalRecords: data.count,
     };
   },
+  get: async (id: Student["id"]): Promise<Omit<Student, "password"> | null> => {
+    const attributes: Array<keyof Omit<Student, "password">> = [
+      "id",
+      "username",
+      "firstname",
+      "lastname",
+      "picture",
+      "teacher_id",
+    ];
+
+    const data: SequelizeReturning<Omit<Student, "password">> | null =
+      (await Students.findByPk(id, {
+        attributes,
+      })) as unknown as SequelizeReturning<Omit<Student, "password">> | null;
+
+    return data?.dataValues ?? null;
+  },
+  getOneBy: async <T extends keyof Omit<Student, "password" | "picture">>(
+    field: T,
+    value: Student[T]
+  ): Promise<Student | null> => {
+    const data: SequelizeReturning<Student> | null = (await Students.findOne({
+      where: {
+        [field]: value,
+      },
+    })) as unknown as SequelizeReturning<Student> | null;
+
+    return data?.dataValues ?? null;
+  },
 };
 
 export default studentsService;

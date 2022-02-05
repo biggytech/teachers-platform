@@ -16,7 +16,7 @@ const getSingleTeacherProps = async ({ id }) => {
   return {
     data: {
       ...data,
-      picture: data.picture
+      picture: data?.picture
         ? Buffer.from(data.picture).toString("base64")
         : null,
     },
