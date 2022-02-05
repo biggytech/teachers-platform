@@ -1,7 +1,5 @@
 import { Model, DataTypes } from "sequelize";
 import sequelize from "@db/sequelize";
-import Students from "@db/students/Students";
-import Programs from "@db/programs/Programs";
 
 class Teachers extends Model {}
 Teachers.init(
@@ -29,8 +27,5 @@ Teachers.init(
   },
   { sequelize, tableName: "teachers", timestamps: false }
 );
-
-Teachers.hasMany(Students, { foreignKey: "teacher_id" });
-Teachers.hasMany(Programs, { foreignKey: "owner_id" });
 
 export default Teachers;

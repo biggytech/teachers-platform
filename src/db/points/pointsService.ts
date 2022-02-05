@@ -1,13 +1,6 @@
-import Points from "@db/points/Points";
+import { Points } from "@db/models";
 import { SequelizeReturning } from "@db/types";
-
-interface Point {
-  id: number;
-  title: string;
-  description: string;
-  duration_days: number;
-  program_id: number;
-}
+import { Point } from "@db/interfaces";
 
 const pointsService = {
   add: async (point: Omit<Point, "id">): Promise<Point> => {

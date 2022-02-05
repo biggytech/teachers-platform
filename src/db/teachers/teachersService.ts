@@ -1,19 +1,11 @@
-import Teachers from "@db/teachers/Teachers";
+import { Teachers } from "@db/models";
 import hashPassword from "@services/hashPassword";
 import {
   PaginatedResult,
   SequelizeReturning,
   SequelizeRowsAndCount,
 } from "@db/types";
-
-interface Teacher {
-  id: number;
-  username: string;
-  firstname: string;
-  lastname: string;
-  password: string;
-  picture?: Buffer;
-}
+import { Teacher, TeacherMainInfo, TeacherSafeInfo } from "@db/interfaces";
 
 const teachersService = {
   add: async (teacher: Omit<Teacher, "id">): Promise<Teacher> => {
@@ -43,31 +35,29 @@ const teachersService = {
   getAll: async (
     page: number,
     limit: number
-  ): Promise<PaginatedResult<Omit<Teacher, "password" | "picture">>> => {
-    const attributes: Array<keyof Omit<Teacher, "password" | "picture">> = [
+  ): Promise<PaginatedResult<TeacherMainInfo>> => {
+    const attributes: Array<keyof TeacherMainInfo> = [
       "id",
       "username",
       "firstname",
       "lastname",
     ];
 
-    const data: SequelizeRowsAndCount<Omit<Teacher, "password" | "picture">> =
+    const data: SequelizeRowsAndCount<TeacherMainInfo> =
       (await Teachers.findAndCountAll({
         attributes,
         offset: (page - 1) * limit,
         limit,
-      })) as unknown as SequelizeRowsAndCount<
-        Omit<Teacher, "password" | "picture">
-      >;
+      })) as unknown as SequelizeRowsAndCount<TeacherMainInfo>;
 
-    const result: PaginatedResult<Omit<Teacher, "password" | "picture">> = {
+    const result: PaginatedResult<TeacherMainInfo> = {
       rows: data.rows.map(({ dataValues }) => dataValues),
       totalRecords: data.count,
     };
 
     return result;
   },
-  get: async (id: Teacher["id"]): Promise<Omit<Teacher, "password"> | null> => {
+  get: async (id: Teacher["id"]): Promise<TeacherSafeInfo | null> => {
     const attributes: Array<keyof Omit<Teacher, "password">> = [
       "id",
       "username",
@@ -83,7 +73,7 @@ const teachersService = {
 
     return data?.dataValues ?? null;
   },
-  getOneBy: async <T extends keyof Omit<Teacher, "password" | "picture">>(
+  getOneBy: async <T extends keyof TeacherMainInfo>(
     field: T,
     value: Teacher[T]
   ): Promise<Teacher | null> => {

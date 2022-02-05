@@ -1,12 +1,10 @@
-import Programs from "@db/programs/Programs";
-import { SequelizeReturning } from "@db/types";
-
-interface Program {
-  id: number;
-  title: string;
-  description: string;
-  owner_id: number;
-}
+import { Programs, Teachers } from "@db/models";
+import {
+  PaginatedResult,
+  SequelizeReturning,
+  SequelizeRowsAndCount,
+} from "@db/types";
+import { Program, Teacher, ProgramWithTeacher } from "@db/interfaces";
 
 const programsService = {
   add: async (program: Omit<Program, "id">): Promise<Program> => {
@@ -25,6 +23,51 @@ const programsService = {
     )) as unknown as SequelizeReturning<Program>;
 
     return created.dataValues;
+  },
+  getAllBy: async <T extends keyof Program>(
+    field: T,
+    value: Program[T],
+    page: number,
+    limit: number
+  ): Promise<PaginatedResult<Program>> => {
+    const data: SequelizeRowsAndCount<Program> =
+      (await Programs.findAndCountAll({
+        offset: (page - 1) * limit,
+        limit,
+        where: {
+          [field]: value,
+        },
+      })) as unknown as SequelizeRowsAndCount<Program>;
+
+    return {
+      rows: data.rows.map(({ dataValues }) => dataValues),
+      totalRecords: data.count,
+    };
+  },
+  getWithTeacher: async (
+    id: Program["id"]
+  ): Promise<ProgramWithTeacher | null> => {
+    const data: SequelizeReturning<
+      Program & {
+        teacher: SequelizeReturning<Teacher>;
+      }
+    > | null = (await Programs.findByPk(id, {
+      include: {
+        model: Teachers,
+        as: "teacher",
+      },
+    })) as unknown as SequelizeReturning<
+      Program & {
+        teacher: SequelizeReturning<Teacher>;
+      }
+    > | null;
+
+    return data?.dataValues
+      ? {
+          ...data.dataValues,
+          teacher: data.dataValues.teacher.dataValues,
+        }
+      : null;
   },
 };
 

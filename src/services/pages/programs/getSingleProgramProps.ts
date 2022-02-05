@@ -1,6 +1,6 @@
-import { getProgram } from "@db/programs/programsQueries";
 import schema from "@db/programs/programsSchema";
 import mapColumnsToDisplayNames from "@services/mapColumnsToDisplayNames";
+import programsService from "@db/programs/programsService";
 
 const getSingleProgramProps = async ({ id }) => {
   const columns = [
@@ -8,13 +8,16 @@ const getSingleProgramProps = async ({ id }) => {
     schema.column("description").toObject(),
   ];
 
-  const data = await getProgram({
-    id,
-    columns,
-    ownerColumn: schema.column("owner_id").columnName,
-  });
+  const data = await programsService.getWithTeacher(id);
+
   return {
-    data,
+    data: {
+      ...data,
+      // TODO: fix joined data mapped fields
+      owner_id: data
+        ? data.teacher.firstname + " " + data.teacher.lastname
+        : null,
+    },
     id,
     mapData: mapColumnsToDisplayNames(
       columns.concat(schema.column("owner_id"))

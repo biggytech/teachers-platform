@@ -1,20 +1,11 @@
-import Students from "@db/students/Students";
+import { Students } from "@db/models";
 import {
   PaginatedResult,
   SequelizeReturning,
   SequelizeRowsAndCount,
 } from "@db/types";
 import hashPassword from "@services/hashPassword";
-
-interface Student {
-  id: number;
-  username: string;
-  firstname: string;
-  lastname: string;
-  password: string;
-  picture?: Buffer;
-  teacher_id: number;
-}
+import { Student, StudentMainInfo, StudentSafeInfo } from "@db/interfaces";
 
 const studentsService = {
   add: async (student: Omit<Student, "id">): Promise<Student> => {
@@ -45,8 +36,8 @@ const studentsService = {
   getAll: async (
     page: number,
     limit: number
-  ): Promise<PaginatedResult<Omit<Student, "password" | "picture">>> => {
-    const attributes: Array<keyof Omit<Student, "password" | "picture">> = [
+  ): Promise<PaginatedResult<StudentMainInfo>> => {
+    const attributes: Array<keyof StudentMainInfo> = [
       "id",
       "username",
       "firstname",
@@ -54,27 +45,25 @@ const studentsService = {
       "teacher_id",
     ];
 
-    const data: SequelizeRowsAndCount<Omit<Student, "picture" | "password">> =
+    const data: SequelizeRowsAndCount<StudentMainInfo> =
       (await Students.findAndCountAll({
         attributes,
         offset: (page - 1) * limit,
         limit,
-      })) as unknown as SequelizeRowsAndCount<
-        Omit<Student, "picture" | "password">
-      >;
+      })) as unknown as SequelizeRowsAndCount<StudentMainInfo>;
 
     return {
       rows: data.rows.map(({ dataValues }) => dataValues),
       totalRecords: data.count,
     };
   },
-  getAllBy: async <T extends keyof Omit<Student, "password" | "picture">>(
+  getAllBy: async <T extends keyof StudentMainInfo>(
     field: T,
     value: Student[T],
     page: number,
     limit: number
-  ): Promise<PaginatedResult<Omit<Student, "password" | "picture">>> => {
-    const attributes: Array<keyof Omit<Student, "password" | "picture">> = [
+  ): Promise<PaginatedResult<StudentMainInfo>> => {
+    const attributes: Array<keyof StudentMainInfo> = [
       "id",
       "username",
       "firstname",
@@ -82,7 +71,7 @@ const studentsService = {
       "teacher_id",
     ];
 
-    const data: SequelizeRowsAndCount<Omit<Student, "password" | "picture">> =
+    const data: SequelizeRowsAndCount<StudentMainInfo> =
       (await Students.findAndCountAll({
         attributes,
         offset: (page - 1) * limit,
@@ -90,17 +79,15 @@ const studentsService = {
         where: {
           [field]: value,
         },
-      })) as unknown as SequelizeRowsAndCount<
-        Omit<Student, "password" | "picture">
-      >;
+      })) as unknown as SequelizeRowsAndCount<StudentMainInfo>;
 
     return {
       rows: data.rows.map(({ dataValues }) => dataValues),
       totalRecords: data.count,
     };
   },
-  get: async (id: Student["id"]): Promise<Omit<Student, "password"> | null> => {
-    const attributes: Array<keyof Omit<Student, "password">> = [
+  get: async (id: Student["id"]): Promise<StudentSafeInfo | null> => {
+    const attributes: Array<keyof StudentSafeInfo> = [
       "id",
       "username",
       "firstname",
@@ -109,14 +96,14 @@ const studentsService = {
       "teacher_id",
     ];
 
-    const data: SequelizeReturning<Omit<Student, "password">> | null =
+    const data: SequelizeReturning<StudentSafeInfo> | null =
       (await Students.findByPk(id, {
         attributes,
-      })) as unknown as SequelizeReturning<Omit<Student, "password">> | null;
+      })) as unknown as SequelizeReturning<StudentSafeInfo> | null;
 
     return data?.dataValues ?? null;
   },
-  getOneBy: async <T extends keyof Omit<Student, "password" | "picture">>(
+  getOneBy: async <T extends keyof StudentMainInfo>(
     field: T,
     value: Student[T]
   ): Promise<Student | null> => {

@@ -1,7 +1,6 @@
 import schema from "@db/plans/plansSchema";
-import programsSchema from "@db/programs/programsSchema";
-import { getProgramsByTeacher } from "@db/programs/programsQueries";
 import { checkAuthentication } from "@services/api";
+import programsService from "@db/programs/programsService";
 
 const getAddPlanProps = ({ req, res, studentId }) => {
   return new Promise(async (resolve, reject) => {
@@ -9,13 +8,12 @@ const getAddPlanProps = ({ req, res, studentId }) => {
       req,
       res,
       cb: async (user) => {
-        const programs = await getProgramsByTeacher({
-          teacherId: user.id,
-          columns: [
-            programsSchema.column("id").toObject(),
-            programsSchema.column("title").toObject(),
-          ],
-        });
+        const { rows: programs } = await programsService.getAllBy(
+          "owner_id",
+          user.id,
+          1,
+          1000
+        );
 
         const columns = [
           schema.column("start_date").toObject(),
