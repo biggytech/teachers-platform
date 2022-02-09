@@ -1,6 +1,7 @@
 import Teachers from "@db/teachers/Teachers";
 import Students from "@db/students/Students";
 import Programs from "@db/programs/Programs";
+import Plans from "@db/plans/Plans";
 import Points from "@db/points/Points";
 
 // Teachers
@@ -9,10 +10,16 @@ Teachers.hasMany(Programs, { foreignKey: "owner_id", as: "programs" });
 
 // Students
 Students.belongsTo(Teachers, { foreignKey: "teacher_id", as: "teacher" });
+Students.hasMany(Plans, { foreignKey: "student_id", as: "plans" });
 
 // Programs
 Programs.belongsTo(Teachers, { foreignKey: "owner_id", as: "teacher" });
+Programs.hasMany(Plans, { foreignKey: "program_id", as: "plans" });
+
+// Plans
+Plans.belongsTo(Students, { foreignKey: "student_id", as: "student" });
+Plans.belongsTo(Programs, { foreignKey: "program_id", as: "program" });
 
 // Points
 
-export { Teachers, Students, Programs, Points };
+export { Teachers, Students, Programs, Plans, Points };

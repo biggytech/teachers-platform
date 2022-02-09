@@ -8,19 +8,19 @@ const getSingleProgramProps = async ({ id }) => {
     schema.column("description").toObject(),
   ];
 
-  const data = await programsService.getWithTeacher(id);
+  const data = await programsService.get(id);
 
   return {
     data: {
       ...data,
-      // TODO: fix joined data mapped fields
-      owner_id: data
-        ? data.teacher.firstname + " " + data.teacher.lastname
-        : null,
+      owner: data ? data.teacher.firstname + " " + data.teacher.lastname : null,
     },
     id,
     mapData: mapColumnsToDisplayNames(
-      columns.concat(schema.column("owner_id"))
+      columns.concat({
+        name: "owner",
+        displayName: schema.column("owner_id").displayName,
+      })
     ),
   };
 };

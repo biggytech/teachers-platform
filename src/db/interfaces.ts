@@ -26,7 +26,7 @@ export type StudentMainInfo = Omit<Student, "password" | "picture">;
 export interface Program {
   id: number;
   title: string;
-  description: string;
+  description?: string;
   owner_id: number;
 }
 
@@ -34,10 +34,22 @@ export interface ProgramWithTeacher extends Program {
   teacher: Teacher;
 }
 
+export interface Plan {
+  id: number;
+  start_date: Date;
+  student_id: number;
+  program_id: number;
+}
+
+export interface PlanWithStudentAndProgram extends Plan {
+  student: Student;
+  program: Program;
+}
+
 export interface Point {
   id: number;
   title: string;
-  description: string;
+  description?: string;
   duration_days: number;
   program_id: number;
 }

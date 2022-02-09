@@ -44,9 +44,7 @@ const programsService = {
       totalRecords: data.count,
     };
   },
-  getWithTeacher: async (
-    id: Program["id"]
-  ): Promise<ProgramWithTeacher | null> => {
+  get: async (id: Program["id"]): Promise<ProgramWithTeacher | null> => {
     const data: SequelizeReturning<
       Program & {
         teacher: SequelizeReturning<Teacher>;
