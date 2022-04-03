@@ -1,4 +1,4 @@
-import { getPlan } from "@db/plans/plansQueries";
+import plansService from "@db/plans/plansService";
 import plansSchema from "@db/plans/plansSchema";
 import mapColumnsToDisplayNames from "@services/mapColumnsToDisplayNames";
 
@@ -6,24 +6,25 @@ export const getSinglePlanProps = async ({ id }) => {
   const columns = [
     plansSchema.column("id").toObject(),
     plansSchema.column("start_date").toObject(),
-    plansSchema.column("student_id").toObject(),
-    plansSchema.column("program_id").toObject(),
   ];
 
-  const data = await getPlan({
-    columns,
-    id,
-  });
+  const data = await plansService.get(id);
 
   return {
-    data,
+    data: {
+      ...data,
+      student: data
+        ? data.student.firstname + " " + data.student.lastname
+        : null,
+      program: data ? data.program.title : null,
+    },
     id,
     mapData: mapColumnsToDisplayNames(
       columns
         .filter(({ name }) => name !== "student_id" && name !== "program_id")
         .concat([
-          { name: "student_name", displayName: "Студент" },
-          { name: "program_title", displayName: "Программа" },
+          { name: "student", displayName: "Студент" },
+          { name: "program", displayName: "Программа" },
         ])
     ),
   };

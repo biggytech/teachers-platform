@@ -58,6 +58,38 @@ const plansService = {
 
     return created.dataValues;
   },
+  get: async (id: Plan["id"]): Promise<PlanWithStudentAndProgram | null> => {
+    const data: SequelizeReturning<
+      Plan & {
+        student: SequelizeReturning<Student>;
+        program: SequelizeReturning<Program>;
+      }
+    > | null = (await Plans.findByPk(id, {
+      include: [
+        {
+          model: Students,
+          as: "student",
+        },
+        {
+          model: Programs,
+          as: "program",
+        },
+      ],
+    })) as unknown as SequelizeReturning<
+      Plan & {
+        student: SequelizeReturning<Student>;
+        program: SequelizeReturning<Program>;
+      }
+    > | null;
+
+    return data?.dataValues
+      ? {
+          ...data.dataValues,
+          student: data.dataValues.student.dataValues,
+          program: data.dataValues.program.dataValues,
+        }
+      : null;
+  },
 };
 
 export default plansService;
