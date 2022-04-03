@@ -44,6 +44,20 @@ const plansService = {
       program: dataValues.program.dataValues,
     }));
   },
+  add: async (plan: Omit<Plan, "id">): Promise<Plan> => {
+    const fields: Array<keyof Omit<Plan, "id">> = [
+      "start_date",
+      "student_id",
+      "program_id",
+    ];
+
+    const created: SequelizeReturning<Plan> = (await Plans.create(plan, {
+      fields,
+      returning: true,
+    })) as unknown as SequelizeReturning<Plan>;
+
+    return created.dataValues;
+  },
 };
 
 export default plansService;

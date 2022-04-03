@@ -1,7 +1,11 @@
-import { addPlan } from "@db/plans/plansQueries";
-import schema from "@db/materials/materialsSchema";
-import { cookCreatedPlanData } from "@services/pages/plans/index";
+import plansService from "@db/plans/plansService";
 import { checkAuthentication } from "@services/api";
+
+interface PlanBody {
+  start_date: Date;
+  student_id: number;
+  program_id: number;
+}
 
 async function handler(req, res) {
   try {
@@ -9,13 +13,10 @@ async function handler(req, res) {
       req,
       res,
       cb: async (user) => {
-        const columns = await cookCreatedPlanData({
-          body: req.body,
-        });
-        await addPlan({
-          columns,
-        });
-        res.redirect("/students");
+        const plan: PlanBody = req.body;
+        const { id } = await plansService.add(plan);
+
+        res.redirect(`/plans/${id}`);
       },
     });
   } catch (err) {

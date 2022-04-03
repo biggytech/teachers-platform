@@ -1,12 +1,6 @@
 import plansSchema from "./plansSchema";
 import { executeQuery, createSimpleInsertQuery } from "@services/db";
 
-const addPlan = async ({ columns }) => {
-  const query = createSimpleInsertQuery({ schema: plansSchema, columns });
-
-  await executeQuery(query);
-};
-
 export const getPlan = async ({ columns, id }) => {
   const query = {
     text: `select plans.id, plans.start_date, plans.student_id, plans.program_id,
@@ -80,5 +74,3 @@ where points.program_id = $1;
     tasksMarks,
   };
 };
-
-export { addPlan };
