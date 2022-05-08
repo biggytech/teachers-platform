@@ -6,11 +6,13 @@ Points.init(
   {
     title: {
       type: DataTypes.TEXT,
+      allowNull: false
     },
     description: DataTypes.TEXT,
     duration_days: DataTypes.INTEGER,
     program_id: {
       type: DataTypes.INTEGER,
+      allowNull: false
     },
   },
   { sequelize, tableName: "points", timestamps: false }

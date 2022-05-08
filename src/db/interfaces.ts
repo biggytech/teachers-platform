@@ -69,3 +69,30 @@ export interface Point {
 export interface PointWithProgram extends Point {
   program: Program;
 }
+
+export interface TaskPoint {
+  task_id: number;
+  point_id: number;
+}
+
+export interface Task {
+  id: number;
+  title: string;
+  description?: string;
+}
+
+export interface TaskWithPoint {
+  point: Point;
+}
+
+export interface TaskMark {
+  // id: number; // TODO: what to do? PRIMARY KEY(task_id, plan_id)
+  mark: number;
+  task_id: number;
+  plan_id: number;
+};
+
+export interface TaskMarkWithTaskAndProgram extends TaskMark {
+  task: Task;
+  program: Program;
+}

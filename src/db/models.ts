@@ -4,6 +4,9 @@ import Programs from "@db/programs/Programs";
 import Plans from "@db/plans/Plans";
 import Points from "@db/points/Points";
 import Materials from "@db/materials/Materials";
+import Tasks from "@db/tasks/Tasks";
+import TasksPoints from "@db/tasks_points/TasksPoints";
+import TaskMarks from "@db/task_marks/TaskMarks";
 
 // Teachers
 Teachers.hasMany(Students, { foreignKey: "teacher_id", as: "students" });
@@ -22,11 +25,23 @@ Programs.hasMany(Points, { foreignKey: "program_id", as: "points" });
 // Plans
 Plans.belongsTo(Students, { foreignKey: "student_id", as: "student" });
 Plans.belongsTo(Programs, { foreignKey: "program_id", as: "program" });
+Plans.hasMany(TaskMarks, { foreignKey: "plan_id", as: "taskMarks" });
 
 // Materials
 Materials.belongsTo(Programs, { foreignKey: "program_id", as: "program" });
 
 // Points
 Points.belongsTo(Programs, { foreignKey: "program_id", as: "program" });
+Points.belongsToMany(Tasks, { through: TasksPoints, foreignKey: 'point_id', as: 'tasks' });
 
-export { Teachers, Students, Programs, Plans, Points, Materials };
+// Tasks
+Tasks.belongsToMany(Points, { through: TasksPoints, foreignKey: 'task_id', as: 'points' });
+Tasks.hasMany(TaskMarks, { foreignKey: "task_id", as: "taskMarks" });
+
+// TasksPoints
+
+// TaskMarks
+TaskMarks.belongsTo(Tasks, { foreignKey: "task_id", as: "task" });
+TaskMarks.belongsTo(Plans, { foreignKey: "plan_id", as: "plan" });
+
+export { Teachers, Students, Programs, Plans, Points, Materials, Tasks, TasksPoints, TaskMarks };

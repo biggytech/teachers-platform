@@ -1,5 +1,4 @@
-import { addTaskMark } from "@db/task_marks/taskMarksQueries";
-import { cookSimpleBodyData } from "@services/pages";
+import taskMarksService from "@db/task_marks/taskMarksService";
 import { checkAuthentication } from "@services/api";
 
 async function handler(req, res) {
@@ -8,12 +7,7 @@ async function handler(req, res) {
       req,
       res,
       cb: async (user) => {
-        const columns = await cookSimpleBodyData({
-          body: req.body,
-        });
-        await addTaskMark({
-          columns,
-        });
+        await taskMarksService.add(req.body);
         res.redirect("/students");
       },
     });

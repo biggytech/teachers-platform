@@ -1,4 +1,4 @@
-import { getTasks } from "@db/tasks/tasksQueries";
+import tasksService from "@db/tasks/tasksService";
 import schema from "@db/tasks/tasksSchema";
 
 const getTasksProps = async ({ pointId }) => {
@@ -8,10 +8,7 @@ const getTasksProps = async ({ pointId }) => {
     schema.column("description").toObject(),
   ];
 
-  const data = await getTasks({
-    columns: columns,
-    pointId,
-  });
+  const data = await tasksService.getAllByPointId(pointId);
 
   return {
     data: {

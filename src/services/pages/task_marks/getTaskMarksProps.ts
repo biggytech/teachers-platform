@@ -1,5 +1,5 @@
 import { taskMarksSchema } from "@db/task_marks/taskMarksSchema";
-import { getTaskMarks } from "@db/task_marks/taskMarksQueries";
+import taskMarksService from "@db/task_marks/taskMarksService";
 
 export const getTaskMarksProps = async ({ planId }) => {
   const columns = [
@@ -8,7 +8,8 @@ export const getTaskMarksProps = async ({ planId }) => {
     taskMarksSchema.column("plan_id").toObject(),
   ];
 
-  const data = await getTaskMarks({ columns, planId });
+  const data = await taskMarksService.getAllByPlanId(planId);
+
   return {
     data: {
       columns: [
@@ -16,7 +17,11 @@ export const getTaskMarksProps = async ({ planId }) => {
         { name: "task_title", displayName: "Практическое задание" },
         { name: "program_title", displayName: "Учебный план" },
       ],
-      rows: data,
+      rows: data.map(item => ({
+        ...item,
+        task_title: item.task.title,
+        program_title: item.program.title
+      })),
     },
   };
 };

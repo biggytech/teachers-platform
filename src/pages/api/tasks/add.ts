@@ -1,6 +1,4 @@
-import { addTask } from "@db/tasks/tasksQueries";
-import schema from "@db/materials/materialsSchema";
-import { cookSimpleBodyData } from "@services/pages";
+import tasksService from "@db/tasks/tasksService";
 import { checkAuthentication } from "@services/api";
 
 async function handler(req, res) {
@@ -9,16 +7,10 @@ async function handler(req, res) {
       req,
       res,
       cb: async (user) => {
-        const columns = await cookSimpleBodyData({
-          body: {
-            title: req.body.title,
-            description: req.body.description,
-          },
-        });
-        await addTask({
-          columns,
-          pointId: req.body.point_id,
-        });
+        await tasksService.add({
+          title: req.body.title,
+          description: req.body.description
+        }, req.body.point_id);
         res.redirect("/programs");
       },
     });

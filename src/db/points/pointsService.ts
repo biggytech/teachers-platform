@@ -39,6 +39,7 @@ const pointsService = {
     field: T,
     value: Point[T]
   ): Promise<PointWithProgram[]> => {
+
     const data: SequelizeReturning<
     Point & {
         program: SequelizeReturning<Program>;
