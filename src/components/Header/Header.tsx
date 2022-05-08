@@ -50,7 +50,7 @@ const Header: React.FC = () => {
       </Link>
       <span
         onClick={logout}
-        className="cursor-pointer navbar-burger self-center mr-12 xl:hidden"
+        className="cursor-pointer navbar-burger self-center mr-12"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
