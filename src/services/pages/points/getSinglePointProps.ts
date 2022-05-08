@@ -1,4 +1,4 @@
-import { getPoint } from "@db/points/index";
+import pointsService from "@db/points/pointsService";
 import schema from "@db/points/schema";
 import mapColumnsToDisplayNames from "@services/mapColumnsToDisplayNames";
 
@@ -10,10 +10,7 @@ const getSinglePointProps = async ({ id }) => {
     schema.column("duration_days").toObject(),
   ];
 
-  const data = await getPoint({
-    id,
-    columns,
-  });
+  const data = await pointsService.get(id);
 
   return {
     data,

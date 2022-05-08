@@ -65,3 +65,7 @@ export interface Point {
   duration_days: number;
   program_id: number;
 }
+
+export interface PointWithProgram extends Point {
+  program: Program;
+}

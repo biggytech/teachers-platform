@@ -1,4 +1,4 @@
-import { getPoints } from "@db/points/index";
+import pointsService from "@db/points/pointsService";
 import schema from "@db/points/schema";
 
 const getPointsProps = async ({ program_id }) => {
@@ -8,11 +8,7 @@ const getPointsProps = async ({ program_id }) => {
     schema.column("description").toObject(),
     schema.column("duration_days").toObject(),
   ];
-  const data = await getPoints({
-    programId: program_id,
-    columns,
-    programColumn: schema.column("program_id").columnName,
-  });
+  const data = await pointsService.getAllBy('program_id', program_id);
 
   const newColumns = columns.concat({
     name: schema.column("program_id").columnName,
@@ -22,7 +18,7 @@ const getPointsProps = async ({ program_id }) => {
   return {
     data: {
       columns: newColumns,
-      rows: data,
+      rows: data.map(item => ({...item, program_id: item.program.title})),
     },
     programId: program_id,
   };

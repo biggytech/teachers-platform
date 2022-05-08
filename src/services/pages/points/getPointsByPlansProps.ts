@@ -1,4 +1,4 @@
-import { getPoints } from "@db/points/index";
+import pointsService from "@db/points/pointsService";
 import schema from "@db/points/schema";
 
 export const getPointsByPlansProps = async ({ planId }) => {
@@ -8,10 +8,7 @@ export const getPointsByPlansProps = async ({ planId }) => {
     schema.column("description").toObject(),
     schema.column("duration_days").toObject(),
   ];
-  const data = await getPoints({
-    columns,
-    planId,
-  });
+  const data = await pointsService.getAllByPlanId(planId);
 
   return {
     data: {

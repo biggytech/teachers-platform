@@ -17,6 +17,7 @@ Students.hasMany(Plans, { foreignKey: "student_id", as: "plans" });
 Programs.belongsTo(Teachers, { foreignKey: "owner_id", as: "teacher" });
 Programs.hasMany(Plans, { foreignKey: "program_id", as: "plans" });
 Programs.hasMany(Materials, { foreignKey: "program_id", as: "materials" });
+Programs.hasMany(Points, { foreignKey: "program_id", as: "points" });
 
 // Plans
 Plans.belongsTo(Students, { foreignKey: "student_id", as: "student" });
@@ -26,5 +27,6 @@ Plans.belongsTo(Programs, { foreignKey: "program_id", as: "program" });
 Materials.belongsTo(Programs, { foreignKey: "program_id", as: "program" });
 
 // Points
+Points.belongsTo(Programs, { foreignKey: "program_id", as: "program" });
 
 export { Teachers, Students, Programs, Plans, Points, Materials };
