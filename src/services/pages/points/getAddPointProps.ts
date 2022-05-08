@@ -1,6 +1,6 @@
 import schema from "@db/points/schema";
 
-const getAddPointProps = async ({ programId }) => {
+const getAddPointProps = async ({ programId, id }) => {
   const columns = [
     schema.column("title").toObject(),
     schema.column("description").toObject(),
@@ -10,6 +10,7 @@ const getAddPointProps = async ({ programId }) => {
 
   return {
     columns,
+    id,
   };
 };
 

@@ -1,4 +1,6 @@
 import { getSinglePointProps } from "@services/pages/points";
+import Button from "@mui/material/Button";
+import RemoveIcon from "@mui/icons-material/Remove";
 
 import { createSinglePage } from "@components/pages";
 
@@ -14,10 +16,15 @@ const { runGetServerSideProps, SinglePage } = createSinglePage({
     },
   ],
   isEditable: true,
+  isDeletable: true,
+  deleteLink: "/api/points/delete",
+  editLink: (id) => `/points/edit/${id}`,
+  backLink: (contextId) => `/programs`, // TODO: back to program
 });
 
 const getServerSideProps = async (data) => {
   const props = await runGetServerSideProps(data);
+  // console.log("PROPS:", props);
   return {
     props: await getSinglePointProps({
       ...props,

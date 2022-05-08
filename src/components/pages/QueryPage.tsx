@@ -37,12 +37,14 @@ const QueryPage = (props: QueryPageProps) => {
         <title>{title}</title>
       </Head>
       {addLink ? (
-        <LinkButton
-          link={addLink instanceof Function ? addLink(contextId) : addLink}
-          text="Добавить"
-          icon="&#43;&nbsp;&nbsp;"
-          className="float-right"
-        />
+        <div style={{ alignSelf: "flex-end" }}>
+          <LinkButton
+            link={addLink instanceof Function ? addLink(contextId) : addLink}
+            text="Добавить"
+            icon="&#43;&nbsp;&nbsp;"
+            className="float-right"
+          />
+        </div>
       ) : null}
       <Table
         pathName={pathName}

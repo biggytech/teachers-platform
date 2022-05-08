@@ -18,6 +18,13 @@ const pointsService = {
 
     return created.dataValues;
   },
+  // TODO: type this function
+  delete: async (id: number) => {
+    await Points.destroy({ where: { id } });
+  },
+  update: async (id: number, body: any) => {
+    await Points.update(body, { where: { id } });
+  },
 };
 
 export default pointsService;

@@ -15,17 +15,19 @@ interface EditPageProps extends EditPageCreatorProps {
 }
 
 const EditPage = (props: EditPageProps) => {
-  const { columns, title, name, action, encType } = props;
+  const { columns, title, name, action, encType, isEdit = false, id } = props;
 
   return (
     <>
       <Head>
-        <title>{title} | Добавить</title>
+        <title>
+          {title} | {isEdit ? "Редактировать" : "Добавить"}
+        </title>
       </Head>
       <Header />
       <Form
-        name={`Добавить ${name}`}
-        action={action}
+        name={isEdit ? `Редактирование` : `Добавить ${name}`}
+        action={isEdit ? action(id) : action}
         columns={columns}
         encType={encType}
       />
@@ -37,14 +39,18 @@ export const createEditPage = (props: EditPageCreatorProps) => {
   return {
     runGetServerSideProps: ({ query, req, res }) => {
       return new Promise(async (resolve) => {
+        // console.log("QUERY:", query);
         await checkAuthentication({
           req,
           cb: (user) => {
+            console.log("TEST!!!");
+            console.log(query);
             resolve({
               query,
               req,
               res,
               userId: user.id,
+              id: query?.id,
             });
           },
         });

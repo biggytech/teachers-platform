@@ -67,6 +67,13 @@ const programsService = {
         }
       : null;
   },
+  // TODO: type this function
+  delete: async (id: number) => {
+    await Programs.destroy({ where: { id } });
+  },
+  update: async (id: number, body: any) => {
+    await Programs.update(body, { where: { id } });
+  },
 };
 
 export default programsService;

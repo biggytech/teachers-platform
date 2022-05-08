@@ -115,6 +115,10 @@ const studentsService = {
 
     return data?.dataValues ?? null;
   },
+  // TODO: type this function
+  delete: async (id: number) => {
+    await Students.destroy({ where: { id } });
+  },
 };
 
 export default studentsService;

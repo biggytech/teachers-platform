@@ -4,6 +4,7 @@ import { checkAuthentication } from "@services/pages";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
+import RemoveIcon from "@mui/icons-material/Remove";
 
 type SinglePageCreatorProps = {
   links: Array<{
@@ -26,11 +27,33 @@ interface SinglePageProps extends SinglePageCreatorProps {
 }
 
 const SinglePage = (props: SinglePageProps) => {
-  const { data, id, mapData, links, isEditable = false } = props;
+  const {
+    data,
+    id,
+    mapData,
+    links,
+    isEditable = false,
+    isDeletable = false,
+    deleteLink,
+    backLink,
+    editLink,
+  } = props;
 
   if (!data) {
     return <div>not found</div>;
   }
+
+  const callDelete = async () => {
+    const result = confirm("Вы уверены, что хотите удалить?");
+    if (result) {
+      // TODO: make delete request
+      await fetch(deleteLink, {
+        method: "POST",
+        body: JSON.stringify({ id }),
+      });
+      window.location.replace(backLink(id));
+    }
+  };
 
   return (
     <>
@@ -39,16 +62,26 @@ const SinglePage = (props: SinglePageProps) => {
         <Typography variant="h2" component="div" gutterBottom>
           {data.title}
         </Typography>
-        {isEditable ? (
-          <Button variant="contained" endIcon={<EditIcon />}>
-            Edit
+        {isEditable && editLink ? (
+          <LinkButton link={editLink(id)} text="Редактировать" />
+        ) : null}
+        {isDeletable && deleteLink && backLink ? (
+          <Button
+            variant="contained"
+            endIcon={<RemoveIcon />}
+            onClick={callDelete}
+          >
+            Удалить
           </Button>
         ) : null}
         <FieldsProfile data={data} mapData={mapData} />
 
-        {links.map(({ link, text }) => {
-          <LinkButton key={text} link={link(id)} text={text} />;
-        })}
+        <div style={{ justifySelf: "flex-start" }}>
+          {/* {console.log(links)} */}
+          {links.map(({ link, text }) => {
+            return <LinkButton key={text} link={link(id)} text={text} />;
+          })}
+        </div>
       </section>
     </>
   );

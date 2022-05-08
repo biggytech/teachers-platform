@@ -15,7 +15,7 @@ async function handler(req, res) {
         await addMaterial({
           columns,
         });
-        res.redirect("/programs");
+        res.redirect(`/materials?program_id=${req.body.program_id}`);
       },
     });
   } catch (err) {
