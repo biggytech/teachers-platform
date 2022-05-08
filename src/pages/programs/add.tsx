@@ -14,6 +14,7 @@ const getServerSideProps = async (data) => {
     props: await getAddProgramProps({
       ...props,
       ownerId: props.userId,
+      id: props.id ?? null
     }),
   };
 };

@@ -1,4 +1,4 @@
-import { getMaterialsWithPrograms } from "@db/materials/index";
+import materialsService from "@db/materials/materialsService";
 import schema from "@db/materials/materialsSchema";
 
 const getMaterialsProps = async ({ program_id }) => {
@@ -8,11 +8,7 @@ const getMaterialsProps = async ({ program_id }) => {
     schema.column("description").toObject(),
     schema.column("link").toObject(),
   ];
-  const data = await getMaterialsWithPrograms({
-    programId: program_id,
-    columns,
-    programColumn: schema.column("program_id").columnName,
-  });
+  const data = await materialsService.getAllBy('program_id', program_id);
 
   const newColumns = columns.concat({
     name: schema.column("program_id").columnName,
@@ -22,7 +18,7 @@ const getMaterialsProps = async ({ program_id }) => {
   return {
     data: {
       columns: newColumns,
-      rows: data,
+      rows: data.map(item => ({...item, program_id: item.program.title})),
     },
     programId: program_id,
   };

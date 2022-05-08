@@ -46,6 +46,18 @@ export interface PlanWithStudentAndProgram extends Plan {
   program: Program;
 }
 
+export interface Material {
+  id: number;
+  title: string;
+  description?: string;
+  link?: string;
+  program_id: number;
+}
+
+export interface MaterialWithProgram extends Material {
+  program: Program;
+}
+
 export interface Point {
   id: number;
   title: string;

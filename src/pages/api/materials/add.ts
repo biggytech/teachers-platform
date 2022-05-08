@@ -1,6 +1,4 @@
-import { addMaterial } from "@db/materials/index";
-import schema from "@db/materials/materialsSchema";
-import { cookSimpleBodyData } from "@services/pages";
+import materialsService from "@db/materials/materialsService";
 import { checkAuthentication } from "@services/api";
 
 async function handler(req, res) {
@@ -9,12 +7,7 @@ async function handler(req, res) {
       req,
       res,
       cb: async (user) => {
-        const columns = await cookSimpleBodyData({
-          body: req.body,
-        });
-        await addMaterial({
-          columns,
-        });
+        await materialsService.add(req.body);
         res.redirect(`/materials?program_id=${req.body.program_id}`);
       },
     });
