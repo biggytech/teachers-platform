@@ -86,7 +86,6 @@ export interface TaskWithPoint {
 }
 
 export interface TaskMark {
-  // id: number; // TODO: what to do? PRIMARY KEY(task_id, plan_id)
   mark: number;
   task_id: number;
   plan_id: number;
@@ -131,4 +130,15 @@ export interface Answer {
 
 export interface AnswerWithQuestion extends Answer {
   question: Question;
+}
+
+export interface TestMark {
+  mark: number;
+  test_id: number;
+  plan_id: number;
+};
+
+export interface TestMarkWithTestAndProgram extends TestMark {
+  test: Test;
+  program: Program;
 }
