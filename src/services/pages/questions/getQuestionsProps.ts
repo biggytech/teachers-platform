@@ -1,4 +1,4 @@
-import { getQuestions } from "@db/questions/questionsQueries";
+import questionsService from "@db/questions/questionsService";
 import questionsSchema from "@db/questions/questionsSchema";
 
 const getQuestionsProps = async ({ testId }) => {
@@ -7,7 +7,7 @@ const getQuestionsProps = async ({ testId }) => {
     questionsSchema.column("description").toObject(),
   ];
 
-  const data = await getQuestions({ columns, testId });
+  const data = await questionsService.getAllBy('test_id', testId);
   return {
     data: {
       columns,

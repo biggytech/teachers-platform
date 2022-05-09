@@ -111,3 +111,13 @@ export interface TestPoint {
   test_id: number;
   point_id: number;
 }
+
+export interface Question {
+  id: number;
+  description: string;
+  test_id: number;
+}
+
+export interface QuestionWithTest extends Question {
+  test: Test;
+}

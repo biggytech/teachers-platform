@@ -1,4 +1,4 @@
-import { getQuestion } from "@db/questions/questionsQueries";
+import questionsService from "@db/questions/questionsService";
 import questionsSchema from "@db/questions/questionsSchema";
 import testsSchema from "@db/tests/testsSchema";
 import mapColumnsToDisplayNames from "@services/mapColumnsToDisplayNames";
@@ -10,13 +10,13 @@ export const getSingleQuestionProps = async ({ id }) => {
     questionsSchema.column("test_id").toObject(),
   ];
 
-  const data = await getQuestion({
-    columns,
-    id,
-  });
+  const data = await questionsService.get(id);
 
   return {
-    data,
+    data: data ? {
+      ...data,
+      title: data.test.title
+    } : null,
     id,
     mapData: mapColumnsToDisplayNames(
       columns

@@ -9,6 +9,7 @@ import TasksPoints from "@db/tasks_points/TasksPoints";
 import TaskMarks from "@db/task_marks/TaskMarks";
 import Tests from "@db/tests/Tests";
 import TestsPoints from "@db/tests_points/TestsPoints";
+import Questions from "@db/questions/Questions";
 
 // Teachers
 Teachers.hasMany(Students, { foreignKey: "teacher_id", as: "students" });
@@ -49,7 +50,11 @@ TaskMarks.belongsTo(Plans, { foreignKey: "plan_id", as: "plan" });
 
 // Tests
 Tests.belongsToMany(Points, { through: TestsPoints, foreignKey: 'test_id', as: 'points' });
+Tests.hasMany(Questions, { foreignKey: "test_id", as: "questions" });
 
 // TestsPoints
 
-export { Teachers, Students, Programs, Plans, Points, Materials, Tasks, TasksPoints, TaskMarks, Tests, TestsPoints };
+// Questions
+Questions.belongsTo(Tests, { foreignKey: "test_id", as: "test" });
+
+export { Teachers, Students, Programs, Plans, Points, Materials, Tasks, TasksPoints, TaskMarks, Tests, TestsPoints, Questions };
