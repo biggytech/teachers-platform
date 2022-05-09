@@ -96,3 +96,18 @@ export interface TaskMarkWithTaskAndProgram extends TaskMark {
   task: Task;
   program: Program;
 }
+
+export interface Test {
+  id: number;
+  title: string;
+  description?: string;
+};
+
+export interface TestWithPoint extends Test {
+  point: Point;
+};
+
+export interface TestPoint {
+  test_id: number;
+  point_id: number;
+}

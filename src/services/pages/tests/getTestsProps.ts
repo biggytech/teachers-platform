@@ -1,4 +1,4 @@
-import { getTests } from "@db/tests/testsQueries";
+import testsService from "@db/tests/testsService";
 import schema from "@db/tasks/tasksSchema";
 
 const getTestsProps = async ({ pointId }) => {
@@ -8,10 +8,7 @@ const getTestsProps = async ({ pointId }) => {
     schema.column("description").toObject(),
   ];
 
-  const data = await getTests({
-    columns: columns,
-    pointId,
-  });
+  const data = await testsService.getAllByPointId(pointId);
 
   return {
     data: {

@@ -1,4 +1,4 @@
-import { getTest } from "@db/tests/testsQueries";
+import testsService from "@db/tests/testsService";
 import schema from "@db/tests/testsSchema";
 import mapColumnsToDisplayNames from "@services/mapColumnsToDisplayNames";
 
@@ -8,10 +8,7 @@ const getSingleTestProps = async ({ id }) => {
     schema.column("description").toObject(),
   ];
 
-  const data = await getTest({
-    id,
-    columns,
-  });
+  const data = await testsService.get(id);
   return {
     data,
     id,

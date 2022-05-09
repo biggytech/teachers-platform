@@ -1,5 +1,4 @@
-import { addTest } from "@db/tests/testsQueries";
-import { cookSimpleBodyData } from "@services/pages";
+import testsService from "@db/tests/testsService";
 import { checkAuthentication } from "@services/api";
 
 async function handler(req, res) {
@@ -8,16 +7,10 @@ async function handler(req, res) {
       req,
       res,
       cb: async (user) => {
-        const columns = await cookSimpleBodyData({
-          body: {
-            title: req.body.title,
+        await testsService.add({
+          title: req.body.title,
             description: req.body.description,
-          },
-        });
-        await addTest({
-          columns,
-          pointId: req.body.point_id,
-        });
+        }, req.body.point_id);
         res.redirect("/programs");
       },
     });
