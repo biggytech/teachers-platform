@@ -1,4 +1,4 @@
-import { getAnswers } from "@db/answers/answersQueries";
+import answersService from "@db/answers/answersService";
 import answersSchema from "@db/answers/answersSchema";
 
 const getAnswersProps = async ({ questionId }) => {
@@ -8,11 +8,7 @@ const getAnswersProps = async ({ questionId }) => {
     answersSchema.column("is_correct").toObject(),
   ];
 
-  const data = await getAnswers({
-    columns,
-    questionId,
-    questionColumn: answersSchema.column("question_id").columnName,
-  });
+  const data = await answersService.getAllBy('question_id', questionId);
 
   const newColumns = columns.concat({
     name: answersSchema.column("question_id").columnName,
@@ -22,7 +18,7 @@ const getAnswersProps = async ({ questionId }) => {
   return {
     data: {
       columns: newColumns,
-      rows: data,
+      rows: data.map(item => ({...item, question_id: item.question.description})),
     },
   };
 };

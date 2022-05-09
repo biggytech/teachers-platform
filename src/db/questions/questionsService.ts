@@ -26,19 +26,28 @@ const questionsService = {
   getAllBy: async <T extends keyof Question>(
     field: T,
     value: Question[T]
-  ): Promise<Question[]> => {
+  ): Promise<QuestionWithTest[]> => {
     const data: SequelizeReturning<
-    Question
+    Question & {
+      test: SequelizeReturning<Test>;
+    }
     >[] = (await Questions.findAll({
       where: {
         [field]: value,
       },
+      include: {
+        model: Tests,
+        as: "test",
+      },
     })) as unknown as SequelizeReturning<
-    Question
+    Question & {
+      test: SequelizeReturning<Test>;
+    }
     >[];
 
     return data.map(({ dataValues }) => ({
       ...dataValues,
+      test: dataValues.test.dataValues,
     }));
   },
   get: async (id: Question["id"]): Promise<QuestionWithTest | null> => {

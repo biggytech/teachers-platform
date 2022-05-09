@@ -1,4 +1,4 @@
-import { addAnswer } from "@db/answers/answersQueries";
+import answersService from "@db/answers/answersService";
 import { cookSimpleBodyData } from "@services/pages";
 import { checkAuthentication } from "@services/api";
 
@@ -8,18 +8,13 @@ async function handler(req, res) {
       req,
       res,
       cb: async (user) => {
-        const columns = await cookSimpleBodyData({
-          body: {
-            description: req.body.description,
-            question_id: req.body.question_id,
-            is_correct: Object.prototype.hasOwnProperty.call(
-              req.body,
-              "is_correct"
-            ),
-          },
-        });
-        await addAnswer({
-          columns,
+        await answersService.add({
+          description: req.body.description,
+          question_id: req.body.question_id,
+          is_correct: Object.prototype.hasOwnProperty.call(
+            req.body,
+            "is_correct"
+          ),
         });
         res.redirect("/programs");
       },

@@ -121,3 +121,14 @@ export interface Question {
 export interface QuestionWithTest extends Question {
   test: Test;
 }
+
+export interface Answer {
+  id: number;
+  description: string;
+  is_correct: boolean;
+  question_id: number;
+}
+
+export interface AnswerWithQuestion extends Answer {
+  question: Question;
+}
