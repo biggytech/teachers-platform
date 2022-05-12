@@ -15,6 +15,7 @@ const getServerSideProps = async (data) => {
     props: await getAddPointProps({
       ...props,
       programId: +props.query.program_id || null,
+      isEdit: true,
     }),
   };
 };

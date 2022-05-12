@@ -16,7 +16,7 @@ async function handler(req, res) {
             "is_correct"
           ),
         });
-        res.redirect("/programs");
+        res.redirect(`/answers?question_id=${req.body.question_id}`);
       },
     });
   } catch (err) {

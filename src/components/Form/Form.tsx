@@ -23,6 +23,7 @@ const Form = forwardRef((props: FormProps, ref) => {
     action,
     columns,
     encType = "application/x-www-form-urlencoded",
+    data,
     ...otherProps
   } = props;
 
@@ -82,7 +83,7 @@ const Form = forwardRef((props: FormProps, ref) => {
                   : column.isRequired
               }
               data-input-name={column.name}
-              value={column.value}
+              defaultValue={data?.[column.name] ?? column.value}
             />
           );
         } else {
@@ -93,7 +94,7 @@ const Form = forwardRef((props: FormProps, ref) => {
                 name={column.name}
                 required={column.isRequired}
                 data-input-name={column.name}
-                value={column.value}
+                defaultValue={data?.[column.name] ?? column.value}
                 style={{
                   width: "100%",
                   border: "1px solid black",

@@ -7,11 +7,14 @@ async function handler(req, res) {
       req,
       res,
       cb: async (user) => {
-        await tasksService.add({
-          title: req.body.title,
-          description: req.body.description
-        }, req.body.point_id);
-        res.redirect("/programs");
+        await tasksService.add(
+          {
+            title: req.body.title,
+            description: req.body.description,
+          },
+          req.body.point_id
+        );
+        res.redirect(`/tasks?point_id=${req.body.point_id}`);
       },
     });
   } catch (err) {

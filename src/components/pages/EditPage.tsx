@@ -15,7 +15,18 @@ interface EditPageProps extends EditPageCreatorProps {
 }
 
 const EditPage = (props: EditPageProps) => {
-  const { columns, title, name, action, encType, isEdit = false, id } = props;
+  const {
+    columns,
+    title,
+    name,
+    action,
+    encType,
+    isEdit = false,
+    id,
+    data,
+  } = props;
+
+  console.log("COLUMNS:", columns);
 
   return (
     <>
@@ -30,6 +41,7 @@ const EditPage = (props: EditPageProps) => {
         action={isEdit ? action(id) : action}
         columns={columns}
         encType={encType}
+        data={data}
       />
     </>
   );

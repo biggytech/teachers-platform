@@ -3,6 +3,7 @@ import { Header, LinkButton } from "@components";
 import { getSinglePointProps } from "@services/pages/points";
 import { checkAuthentication } from "@services/pages";
 import { FieldsProfile } from "@components";
+import Head from "next/head";
 
 const SinglePoint = ({ data, id, planId, mapData }) => {
   if (!data) {
@@ -12,6 +13,9 @@ const SinglePoint = ({ data, id, planId, mapData }) => {
   return (
     <>
       <Header />
+      <Head>
+        <title>Пункт: {data.title}</title>
+      </Head>
       <section style={{ padding: 10 }}>
         <h2 className="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">
           {data.title}

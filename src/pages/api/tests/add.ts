@@ -7,11 +7,14 @@ async function handler(req, res) {
       req,
       res,
       cb: async (user) => {
-        await testsService.add({
-          title: req.body.title,
+        const { id } = await testsService.add(
+          {
+            title: req.body.title,
             description: req.body.description,
-        }, req.body.point_id);
-        res.redirect("/programs");
+          },
+          req.body.point_id
+        );
+        res.redirect(`/tests/${id}`);
       },
     });
   } catch (err) {

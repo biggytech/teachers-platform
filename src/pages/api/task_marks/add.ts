@@ -7,8 +7,9 @@ async function handler(req, res) {
       req,
       res,
       cb: async (user) => {
-        await taskMarksService.add(req.body);
-        res.redirect("/students");
+        const { point_id, ...task } = req.body;
+        await taskMarksService.add(task);
+        res.redirect(`/points/by_plans/${point_id}?plan_id=${task.plan_id}`);
       },
     });
   } catch (err) {

@@ -3,6 +3,7 @@ import { getSingleProgramProps } from "@services/pages/programs";
 import { checkAuthentication } from "@services/pages";
 import Button from "@mui/material/Button";
 import RemoveIcon from "@mui/icons-material/Remove";
+import Head from "next/head";
 
 const SingleProgram = ({ data, id, mapData }) => {
   if (!data) {
@@ -26,6 +27,9 @@ const SingleProgram = ({ data, id, mapData }) => {
   return (
     <>
       <Header />
+      <Head>
+        <title>Учебная программа: {data.title}</title>
+      </Head>
       <section style={{ padding: 10 }}>
         <h2 className="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">
           {data.title}

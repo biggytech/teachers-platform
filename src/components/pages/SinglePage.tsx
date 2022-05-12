@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import RemoveIcon from "@mui/icons-material/Remove";
+import Head from "next/head";
 
 type SinglePageCreatorProps = {
   links: Array<{
@@ -58,6 +59,9 @@ const SinglePage = (props: SinglePageProps) => {
   return (
     <>
       <Header />
+      <Head>
+        <title>{data.title}</title>
+      </Head>
       <section style={{ padding: 10 }}>
         <Typography variant="h2" component="div" gutterBottom>
           {data.title}

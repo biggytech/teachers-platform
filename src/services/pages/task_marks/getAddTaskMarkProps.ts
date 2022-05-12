@@ -12,6 +12,17 @@ export const getAddTaskMarkProps = async ({ planId, pointId }) => {
       }))
     ),
     taskMarksSchema.column("plan_id").withValue(planId),
+    {
+      name: "point_id",
+      displayName: "point_id",
+      type: {
+        dataType: "integer",
+        htmlType: 4,
+      },
+      isRequired: false,
+      columnName: "point_id",
+      value: pointId,
+    },
   ];
 
   return { columns, planId, pointId };

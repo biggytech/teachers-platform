@@ -12,7 +12,7 @@ const { runGetServerSideProps, EditPage } = createEditPage({
 const getServerSideProps = async (data) => {
   const props = await runGetServerSideProps(data);
 
-  console.log("PROPS:", props);
+  // console.log("PROPS:", props);
 
   return {
     props: await getAddProgramProps({

@@ -8,8 +8,8 @@ async function handler(req, res) {
       req,
       res,
       cb: async (user) => {
-        await questionsService.add(req.body);
-        res.redirect("/programs");
+        const { id } = await questionsService.add(req.body);
+        res.redirect(`/questions/${id}`);
       },
     });
   } catch (err) {

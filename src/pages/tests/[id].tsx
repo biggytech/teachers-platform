@@ -1,6 +1,7 @@
 import { Header, FieldsProfile, LinkButton } from "@components";
 import { getSingleTestProps } from "@services/pages/tests";
 import { checkAuthentication } from "@services/pages";
+import Head from "next/head";
 
 const SingleTest = ({ data, id, mapData }) => {
   if (!data) {
@@ -10,6 +11,9 @@ const SingleTest = ({ data, id, mapData }) => {
   return (
     <>
       <Header />
+      <Head>
+        <title>Тест: {data.title}</title>
+      </Head>
       <section style={{ padding: 10 }}>
         <h2 className="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">
           {data.title}

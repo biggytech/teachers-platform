@@ -16,6 +16,8 @@ const Input = (props: InputProps) => {
     ...otherProps
   } = props;
 
+  console.log("INP PROPS:", props);
+
   return (
     <div className="mb-6">
       {type !== "hidden" ? (
