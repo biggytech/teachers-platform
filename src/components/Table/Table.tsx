@@ -101,8 +101,8 @@ const Table = (props: TableProps) => {
         <>
           <div>
             <p className="text-sm leading-5 text-blue-700 text-right py-1 px-3">
-              Показано <span className="font-medium">{pageSize}</span> из{" "}
-              <span className="font-medium">{totalRecords}</span> записей
+              Показано <span className="font-medium">{rows?.length || 0}</span>{" "}
+              из <span className="font-medium">{totalRecords}</span> записей
             </p>
           </div>
           <div className="w-full flex justify-center border-t border-gray-100 py-2  items-center">

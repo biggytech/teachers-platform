@@ -62,21 +62,24 @@ const SinglePage = (props: SinglePageProps) => {
         <Typography variant="h2" component="div" gutterBottom>
           {data.title}
         </Typography>
-        {isEditable && editLink ? (
-          <LinkButton link={editLink(id)} text="Редактировать" />
-        ) : null}
-        {isDeletable && deleteLink && backLink ? (
-          <Button
-            variant="contained"
-            endIcon={<RemoveIcon />}
-            onClick={callDelete}
-          >
-            Удалить
-          </Button>
-        ) : null}
+        <div style={{ display: "flex", alignItems: "center" }}>
+          {isEditable && editLink ? (
+            <LinkButton link={editLink(id)} text="Редактировать" />
+          ) : null}
+          {isDeletable && deleteLink && backLink ? (
+            <Button
+              variant="contained"
+              endIcon={<RemoveIcon />}
+              onClick={callDelete}
+            >
+              Удалить
+            </Button>
+          ) : null}
+        </div>
+
         <FieldsProfile data={data} mapData={mapData} />
 
-        <div style={{ justifySelf: "flex-start" }}>
+        <div style={{ justifySelf: "flex-start", alignItems: "center" }}>
           {/* {console.log(links)} */}
           {links.map(({ link, text }) => {
             return <LinkButton key={text} link={link(id)} text={text} />;

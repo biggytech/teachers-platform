@@ -23,3 +23,7 @@ a {
 .bg-green-500 {
   background-color: darkcyan;
 }
+
+.MuiButton-sizeMedium {
+  height: 40px;
+}
