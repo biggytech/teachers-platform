@@ -1,10 +1,11 @@
 import Link from "next/link";
 
 const Header: React.FC = () => {
-  const logout = () => {
-    fetch("/api/logout", {
+  const logout = async () => {
+    await fetch("/api/logout", {
       method: "POST",
     });
+    window.location.replace("/");
   };
 
   return (
