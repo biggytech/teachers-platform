@@ -12,7 +12,10 @@ const { runGetServerSideProps, EditPage } = createEditPage({
 const getServerSideProps = async (data) => {
   const props = await runGetServerSideProps(data);
   return {
-    props: await getAddStudentProps(),
+    props: {
+      ...props,
+      ...(await getAddStudentProps())
+    },
   };
 };
 

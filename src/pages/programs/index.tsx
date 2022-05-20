@@ -11,10 +11,13 @@ const { runGetServerSideProps, QueryPage } = createQueryPage({
 const getServerSideProps = async (data) => {
   const props = await runGetServerSideProps(data);
   return {
-    props: await getProgramsProps({
+    props: {
       ...props,
-      ownerId: props.userId,
-    }),
+      ...(await getProgramsProps({
+        ...props,
+        ownerId: props.userId,
+      }))
+    },
   };
 };
 

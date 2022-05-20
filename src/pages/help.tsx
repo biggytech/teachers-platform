@@ -1,10 +1,15 @@
 import { Button, Header, LinkButton } from "@components";
 import { checkAuthentication } from "@services/pages";
+import { User } from "@types/user";
 
-const Help = ({}) => {
+interface HelpProps {
+  user: User
+}
+
+const Help: React.FC<HelpProps> = ({ user }) => {
   return (
     <>
-      <Header />
+      <Header role={user.role} />
       <section style={{ padding: 20 }}>
         <h1 style={{ fontWeight: "bold", fontSize: 30 }}>Система помощи</h1>
         <article>
@@ -124,9 +129,11 @@ const Help = ({}) => {
 const getServerSideProps = async ({ params, req }) => {
   return await checkAuthentication({
     req,
-    cb: () => {
+    cb: (user) => {
       return {
-        props: {},
+        props: {
+          user
+        },
       };
     },
   });

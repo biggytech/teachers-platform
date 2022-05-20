@@ -13,6 +13,7 @@ const getServerSideProps = async (data) => {
   const props = await runGetServerSideProps(data);
   return {
     props: {
+      ...props,
       ...(await getTestsProps({
         ...props,
         pointId: props.query.point_id || null,

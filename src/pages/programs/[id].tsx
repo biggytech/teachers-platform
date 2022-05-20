@@ -4,8 +4,13 @@ import { checkAuthentication } from "@services/pages";
 import Button from "@mui/material/Button";
 import RemoveIcon from "@mui/icons-material/Remove";
 import Head from "next/head";
+import { User } from "@types/user";
 
-const SingleProgram = ({ data, id, mapData }) => {
+interface SingleProgramProps {
+  user: User
+}
+
+const SingleProgram: React.FC<SingleProgramProps> = ({ data, id, mapData, user}) => {
   if (!data) {
     return <div>not found</div>;
   }
@@ -26,7 +31,7 @@ const SingleProgram = ({ data, id, mapData }) => {
 
   return (
     <>
-      <Header />
+      <Header role={user.role} />
       <Head>
         <title>Учебная программа: {data.title}</title>
       </Head>
@@ -63,9 +68,12 @@ const SingleProgram = ({ data, id, mapData }) => {
 const getServerSideProps = async ({ params, req }) => {
   return await checkAuthentication({
     req,
-    cb: () => {
+    cb: (user) => {
       return {
-        props: getSingleProgramProps({ id: +params.id }),
+        props: {
+          ...getSingleProgramProps({ id: +params.id }),
+          user
+        }
       };
     },
   });

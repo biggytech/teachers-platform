@@ -1,6 +1,7 @@
 import { Authenticator } from "@services/Authenticator";
 import teachersService from "@db/teachers/teachersService";
 import bcrypt from "bcryptjs";
+import { ROLES } from '@types/user'
 
 async function handler(req, res) {
   try {
@@ -15,7 +16,7 @@ async function handler(req, res) {
     const isPasswordValid = bcrypt.compareSync(password, teacher.password); // true
 
     if (isPasswordValid) {
-      await Authenticator.authenticateUser(res, { username, id: teacher.id });
+      await Authenticator.authenticateUser(res, { username, id: teacher.id, role: ROLES.TEACHER });
 
       res.redirect("/students");
     } else {

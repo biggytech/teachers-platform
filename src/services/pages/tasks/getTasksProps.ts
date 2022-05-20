@@ -1,7 +1,7 @@
 import tasksService from "@db/tasks/tasksService";
 import schema from "@db/tasks/tasksSchema";
 
-const getTasksProps = async ({ pointId }) => {
+const getTasksProps = async ({ pointId, ...other }) => {
   const columns = [
     schema.column("id").toObject(),
     schema.column("title").toObject(),
@@ -16,6 +16,7 @@ const getTasksProps = async ({ pointId }) => {
       rows: data,
     },
     pointId,
+    ...other
   };
 };
 

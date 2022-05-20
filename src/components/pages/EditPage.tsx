@@ -2,6 +2,7 @@ import Head from "next/head";
 
 import { Form, Header } from "@components";
 import { checkAuthentication } from "@services/pages";
+import { User } from "@types/user";
 
 type EditPageCreatorProps = {
   title: string;
@@ -12,6 +13,7 @@ type EditPageCreatorProps = {
 
 interface EditPageProps extends EditPageCreatorProps {
   columns: any;
+  user: User
 }
 
 const EditPage = (props: EditPageProps) => {
@@ -24,6 +26,7 @@ const EditPage = (props: EditPageProps) => {
     isEdit = false,
     id,
     data,
+    user
   } = props;
 
   console.log("COLUMNS:", columns);
@@ -35,7 +38,7 @@ const EditPage = (props: EditPageProps) => {
           {title} | {isEdit ? "Редактировать" : "Добавить"}
         </title>
       </Head>
-      <Header />
+      <Header role={user.role} />
       <Form
         name={isEdit ? `Редактирование` : `Добавить ${name}`}
         action={isEdit ? action(id) : action}
@@ -63,6 +66,7 @@ export const createEditPage = (props: EditPageCreatorProps) => {
               res,
               userId: user.id,
               id: query?.id,
+              user
             });
           },
         });

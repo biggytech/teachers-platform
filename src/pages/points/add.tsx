@@ -11,11 +11,14 @@ const { runGetServerSideProps, EditPage } = createEditPage({
 const getServerSideProps = async (data) => {
   const props = await runGetServerSideProps(data);
   return {
-    props: await getAddPointProps({
+    props: {
       ...props,
-      programId: +props.query.program_id || null,
-      id: props.id ?? null
-    }),
+      ...(await getAddPointProps({
+        ...props,
+        programId: +props.query.program_id || null,
+        id: props.id ?? null
+      }))
+    },
   };
 };
 

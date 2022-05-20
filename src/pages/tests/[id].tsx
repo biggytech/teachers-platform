@@ -2,15 +2,20 @@ import { Header, FieldsProfile, LinkButton } from "@components";
 import { getSingleTestProps } from "@services/pages/tests";
 import { checkAuthentication } from "@services/pages";
 import Head from "next/head";
+import { User } from "@types/user";
 
-const SingleTest = ({ data, id, mapData }) => {
+interface SingleTestProps {
+  user: User
+}
+
+const SingleTest: React.FC<SingleTestProps> = ({ data, id, mapData, user }) => {
   if (!data) {
     return <div>not found</div>;
   }
 
   return (
     <>
-      <Header />
+      <Header role={user.role} />
       <Head>
         <title>Тест: {data.title}</title>
       </Head>
@@ -28,9 +33,12 @@ const SingleTest = ({ data, id, mapData }) => {
 const getServerSideProps = async ({ params, req }) => {
   return await checkAuthentication({
     req,
-    cb: () => {
+    cb: (user) => {
       return {
-        props: getSingleTestProps({ id: +params.id }),
+        props: {
+          ...getSingleTestProps({ id: +params.id }),
+          user
+        },
       };
     },
   });

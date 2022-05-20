@@ -3,10 +3,15 @@ import { getSinglePlanProps } from "@services/pages/plans/getSinglePlanProps";
 import { checkAuthentication } from "@services/pages";
 import { FieldsProfile } from "@components";
 import { useCallback } from "react";
+import { User } from "@types/user";
 
 declare var open: (url: string, target: string) => { focus: () => void };
 
-const SinglePlan = ({ data, id, mapData }) => {
+interface SinglePlanProps {
+  user: User
+}
+
+const SinglePlan: React.FC<SinglePlanProps> = ({ data, id, mapData, user }) => {
   const handleGenerateReport = useCallback(() => {
     open(`/api/generateReport?plan_id=${id}`, "_blank").focus();
   }, [id]);
@@ -17,7 +22,7 @@ const SinglePlan = ({ data, id, mapData }) => {
 
   return (
     <>
-      <Header />
+      <Header role={user.role} />
       <section>
         <h2 className="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">
           {data.title}
@@ -38,9 +43,12 @@ const SinglePlan = ({ data, id, mapData }) => {
 const getServerSideProps = async ({ params, req }) => {
   return await checkAuthentication({
     req,
-    cb: () => {
+    cb: (user) => {
       return {
-        props: getSinglePlanProps({ id: +params.id }),
+        props: {
+          ...getSinglePlanProps({ id: +params.id }),
+          user
+        }
       };
     },
   });

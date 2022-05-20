@@ -3,11 +3,16 @@ import Head from "next/head";
 import { Form, Header } from "@components";
 import { getAddTeacherProps } from "@services/pages/teachers";
 import { checkAuthentication } from "@services/pages";
+import { User } from "@types/user";
 
-const AddTeacher = ({ columns }) => {
+interface AddTeacherProps {
+  user: User
+}
+
+const AddTeacher: React.FC<AddTeacherProps> = ({ columns, user }) => {
   return (
     <>
-      <Header />
+      <Header role={user.role} />
       <Head>
         <title>Инструкторы | Добавить</title>
       </Head>
@@ -24,9 +29,12 @@ const AddTeacher = ({ columns }) => {
 const getServerSideProps = async ({ req }) => {
   return await checkAuthentication({
     req,
-    cb: () => {
+    cb: (user) => {
       return {
-        props: getAddTeacherProps(),
+        props: {
+          ...getAddTeacherProps(),
+          user
+        },
       };
     },
   });

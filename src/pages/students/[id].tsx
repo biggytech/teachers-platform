@@ -3,8 +3,13 @@ import { getSingleStudentProps } from "@services/pages/students";
 import { checkAuthentication } from "@services/pages";
 import Button from "@mui/material/Button";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { User } from "@types/user";
 
-const SingleStudent = ({ data, id, mapData }) => {
+interface SingleStudentProps {
+  user: User
+}
+
+const SingleStudent: React.FC<SingleStudentProps> = ({ data, id, mapData, user }) => {
   if (!data) {
     return <div>not found</div>;
   }
@@ -25,7 +30,7 @@ const SingleStudent = ({ data, id, mapData }) => {
 
   return (
     <>
-      <Header />
+      <Header role={user.role} />
 
       <UserProfile pageType="Студент" data={data} mapData={mapData} />
       <div
@@ -51,9 +56,12 @@ const SingleStudent = ({ data, id, mapData }) => {
 const getServerSideProps = async ({ params, req }) => {
   return await checkAuthentication({
     req,
-    cb: () => {
+    cb: (user) => {
       return {
-        props: getSingleStudentProps({ id: +params.id }),
+        props: {
+          ...getSingleStudentProps({ id: +params.id }),
+          user
+        }
       };
     },
   });

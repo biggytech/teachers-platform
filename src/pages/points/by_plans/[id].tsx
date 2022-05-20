@@ -4,15 +4,20 @@ import { getSinglePointProps } from "@services/pages/points";
 import { checkAuthentication } from "@services/pages";
 import { FieldsProfile } from "@components";
 import Head from "next/head";
+import { User } from "@types/user";
 
-const SinglePoint = ({ data, id, planId, mapData }) => {
+interface SinglePointProps {
+  user: User
+}
+
+const SinglePoint: React.FC<SinglePointProps> = ({ data, id, planId, mapData, user }) => {
   if (!data) {
     return <div>not found</div>;
   }
 
   return (
     <>
-      <Header />
+      <Header role={user.role} />
       <Head>
         <title>Пункт: {data.title}</title>
       </Head>
@@ -34,11 +39,12 @@ const SinglePoint = ({ data, id, planId, mapData }) => {
 const getServerSideProps = async ({ params, req, query }) => {
   return await checkAuthentication({
     req,
-    cb: async () => {
+    cb: async (user) => {
       return {
         props: {
           ...(await getSinglePointProps({ id: +params.id })),
           planId: +query.plan_id || null,
+          user
         },
       };
     },

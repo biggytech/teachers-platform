@@ -1,6 +1,11 @@
 import Link from "next/link";
+import { ROLES } from '@types/user';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  role: ROLES
+}
+
+const Header: React.FC<HeaderProps> = ({ role }) => {
   const logout = async () => {
     await fetch("/api/logout", {
       method: "POST",
@@ -14,6 +19,7 @@ const Header: React.FC = () => {
         <a className="text-3xl font-bold font-heading" href="#"></a>
         <ul className="flex px-4 font-semibold font-heading space-x-12">
           <li>
+          {role === ROLES.TEACHER ? (<>
             <Link href="/students">
               <a className="hover:text-gray-200 mr-4" href="#">
                 Студенты
@@ -29,6 +35,14 @@ const Header: React.FC = () => {
                 Учебные программы
               </a>
             </Link>
+          </>) : null}    
+          {role === ROLES.STUDENT ? (<>
+            <Link href="/students">
+              <a className="hover:text-gray-200 mr-4" href="#">
+                Мои курсы
+              </a>
+            </Link>
+          </>) : null}            
           </li>
         </ul>
       </div>

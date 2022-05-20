@@ -23,7 +23,9 @@
       "@db": ["db/index"],
       "@db/*": ["db/*"],
       "@services": ["services/index"],
-      "@services/*": ["services/*"]
+      "@services/*": ["services/*"],
+      "@types/*": ["types/*"],
+      "@logger": ["logger.ts"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

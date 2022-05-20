@@ -1,14 +1,19 @@
 import { UserProfile, Header } from "@components";
 import { checkAuthentication } from "@services/pages";
 import { getSingleTeacherProps } from "@services/pages/teachers";
+import { User } from "@types/user";
 
-const SingleTeacher = ({ data, mapData }) => {
+interface SingleTeacherProps {
+  user: User
+}
+
+const SingleTeacher: React.FC<SingleTeacherProps> = ({ data, mapData, user }) => {
   if (!data) {
     return <div>not found</div>;
   }
   return (
     <>
-      <Header />
+      <Header role={user.role} />
       <UserProfile pageType="Инструктор" data={data} mapData={mapData} />
     </>
   );
@@ -17,9 +22,12 @@ const SingleTeacher = ({ data, mapData }) => {
 const getServerSideProps = async ({ params, req }) => {
   return await checkAuthentication({
     req,
-    cb: () => {
+    cb: (user) => {
       return {
-        props: getSingleTeacherProps({ id: +params.id }),
+        props: {
+          ...getSingleTeacherProps({ id: +params.id }),
+          user
+        }
       };
     },
   });

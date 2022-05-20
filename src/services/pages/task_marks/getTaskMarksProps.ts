@@ -1,7 +1,7 @@
 import { taskMarksSchema } from "@db/task_marks/taskMarksSchema";
 import taskMarksService from "@db/task_marks/taskMarksService";
 
-export const getTaskMarksProps = async ({ planId }) => {
+export const getTaskMarksProps = async ({ planId, ...other }) => {
   const columns = [
     taskMarksSchema.column("mark").toObject(),
     taskMarksSchema.column("task_id").toObject(),
@@ -23,5 +23,6 @@ export const getTaskMarksProps = async ({ planId }) => {
         program_title: item.program.title
       })),
     },
+    ...other
   };
 };

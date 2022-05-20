@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Header, LinkButton } from "../components";
+import { LinkButton } from "../components";
 
 import styles from "../styles/Home.module.css";
 

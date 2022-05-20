@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import RemoveIcon from "@mui/icons-material/Remove";
 import Head from "next/head";
+import { User } from "@types/user";
 
 type SinglePageCreatorProps = {
   links: Array<{
@@ -25,6 +26,7 @@ interface SinglePageProps extends SinglePageCreatorProps {
   mapData?: {
     [ley: string]: any;
   } | null;
+  user: User
 }
 
 const SinglePage = (props: SinglePageProps) => {
@@ -38,6 +40,7 @@ const SinglePage = (props: SinglePageProps) => {
     deleteLink,
     backLink,
     editLink,
+    user
   } = props;
 
   if (!data) {
@@ -58,7 +61,7 @@ const SinglePage = (props: SinglePageProps) => {
 
   return (
     <>
-      <Header />
+      <Header role={user.role} />
       <Head>
         <title>{data.title}</title>
       </Head>
@@ -106,6 +109,7 @@ export const createSinglePage = (props: SinglePageCreatorProps) => {
               req,
               res,
               userId: user.id,
+              user
             });
           },
         });

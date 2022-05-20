@@ -12,6 +12,7 @@ export const getServerSideProps = async ({ query, req, res }) => {
 
   return {
     props: {
+      ...props
       ...(await getAddQuestionProps({
         testId: +props.query.test_id ?? null,
       })),

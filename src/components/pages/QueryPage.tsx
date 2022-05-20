@@ -3,6 +3,7 @@ import { Table, Header } from "@components";
 import { checkAuthentication } from "@services/pages";
 
 import { LinkButton } from "@components";
+import { User } from "@types/user";
 
 type QueryPageCreatorProps = {
   title: string;
@@ -16,6 +17,7 @@ type QueryPageCreatorProps = {
 
 interface QueryPageProps extends QueryPageCreatorProps {
   data: any;
+  user: User
 }
 
 const QueryPage = (props: QueryPageProps) => {
@@ -28,11 +30,12 @@ const QueryPage = (props: QueryPageProps) => {
     contextId = null,
     queryParams,
     onClick,
+    user
   } = props;
 
   return (
     <>
-      <Header />
+      <Header role={user.role} />
       <Head>
         <title>{title}</title>
       </Head>
@@ -74,6 +77,7 @@ export const createQueryPage = (props: QueryPageCreatorProps) => {
               limit: +query.limit || 20,
               userId: user.id,
               query,
+              user
             });
           },
         });

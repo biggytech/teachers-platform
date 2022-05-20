@@ -15,11 +15,14 @@ const getServerSideProps = async (data) => {
   // console.log("PROPS:", props);
 
   return {
-    props: await getAddProgramProps({
+    props: {
       ...props,
-      ownerId: props.userId,
-      isEdit: true,
-    }),
+      ...(await getAddProgramProps({
+        ...props,
+        ownerId: props.userId,
+        isEdit: true,
+      }))
+    },
   };
 };
 

@@ -10,7 +10,11 @@ const { runGetServerSideProps, QueryPage } = createQueryPage({
 const getServerSideProps = async (data) => {
   const props = await runGetServerSideProps(data);
   return {
-    props: await getTeachersProps(props),
+    props: {
+      ...props,
+      ...(await getTeachersProps(props)),
+
+    },
   };
 };
 

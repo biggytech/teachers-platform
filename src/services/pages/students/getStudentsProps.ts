@@ -1,7 +1,7 @@
 import schema from "@db/students/schema";
 import studentsService from "@db/students/studentsService";
 
-const getStudentsProps = async ({ page, limit, teacherId }) => {
+const getStudentsProps = async ({ page, limit, teacherId, ...other }) => {
   const columns = [
     schema.column("id").toObject(),
     schema.column("firstname").toObject(),
@@ -24,6 +24,7 @@ const getStudentsProps = async ({ page, limit, teacherId }) => {
       pageSize: limit,
       page,
     },
+    ...other
   };
 };
 

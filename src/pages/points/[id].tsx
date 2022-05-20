@@ -24,12 +24,14 @@ const { runGetServerSideProps, SinglePage } = createSinglePage({
 
 const getServerSideProps = async (data) => {
   const props = await runGetServerSideProps(data);
-  // console.log("PROPS:", props);
   return {
-    props: await getSinglePointProps({
+    props: {
       ...props,
-      id: +data.params.id,
-    }),
+      ...(await getSinglePointProps({
+        ...props,
+        id: +data.params.id,
+      }))
+    },
   };
 };
 

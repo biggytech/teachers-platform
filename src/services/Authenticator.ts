@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import { serialize } from "cookie";
+import logger from '@logger'
 
 namespace Utils {
   export class CookieService {
@@ -59,12 +60,12 @@ export class Authenticator extends Utils.CookieService {
 
     try {
       const data = jwt.verify(token, process.env.JWT_TOKEN_KEY);
+      logger.info(`User data is:`, data);
 
       if (!data) return null;
       return data;
     } catch (error) {
-      console.log("ERROR!!!");
-      console.log(error);
+      logger.err(error.message);
       return null;
     }
   }

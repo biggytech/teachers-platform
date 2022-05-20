@@ -11,7 +11,7 @@ export const getServerSideProps = async ({ query, req, res }) => {
   const props = await runGetServerSideProps({ query, req, res });
   return {
     props: {
-      //   ...props,
+      ...props,
       ...getAddAnswersProps({
         questionId: +query.question_id || null,
       }),

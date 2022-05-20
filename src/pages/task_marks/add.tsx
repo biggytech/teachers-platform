@@ -11,6 +11,7 @@ export const getServerSideProps = async ({ req, res, query }) => {
   await runGetServerSideProps({ query, req, res });
   return {
     props: {
+      ...props,
       ...(await getAddTaskMarkProps({
         planId: +query.plan_id ?? null,
         pointId: +query.point_id ?? null,

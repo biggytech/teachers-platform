@@ -1,15 +1,20 @@
 import { Header, FieldsProfile, LinkButton } from "@components";
 import { getSingleQuestionProps } from "@services/pages/questions/getSingleQuestionProps";
 import { checkAuthentication } from "@services/pages";
+import { User } from "@types/user";
 
-const SingleQuestion = ({ data, id, mapData }) => {
+interface SingleQuestionProps {
+  user: User
+}
+
+const SingleQuestion: React.FC<SingleQuestionProps> = ({ data, id, mapData, user }) => {
   if (!data) {
     return <div>not found</div>;
   }
 
   return (
     <>
-      <Header />
+      <Header role={user.role} />
       <section style={{ padding: 10 }}>
         <h2 className="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">
           {data.title}
@@ -27,9 +32,12 @@ const SingleQuestion = ({ data, id, mapData }) => {
 const getServerSideProps = async ({ params, req }) => {
   return await checkAuthentication({
     req,
-    cb: () => {
+    cb: (user) => {
       return {
-        props: getSingleQuestionProps({ id: +params.id }),
+        props: {
+          ...getSingleQuestionProps({ id: +params.id }),
+          user
+        }
       };
     },
   });
