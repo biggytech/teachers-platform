@@ -1,11 +1,22 @@
-import { Students } from "@db/models";
+import { Plans, Points, Programs, Students, Teachers } from "@db/models";
 import {
   PaginatedResult,
   SequelizeReturning,
   SequelizeRowsAndCount,
 } from "@db/types";
 import hashPassword from "@services/hashPassword";
-import { Student, StudentMainInfo, StudentSafeInfo } from "@db/interfaces";
+import { Plan, PlanWithProgramAndTeacher, Student, StudentMainInfo, StudentSafeInfo } from "@db/interfaces";
+import { Id } from "@projectTypes/database";
+import logger from "@logger";
+import { formatDateToGeneral } from "@services/dates";
+
+export interface Course {
+  id: Id;
+  name: string;
+  startDate: string;
+  endDate: string;
+  teacher: string;
+}
 
 const studentsService = {
   add: async (student: Omit<Student, "id">): Promise<Student> => {
@@ -115,10 +126,57 @@ const studentsService = {
 
     return data?.dataValues ?? null;
   },
-  // TODO: type this function
-  delete: async (id: number) => {
+  delete: async (id: Id) => {
     await Students.destroy({ where: { id } });
   },
+  getCoursesByStudent: async (studentId: Id, page: number, limit: number): Promise<PaginatedResult<Course>> => {
+    const attributes: Array<keyof Plan> = ["id", "start_date", "student_id", "program_id"];
+
+    const data: SequelizeRowsAndCount<PlanWithProgramAndTeacher> = await Plans.findAndCountAll({
+      attributes,
+      where: {
+        "student_id": studentId
+      },
+      include: [
+        {
+          model: Programs,
+          as: "program",
+          include: [
+            {
+              model: Teachers,
+              as: "teacher"
+            },
+            {
+              model: Points,
+              as: 'points'
+            }
+          ]
+        },        
+      ]
+    }) as unknown as SequelizeRowsAndCount<PlanWithProgramAndTeacher>;
+
+    const courses: Course[] = data.rows.map(row => {
+      const points = row.dataValues.program.dataValues.points;
+
+      const startDate = new Date(row.dataValues.start_date);
+      const programDuration = points.reduce((sum, point) => sum + point.dataValues.duration_days, 0);
+      const endDate = new Date(startDate);
+      endDate.setDate(endDate.getDate() + programDuration);
+
+      return {
+        id: row.dataValues.id,
+        name: row.dataValues.program.dataValues.title,
+        startDate: formatDateToGeneral(startDate),
+        endDate: formatDateToGeneral(endDate),
+        teacher: row.dataValues.program.dataValues.teacher.dataValues.firstname + ' ' + row.dataValues.program.dataValues.teacher.dataValues.lastname
+      }
+    });
+
+    return {
+      rows: courses,
+      totalRecords: data.count,
+    };
+  }
 };
 
 export default studentsService;

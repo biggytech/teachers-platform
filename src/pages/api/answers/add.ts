@@ -1,6 +1,6 @@
 import answersService from "@db/answers/answersService";
 import { checkRoleAuthentication, cookSimpleBodyData } from "@services/pages";
-import { ROLES } from "@types/user";
+import { ROLES } from "@projectTypes/user";
 
 async function handler(req, res) {
   try {

@@ -3,7 +3,7 @@ import getFormData from "@services/getFormData";
 import fs from "fs";
 import studentsService from "@db/students/studentsService";
 import { checkRoleAuthentication } from "@services/pages";
-import { ROLES } from "@types/user";
+import { ROLES } from "@projectTypes/user";
 
 interface StudentFields {
   username: string;

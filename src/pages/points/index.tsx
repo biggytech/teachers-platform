@@ -1,7 +1,7 @@
 import { getPointsProps } from "@services/pages/points";
 
 import { createQueryPage } from "@components/pages";
-import { ROLES } from "@types/user";
+import { ROLES } from "@projectTypes/user";
 import handleRedirectError from "@services/pages/handleRedirectError";
 
 const { runGetServerSideProps, QueryPage } = createQueryPage({
@@ -17,7 +17,7 @@ const getServerSideProps = async (data) => {
     const props = await runGetServerSideProps(data);
     return {
       props: {
-        ...props,
+        user: props.user,
         ...(await getPointsProps({
           ...props,
           program_id: props.query.program_id || null,

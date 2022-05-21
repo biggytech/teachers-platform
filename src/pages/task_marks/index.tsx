@@ -1,7 +1,7 @@
 import { createQueryPage } from "@components/pages";
 import handleRedirectError from "@services/pages/handleRedirectError";
 import { getTaskMarksProps } from "@services/pages/task_marks/getTaskMarksProps";
-import { ROLES } from "@types/user";
+import { ROLES } from "@projectTypes/user";
 
 const { runGetServerSideProps, QueryPage } = createQueryPage({
   title: "Оценки по практическим заданиям",

@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { serialize } from "cookie";
 import logger from '@logger'
-import { User } from "@types/user";
+import { User } from "@projectTypes/user";
 
 namespace Utils {
   export class CookieService {

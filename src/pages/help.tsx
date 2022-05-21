@@ -1,6 +1,6 @@
 import { Button, Header, LinkButton } from "@components";
 import { checkAuthentication } from "@services/pages";
-import { User } from "@types/user";
+import { User } from "@projectTypes/user";
 
 interface HelpProps {
   user: User

@@ -24,7 +24,7 @@
       "@db/*": ["db/*"],
       "@services": ["services/index"],
       "@services/*": ["services/*"],
-      "@types/*": ["types/*"],
+      "@projectTypes/*": ["types/*"],
       "@logger": ["logger.ts"],
       "@lib/*": ["lib/*"],
     }

@@ -52,7 +52,7 @@ const Table = (props: TableProps) => {
           {rows.map((row) => {
             const content = (
               <tr
-                className="cursor-pointer border-b border-gray-200 hover:bg-gray-100"
+                className={`${pathName ? 'cursor-pointer' : ''} border-b border-gray-200 hover:bg-gray-100`}
                 onClick={
                   onClick
                     ? () => window.open(onClick(row), "_blank").focus()
@@ -83,9 +83,8 @@ const Table = (props: TableProps) => {
               return (
                 <Link
                   key={row.id}
-                  href={`${pathName}/${row.id}${
-                    queryParams ? queryParams(contextId) : ""
-                  }`}
+                  href={`${pathName}/${row.id}${queryParams ? queryParams(contextId) : ""
+                    }`}
                 >
                   {content}
                 </Link>

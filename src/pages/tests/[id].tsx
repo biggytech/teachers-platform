@@ -2,7 +2,7 @@ import { Header, FieldsProfile, LinkButton } from "@components";
 import { getSingleTestProps } from "@services/pages/tests";
 import { checkRoleAuthentication } from "@services/pages";
 import Head from "next/head";
-import { ROLES, User } from "@types/user";
+import { ROLES, User } from "@projectTypes/user";
 import RedirectError from "@lib/RedirectError";
 import handleRedirectError from "@services/pages/handleRedirectError";
 

@@ -1,6 +1,6 @@
 import pointsService from "@db/points/pointsService";
 import { checkRoleAuthentication } from "@services/pages";
-import { ROLES } from "@types/user";
+import { ROLES } from "@projectTypes/user";
 
 interface PointBody {
   title: string;

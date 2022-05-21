@@ -1,6 +1,6 @@
 import logger from '@logger';
 import { Authenticator } from '@services/Authenticator';
-import { ROLES, User } from '@types/user';
+import { ROLES, User } from '@projectTypes/user';
 
 
 const checkRoleAuthentication = async ({ req, cb, role }: { role: ROLES, cb: (redirect: string | null, user?: User) => void }) => {

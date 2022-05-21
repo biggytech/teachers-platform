@@ -1,7 +1,7 @@
 import { getReportData } from "@db/plans/plansQueries";
 import { checkRoleAuthentication } from "@services/pages";
 import { generateReport } from "@services/pdf/generateReport";
-import { ROLES } from "@types/user";
+import { ROLES } from "@projectTypes/user";
 import * as fs from "fs";
 
 async function handler(req, res) {

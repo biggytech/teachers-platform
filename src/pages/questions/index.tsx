@@ -1,7 +1,7 @@
 import { createQueryPage } from "@components/pages";
 import handleRedirectError from "@services/pages/handleRedirectError";
 import getQuestionsProps from "@services/pages/questions/getQuestionsProps";
-import { ROLES } from "@types/user";
+import { ROLES } from "@projectTypes/user";
 
 const { runGetServerSideProps, QueryPage } = createQueryPage({
   title: "Вопросы",

@@ -3,8 +3,9 @@ import { Table, Header } from "@components";
 import { checkRoleAuthentication } from "@services/pages";
 
 import { LinkButton } from "@components";
-import { ROLES, User } from "@types/user";
+import { ROLES, User } from "@projectTypes/user";
 import RedirectError from "@lib/RedirectError";
+import { Id } from "@projectTypes/database";
 
 type QueryPageCreatorProps = {
   title: string;
@@ -12,7 +13,7 @@ type QueryPageCreatorProps = {
   pathName?: string | null;
   isUsePagination?: boolean;
   contextId?: string | Array<string> | null;
-  queryParams: any;
+  queryParams?: any;
   onClick?: Function;
   accessRole: ROLES;
 };
@@ -71,7 +72,13 @@ const QueryPage = (props: QueryPageProps) => {
 export const createQueryPage = ({ accessRole,
   ...props }: QueryPageCreatorProps) => {
   return {
-    runGetServerSideProps: ({ query, req }) => {
+    runGetServerSideProps: ({ query, req }): Promise<{
+      page: number,
+      limit: number,
+      userId: Id,
+      query: any,
+      user: User
+    }> => {
       return new Promise(async (resolve, reject) => {
         await checkRoleAuthentication({
           role: accessRole,

@@ -1,6 +1,6 @@
 import taskMarksService from "@db/task_marks/taskMarksService";
 import { checkRoleAuthentication } from "@services/pages";
-import { ROLES } from "@types/user";
+import { ROLES } from "@projectTypes/user";
 
 async function handler(req, res) {
   try {

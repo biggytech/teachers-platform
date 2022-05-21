@@ -1,4 +1,4 @@
-import { User } from "@types/user";
+import { User } from "@projectTypes/user";
 import { Authenticator } from "../Authenticator";
 
 const checkAuthentication = async ({ req, cb }: { cb: (user: User) => void}) => {

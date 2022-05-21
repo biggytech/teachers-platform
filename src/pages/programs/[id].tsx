@@ -4,7 +4,7 @@ import { checkRoleAuthentication } from "@services/pages";
 import Button from "@mui/material/Button";
 import RemoveIcon from "@mui/icons-material/Remove";
 import Head from "next/head";
-import { ROLES, User } from "@types/user";
+import { ROLES, User } from "@projectTypes/user";
 import RedirectError from "@lib/RedirectError";
 import handleRedirectError from "@services/pages/handleRedirectError";
 
@@ -71,14 +71,14 @@ const getServerSideProps = async ({ params, req }) => {
   return await checkRoleAuthentication({
     role: ROLES.TEACHER,
     req,
-    cb: (redirect, user) => {
+    cb: async (redirect, user) => {
       if (redirect) {
         return handleRedirectError(new RedirectError(`Redirection to ${redirect}`, redirect));
       }
 
       return {
         props: {
-          ...getSingleProgramProps({ id: +params.id }),
+          ...(await getSingleProgramProps({ id: +params.id })),
           user
         }
       };

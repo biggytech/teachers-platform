@@ -1,7 +1,7 @@
 import { getAddTestProps } from "@services/pages/tests";
 
 import { createEditPage } from "@components/pages";
-import { ROLES } from "@types/user";
+import { ROLES } from "@projectTypes/user";
 import handleRedirectError from "@services/pages/handleRedirectError";
 
 const { runGetServerSideProps, EditPage } = createEditPage({

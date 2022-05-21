@@ -1,8 +1,6 @@
 import { getStudentsProps } from "../../services/pages/students";
 import { createQueryPage } from "@components/pages";
-import { ROLES } from "@types/user";
-import logger from "@logger";
-import RedirectError from "@lib/RedirectError";
+import { ROLES } from "@projectTypes/user";
 import handleRedirectError from "@services/pages/handleRedirectError";
 
 const { runGetServerSideProps, QueryPage } = createQueryPage({

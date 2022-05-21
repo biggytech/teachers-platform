@@ -1,7 +1,7 @@
 
 import studentsService from "@db/students/studentsService";
 import { checkRoleAuthentication } from "@services/pages";
-import { ROLES } from "@types/user";
+import { ROLES } from "@projectTypes/user";
 
 async function handler(req, res) {
   try {

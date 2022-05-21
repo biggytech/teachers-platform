@@ -2,7 +2,7 @@ import schema from "@db/plans/plansSchema";
 import { checkAuthentication } from "@services/api";
 import programsService from "@db/programs/programsService";
 import checkRoleAuthentication from "../checkRoleAuthentication";
-import { ROLES } from "@types/user";
+import { ROLES } from "@projectTypes/user";
 
 const getAddPlanProps = ({ req, res, studentId, user }) => {
   const { rows: programs } = await programsService.getAllBy(

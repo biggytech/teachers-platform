@@ -1,3 +1,6 @@
+import { Id } from "@projectTypes/database";
+import { SequelizeReturning } from "./types";
+
 export interface Teacher {
   id: number;
   username: string;
@@ -31,7 +34,12 @@ export interface Program {
 }
 
 export interface ProgramWithTeacher extends Program {
-  teacher: Teacher;
+  teacher: SequelizeReturning<Teacher>
+}
+
+export interface ProgramWithTeacherAndPoints extends Program {
+  teacher: SequelizeReturning<Teacher>
+  points: SequelizeReturning<Point>[]
 }
 
 export interface Plan {
@@ -44,6 +52,10 @@ export interface Plan {
 export interface PlanWithStudentAndProgram extends Plan {
   student: Student;
   program: Program;
+}
+
+export interface PlanWithProgramAndTeacher extends Plan {
+  program: SequelizeReturning<ProgramWithTeacherAndPoints>;
 }
 
 export interface Material {

@@ -1,7 +1,7 @@
 import { createQueryPage } from "@components/pages";
 import getAnswersProps from "@services/pages/answers/getAnswersProps";
 import handleRedirectError from "@services/pages/handleRedirectError";
-import { ROLES } from "@types/user";
+import { ROLES } from "@projectTypes/user";
 
 const { runGetServerSideProps, QueryPage } = createQueryPage({
   title: "Ответы на вопросы тестов",

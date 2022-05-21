@@ -1,7 +1,7 @@
 import { Authenticator } from "@services/Authenticator";
 import studentsService from "@db/students/studentsService";
 import bcrypt from "bcryptjs";
-import { ROLES } from '@types/user';
+import { ROLES } from '@projectTypes/user';
 
 async function handler(req, res) {
   try {

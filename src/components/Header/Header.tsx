@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ROLES } from '@types/user';
+import { ROLES } from '@projectTypes/user';
 
 interface HeaderProps {
   role: ROLES

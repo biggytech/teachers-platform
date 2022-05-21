@@ -3,7 +3,7 @@ import RedirectError from "@lib/RedirectError";
 import { checkRoleAuthentication } from "@services/pages";
 import handleRedirectError from "@services/pages/handleRedirectError";
 import { getSingleTeacherProps } from "@services/pages/teachers";
-import { ROLES, User } from "@types/user";
+import { ROLES, User } from "@projectTypes/user";
 
 interface SingleTeacherProps {
   user: User

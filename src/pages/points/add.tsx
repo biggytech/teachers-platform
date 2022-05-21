@@ -1,7 +1,7 @@
 import { getAddPointProps } from "@services/pages/points";
 
 import { createEditPage } from "@components/pages";
-import { ROLES } from "@types/user";
+import { ROLES } from "@projectTypes/user";
 import handleRedirectError from "@services/pages/handleRedirectError";
 
 const { runGetServerSideProps, EditPage } = createEditPage({
@@ -16,7 +16,7 @@ const getServerSideProps = async (data) => {
     const props = await runGetServerSideProps(data);
     return {
       props: {
-        ...props,
+        user: props.user,
         ...(await getAddPointProps({
           ...props,
           programId: +props.query.program_id || null,

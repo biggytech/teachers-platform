@@ -2,7 +2,7 @@ import Head from "next/head";
 
 import { Form, Header } from "@components";
 import { checkRoleAuthentication } from "@services/pages";
-import { ROLES, User } from "@types/user";
+import { ROLES, User } from "@projectTypes/user";
 import RedirectError from "@lib/RedirectError";
 
 type EditPageCreatorProps = {

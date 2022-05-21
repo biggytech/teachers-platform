@@ -1,7 +1,7 @@
 import { createEditPage } from "@components/pages";
 import { getAddAnswersProps } from "@services/pages/answers/getAddAnswersProps";
 import handleRedirectError from "@services/pages/handleRedirectError";
-import { ROLES } from "@types/user";
+import { ROLES } from "@projectTypes/user";
 
 const { runGetServerSideProps, EditPage } = createEditPage({
   title: "Ответы на вопросы тестов",

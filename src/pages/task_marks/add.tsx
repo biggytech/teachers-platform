@@ -1,7 +1,7 @@
 import { createEditPage } from "@components/pages";
 import handleRedirectError from "@services/pages/handleRedirectError";
 import { getAddTaskMarkProps } from "@services/pages/task_marks/getAddTaskMarkProps";
-import { ROLES } from "@types/user";
+import { ROLES } from "@projectTypes/user";
 
 const { runGetServerSideProps, EditPage } = createEditPage({
   title: "Оценки по практическим заданиям",

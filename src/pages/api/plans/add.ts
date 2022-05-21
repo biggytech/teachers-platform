@@ -1,6 +1,6 @@
 import plansService from "@db/plans/plansService";
 import { checkRoleAuthentication } from "@services/pages";
-import { ROLES } from "@types/user";
+import { ROLES } from "@projectTypes/user";
 
 interface PlanBody {
   start_date: Date;

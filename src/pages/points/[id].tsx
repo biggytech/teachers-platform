@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import RemoveIcon from "@mui/icons-material/Remove";
 
 import { createSinglePage } from "@components/pages";
-import { ROLES } from "@types/user";
+import { ROLES } from "@projectTypes/user";
 import handleRedirectError from "@services/pages/handleRedirectError";
 
 const { runGetServerSideProps, SinglePage } = createSinglePage({
@@ -30,7 +30,7 @@ const getServerSideProps = async (data) => {
     const props = await runGetServerSideProps(data);
     return {
       props: {
-        ...props,
+        user: props.user,
         ...(await getSinglePointProps({
           ...props,
           id: +data.params.id,
