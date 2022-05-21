@@ -1,9 +1,11 @@
 import { Button, Header, LinkButton } from "@components";
 import { getSinglePlanProps } from "@services/pages/plans/getSinglePlanProps";
-import { checkAuthentication } from "@services/pages";
+import { checkRoleAuthentication } from "@services/pages";
 import { FieldsProfile } from "@components";
 import { useCallback } from "react";
-import { User } from "@types/user";
+import { ROLES, User } from "@types/user";
+import RedirectError from "@lib/RedirectError";
+import handleRedirectError from "@services/pages/handleRedirectError";
 
 declare var open: (url: string, target: string) => { focus: () => void };
 
@@ -41,9 +43,14 @@ const SinglePlan: React.FC<SinglePlanProps> = ({ data, id, mapData, user }) => {
 };
 
 const getServerSideProps = async ({ params, req }) => {
-  return await checkAuthentication({
+  return await checkRoleAuthentication({
+    role: ROLES.TEACHER,
     req,
-    cb: (user) => {
+    cb: (redirect, user) => {
+      if (redirect) {
+        return handleRedirectError(new RedirectError(`Redirection to ${redirect}`, redirect));
+      }
+
       return {
         props: {
           ...getSinglePlanProps({ id: +params.id }),

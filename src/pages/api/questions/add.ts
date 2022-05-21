@@ -1,13 +1,17 @@
 import questionsService from "@db/questions/questionsService";
-import { cookSimpleBodyData } from "@services/pages";
-import { checkAuthentication } from "@services/api";
+import { checkRoleAuthentication, cookSimpleBodyData } from "@services/pages";
+import { ROLES } from "@types/user";
 
 async function handler(req, res) {
   try {
-    return await checkAuthentication({
+    return await checkRoleAuthentication({
+      role: ROLES.TEACHER,
       req,
       res,
-      cb: async (user) => {
+      cb: async (redirect, user) => {
+        if (redirect) {
+          return res.redirect(redirect);
+        }
         const { id } = await questionsService.add(req.body);
         res.redirect(`/questions/${id}`);
       },

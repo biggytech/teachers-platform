@@ -1,12 +1,17 @@
 import testsService from "@db/tests/testsService";
-import { checkAuthentication } from "@services/api";
+import { checkRoleAuthentication } from "@services/pages";
+import { ROLES } from "@types/user";
 
 async function handler(req, res) {
   try {
-    return await checkAuthentication({
+    return await checkRoleAuthentication({
+      role: ROLES.TEACHER,
       req,
       res,
-      cb: async (user) => {
+      cb: async (redirect, user) => {
+        if (redirect) {
+          return res.redirect(redirect);
+        }
         const { id } = await testsService.add(
           {
             title: req.body.title,

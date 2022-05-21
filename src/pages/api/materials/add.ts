@@ -1,12 +1,18 @@
 import materialsService from "@db/materials/materialsService";
-import { checkAuthentication } from "@services/api";
+import { checkRoleAuthentication } from "@services/pages";
+import { ROLES } from "@types/user";
 
 async function handler(req, res) {
   try {
-    return await checkAuthentication({
+    return await checkRoleAuthentication({
+      role: ROLES.TEACHER,
       req,
       res,
-      cb: async (user) => {
+      cb: async (redirect, user) => {
+        if (redirect) {
+          return res.redirect(redirect);
+        }
+        
         await materialsService.add(req.body);
         res.redirect(`/materials?program_id=${req.body.program_id}`);
       },

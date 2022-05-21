@@ -1,8 +1,11 @@
+import { Id } from '@types/database'
+
 export enum ROLES {
   TEACHER = 'TEACHER',
   STUDENT = 'STUDENT'
 }
 
 export interface User {
-  role: ROLES
+  id: Id;
+  role: ROLES;
 }

@@ -1,12 +1,17 @@
 import taskMarksService from "@db/task_marks/taskMarksService";
-import { checkAuthentication } from "@services/api";
+import { checkRoleAuthentication } from "@services/pages";
+import { ROLES } from "@types/user";
 
 async function handler(req, res) {
   try {
-    return await checkAuthentication({
+    return await checkRoleAuthentication({
+      role: ROLES.TEACHER,
       req,
       res,
-      cb: async (user) => {
+      cb: async (redirect, user) => {
+        if (redirect) {
+          return res.redirect(redirect);
+        }
         const { point_id, ...task } = req.body;
         await taskMarksService.add(task);
         res.redirect(`/points/by_plans/${point_id}?plan_id=${task.plan_id}`);

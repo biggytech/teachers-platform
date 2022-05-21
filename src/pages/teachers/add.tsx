@@ -2,8 +2,10 @@ import Head from "next/head";
 
 import { Form, Header } from "@components";
 import { getAddTeacherProps } from "@services/pages/teachers";
-import { checkAuthentication } from "@services/pages";
-import { User } from "@types/user";
+import { checkRoleAuthentication } from "@services/pages";
+import { ROLES, User } from "@types/user";
+import RedirectError from "@lib/RedirectError";
+import handleRedirectError from "@services/pages/handleRedirectError";
 
 interface AddTeacherProps {
   user: User
@@ -27,9 +29,14 @@ const AddTeacher: React.FC<AddTeacherProps> = ({ columns, user }) => {
 };
 
 const getServerSideProps = async ({ req }) => {
-  return await checkAuthentication({
+  return await checkRoleAuthentication({
+    role: ROLES.TEACHER,
     req,
-    cb: (user) => {
+    cb: (redirect, user) => {
+      if (redirect) {
+        return handleRedirectError(new RedirectError(`Redirection to ${redirect}`, redirect));
+      }
+
       return {
         props: {
           ...getAddTeacherProps(),

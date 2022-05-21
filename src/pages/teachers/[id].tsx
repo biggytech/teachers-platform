@@ -1,7 +1,9 @@
 import { UserProfile, Header } from "@components";
-import { checkAuthentication } from "@services/pages";
+import RedirectError from "@lib/RedirectError";
+import { checkRoleAuthentication } from "@services/pages";
+import handleRedirectError from "@services/pages/handleRedirectError";
 import { getSingleTeacherProps } from "@services/pages/teachers";
-import { User } from "@types/user";
+import { ROLES, User } from "@types/user";
 
 interface SingleTeacherProps {
   user: User
@@ -20,9 +22,14 @@ const SingleTeacher: React.FC<SingleTeacherProps> = ({ data, mapData, user }) =>
 };
 
 const getServerSideProps = async ({ params, req }) => {
-  return await checkAuthentication({
+  return await checkRoleAuthentication({
+    role: ROLES.TEACHER,
     req,
-    cb: (user) => {
+    cb: (redirect, user) => {
+      if (redirect) {
+        return handleRedirectError(new RedirectError(`Redirection to ${redirect}`, redirect));
+      }
+
       return {
         props: {
           ...getSingleTeacherProps({ id: +params.id }),

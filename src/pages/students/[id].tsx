@@ -1,9 +1,11 @@
 import { UserProfile, Header, LinkButton } from "@components";
 import { getSingleStudentProps } from "@services/pages/students";
-import { checkAuthentication } from "@services/pages";
+import { checkRoleAuthentication } from "@services/pages";
 import Button from "@mui/material/Button";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { User } from "@types/user";
+import { ROLES, User } from "@types/user";
+import RedirectError from "@lib/RedirectError";
+import handleRedirectError from "@services/pages/handleRedirectError";
 
 interface SingleStudentProps {
   user: User
@@ -54,9 +56,13 @@ const SingleStudent: React.FC<SingleStudentProps> = ({ data, id, mapData, user }
 };
 
 const getServerSideProps = async ({ params, req }) => {
-  return await checkAuthentication({
+  return await checkRoleAuthentication({
+    role: ROLES.TEACHER,
     req,
-    cb: (user) => {
+    cb: (redirect, user) => {
+      if (redirect) {
+        return handleRedirectError(new RedirectError(`Redirection to ${redirect}`, redirect));
+      }
       return {
         props: {
           ...getSingleStudentProps({ id: +params.id }),

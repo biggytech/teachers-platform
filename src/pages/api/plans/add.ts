@@ -1,5 +1,6 @@
 import plansService from "@db/plans/plansService";
-import { checkAuthentication } from "@services/api";
+import { checkRoleAuthentication } from "@services/pages";
+import { ROLES } from "@types/user";
 
 interface PlanBody {
   start_date: Date;
@@ -9,10 +10,15 @@ interface PlanBody {
 
 async function handler(req, res) {
   try {
-    return await checkAuthentication({
+    return await checkRoleAuthentication({
+      role: ROLES.TEACHER,
       req,
       res,
-      cb: async (user) => {
+      cb: async (redirect, user) => {
+        if (redirect) {
+          return res.redirect(redirect);
+        }
+        
         const plan: PlanBody = req.body;
         const { id } = await plansService.add(plan);
 

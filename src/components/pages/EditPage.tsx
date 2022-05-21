@@ -1,14 +1,16 @@
 import Head from "next/head";
 
 import { Form, Header } from "@components";
-import { checkAuthentication } from "@services/pages";
-import { User } from "@types/user";
+import { checkRoleAuthentication } from "@services/pages";
+import { ROLES, User } from "@types/user";
+import RedirectError from "@lib/RedirectError";
 
 type EditPageCreatorProps = {
   title: string;
   name: string;
   action: string;
   encType?: string;
+  accessRole: ROLES
 };
 
 interface EditPageProps extends EditPageCreatorProps {
@@ -26,10 +28,8 @@ const EditPage = (props: EditPageProps) => {
     isEdit = false,
     id,
     data,
-    user
+    user,
   } = props;
-
-  console.log("COLUMNS:", columns);
 
   return (
     <>
@@ -50,16 +50,18 @@ const EditPage = (props: EditPageProps) => {
   );
 };
 
-export const createEditPage = (props: EditPageCreatorProps) => {
+export const createEditPage = ({ accessRole, ...props }: EditPageCreatorProps) => {
   return {
     runGetServerSideProps: ({ query, req, res }) => {
-      return new Promise(async (resolve) => {
-        // console.log("QUERY:", query);
-        await checkAuthentication({
+      return new Promise(async (resolve, reject) => {
+        await checkRoleAuthentication({
+          role: accessRole,
           req,
-          cb: (user) => {
-            console.log("TEST!!!");
-            console.log(query);
+          cb: (redirect, user) => {
+            if (redirect) {
+              return reject(new RedirectError(`Redirection to ${redirect}`, redirect));
+            }
+
             resolve({
               query,
               req,

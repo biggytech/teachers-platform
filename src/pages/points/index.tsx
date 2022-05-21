@@ -1,26 +1,34 @@
 import { getPointsProps } from "@services/pages/points";
 
 import { createQueryPage } from "@components/pages";
+import { ROLES } from "@types/user";
+import handleRedirectError from "@services/pages/handleRedirectError";
 
 const { runGetServerSideProps, QueryPage } = createQueryPage({
   title: "Пункты учебной программы",
   addLink: (contextId) => `/points/add?program_id=${contextId}`,
   isUsePagination: false,
   pathName: "/points",
+  accessRole: ROLES.TEACHER
 });
 
 const getServerSideProps = async (data) => {
-  const props = await runGetServerSideProps(data);
-  return {
-    props: {
-      ...props,
-      ...(await getPointsProps({
+  try {
+    const props = await runGetServerSideProps(data);
+    return {
+      props: {
         ...props,
-        program_id: props.query.program_id || null,
-      })),
-      contextId: props.query.program_id || null,
-    },
-  };
+        ...(await getPointsProps({
+          ...props,
+          program_id: props.query.program_id || null,
+        })),
+        contextId: props.query.program_id || null,
+      },
+    };
+  } catch (error) {
+    return handleRedirectError(error)
+  }
+
 };
 
 export { getServerSideProps };

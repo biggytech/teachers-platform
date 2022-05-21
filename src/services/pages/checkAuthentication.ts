@@ -1,9 +1,10 @@
+import { User } from "@types/user";
 import { Authenticator } from "../Authenticator";
 
-const checkAuthentication = async ({ req, cb }) => {
+const checkAuthentication = async ({ req, cb }: { cb: (user: User) => void}) => {
   const user = await Authenticator.userFromRequest(req);
   if (!user) {
-    // TODO: delete browser cookies
+    // TODO: delete browser cookiess
     return {
       redirect: {
         destination: "/",

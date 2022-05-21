@@ -1,5 +1,6 @@
-import { checkAuthentication } from "@services/api";
 import pointsService from "@db/points/pointsService";
+import { checkRoleAuthentication } from "@services/pages";
+import { ROLES } from "@types/user";
 
 interface PointBody {
   title: string;
@@ -10,10 +11,15 @@ interface PointBody {
 
 async function handler(req, res) {
   try {
-    return await checkAuthentication({
+    return await checkRoleAuthentication({
+      role: ROLES.TEACHER,
       req,
       res,
-      cb: async (user) => {
+      cb: async (redirect, user) => {
+        if (redirect) {
+          return res.redirect(redirect);
+        }
+        
         const point: PointBody = req.body;
 
         const { id } = await pointsService.add(point);

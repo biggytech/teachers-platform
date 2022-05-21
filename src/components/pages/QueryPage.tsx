@@ -1,9 +1,10 @@
 import Head from "next/head";
 import { Table, Header } from "@components";
-import { checkAuthentication } from "@services/pages";
+import { checkRoleAuthentication } from "@services/pages";
 
 import { LinkButton } from "@components";
-import { User } from "@types/user";
+import { ROLES, User } from "@types/user";
+import RedirectError from "@lib/RedirectError";
 
 type QueryPageCreatorProps = {
   title: string;
@@ -13,11 +14,12 @@ type QueryPageCreatorProps = {
   contextId?: string | Array<string> | null;
   queryParams: any;
   onClick?: Function;
+  accessRole: ROLES;
 };
 
 interface QueryPageProps extends QueryPageCreatorProps {
   data: any;
-  user: User
+  user: User;
 }
 
 const QueryPage = (props: QueryPageProps) => {
@@ -30,7 +32,8 @@ const QueryPage = (props: QueryPageProps) => {
     contextId = null,
     queryParams,
     onClick,
-    user
+    user,
+
   } = props;
 
   return (
@@ -65,13 +68,19 @@ const QueryPage = (props: QueryPageProps) => {
   );
 };
 
-export const createQueryPage = (props: QueryPageCreatorProps) => {
+export const createQueryPage = ({ accessRole,
+  ...props }: QueryPageCreatorProps) => {
   return {
     runGetServerSideProps: ({ query, req }) => {
-      return new Promise(async (resolve) => {
-        await checkAuthentication({
+      return new Promise(async (resolve, reject) => {
+        await checkRoleAuthentication({
+          role: accessRole,
           req,
-          cb: (user) => {
+          cb: (redirect, user) => {
+            if (redirect) {
+              return reject(new RedirectError(`Redirection to ${redirect}`, redirect));
+            }
+
             resolve({
               page: +query.page || 1,
               limit: +query.limit || 20,

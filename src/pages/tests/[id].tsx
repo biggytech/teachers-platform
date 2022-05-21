@@ -1,8 +1,10 @@
 import { Header, FieldsProfile, LinkButton } from "@components";
 import { getSingleTestProps } from "@services/pages/tests";
-import { checkAuthentication } from "@services/pages";
+import { checkRoleAuthentication } from "@services/pages";
 import Head from "next/head";
-import { User } from "@types/user";
+import { ROLES, User } from "@types/user";
+import RedirectError from "@lib/RedirectError";
+import handleRedirectError from "@services/pages/handleRedirectError";
 
 interface SingleTestProps {
   user: User
@@ -31,9 +33,14 @@ const SingleTest: React.FC<SingleTestProps> = ({ data, id, mapData, user }) => {
 };
 
 const getServerSideProps = async ({ params, req }) => {
-  return await checkAuthentication({
+  return await checkRoleAuthentication({
+    role: ROLES.TEACHER,
     req,
-    cb: (user) => {
+    cb: (redirect, user) => {
+      if (redirect) {
+        return handleRedirectError(new RedirectError(`Redirection to ${redirect}`, redirect));
+      }
+
       return {
         props: {
           ...getSingleTestProps({ id: +params.id }),

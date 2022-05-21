@@ -1,16 +1,18 @@
 import { Header, FieldsProfile, LinkButton } from "@components";
 import { getSingleProgramProps } from "@services/pages/programs";
-import { checkAuthentication } from "@services/pages";
+import { checkRoleAuthentication } from "@services/pages";
 import Button from "@mui/material/Button";
 import RemoveIcon from "@mui/icons-material/Remove";
 import Head from "next/head";
-import { User } from "@types/user";
+import { ROLES, User } from "@types/user";
+import RedirectError from "@lib/RedirectError";
+import handleRedirectError from "@services/pages/handleRedirectError";
 
 interface SingleProgramProps {
   user: User
 }
 
-const SingleProgram: React.FC<SingleProgramProps> = ({ data, id, mapData, user}) => {
+const SingleProgram: React.FC<SingleProgramProps> = ({ data, id, mapData, user }) => {
   if (!data) {
     return <div>not found</div>;
   }
@@ -66,9 +68,14 @@ const SingleProgram: React.FC<SingleProgramProps> = ({ data, id, mapData, user})
 };
 
 const getServerSideProps = async ({ params, req }) => {
-  return await checkAuthentication({
+  return await checkRoleAuthentication({
+    role: ROLES.TEACHER,
     req,
-    cb: (user) => {
+    cb: (redirect, user) => {
+      if (redirect) {
+        return handleRedirectError(new RedirectError(`Redirection to ${redirect}`, redirect));
+      }
+
       return {
         props: {
           ...getSingleProgramProps({ id: +params.id }),

@@ -1,7 +1,9 @@
-import { checkAuthentication } from "@services/api";
+
 import teachersService from "@db/teachers/teachersService";
 import getFormData from "@services/getFormData";
 import fs from "fs";
+import { checkRoleAuthentication } from "@services/pages";
+import { ROLES } from "@types/user";
 
 interface TeacherFields {
   username: string;
@@ -16,10 +18,14 @@ interface TeacherFiles {
 
 async function handler(req, res) {
   try {
-    return await checkAuthentication({
+    return await checkRoleAuthentication({
+      role: ROLES.TEACHER,
       req,
       res,
-      cb: async (user) => {
+      cb: async (redirect, user) => {
+        if (redirect) {
+          return res.redirect(redirect);
+        }
         const { fields, files } = await getFormData<
           TeacherFields,
           TeacherFiles

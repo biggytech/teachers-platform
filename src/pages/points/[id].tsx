@@ -3,6 +3,8 @@ import Button from "@mui/material/Button";
 import RemoveIcon from "@mui/icons-material/Remove";
 
 import { createSinglePage } from "@components/pages";
+import { ROLES } from "@types/user";
+import handleRedirectError from "@services/pages/handleRedirectError";
 
 const { runGetServerSideProps, SinglePage } = createSinglePage({
   links: [
@@ -19,20 +21,25 @@ const { runGetServerSideProps, SinglePage } = createSinglePage({
   isDeletable: true,
   deleteLink: "/api/points/delete",
   editLink: (id) => `/points/edit/${id}`,
-  backLink: (contextId) => `/programs`, // TODO: back to program
+  backLink: (contextId) => `/programs`, // TODO: back to program,
+  accessRole: ROLES.TEACHER
 });
 
 const getServerSideProps = async (data) => {
-  const props = await runGetServerSideProps(data);
-  return {
-    props: {
-      ...props,
-      ...(await getSinglePointProps({
+  try {
+    const props = await runGetServerSideProps(data);
+    return {
+      props: {
         ...props,
-        id: +data.params.id,
-      }))
-    },
-  };
+        ...(await getSinglePointProps({
+          ...props,
+          id: +data.params.id,
+        }))
+      },
+    };
+  } catch (error) {
+    return handleRedirectError(error)
+  }
 };
 
 export { getServerSideProps };

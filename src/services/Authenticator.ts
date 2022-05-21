@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { serialize } from "cookie";
 import logger from '@logger'
+import { User } from "@types/user";
 
 namespace Utils {
   export class CookieService {
@@ -53,7 +54,7 @@ export class Authenticator extends Utils.CookieService {
 
   // This gives back the user behind a given request
   // either on API routes or getServerSideProps
-  public static async userFromRequest(req): Promise<any> {
+  public static async userFromRequest(req): Promise<User | null> {
     const { auth: token } = req.cookies;
 
     if (!token) return null;

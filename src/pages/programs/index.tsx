@@ -1,24 +1,32 @@
 import { getProgramsProps } from "@services/pages/programs";
 
 import { createQueryPage } from "@components/pages";
+import { ROLES } from "@types/user";
+import handleRedirectError from "@services/pages/handleRedirectError";
 
 const { runGetServerSideProps, QueryPage } = createQueryPage({
   title: "Учебные программы",
   addLink: "/programs/add",
   pathName: "/programs",
+  accessRole: ROLES.TEACHER
 });
 
 const getServerSideProps = async (data) => {
-  const props = await runGetServerSideProps(data);
-  return {
-    props: {
-      ...props,
-      ...(await getProgramsProps({
+  try {
+    const props = await runGetServerSideProps(data);
+    return {
+      props: {
         ...props,
-        ownerId: props.userId,
-      }))
-    },
-  };
+        ...(await getProgramsProps({
+          ...props,
+          ownerId: props.userId,
+        }))
+      },
+    };
+  } catch (error) {
+    return handleRedirectError(error)
+  }
+
 };
 
 export { getServerSideProps };

@@ -18,7 +18,7 @@ async function handler(req, res) {
     if (val) {
       await Authenticator.authenticateUser(res, { username, id: user.id, role: ROLES.STUDENT });
 
-      res.redirect("/students");
+      res.redirect("/students/courses");
     } else {
       res.redirect("/login/student?invalid=true");
     }

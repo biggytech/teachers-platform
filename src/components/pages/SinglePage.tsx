@@ -1,12 +1,13 @@
 import { Header, LinkButton } from "@components";
 import { FieldsProfile } from "@components";
-import { checkAuthentication } from "@services/pages";
+import { checkRoleAuthentication } from "@services/pages";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import RemoveIcon from "@mui/icons-material/Remove";
 import Head from "next/head";
-import { User } from "@types/user";
+import { ROLES, User } from "@types/user";
+import RedirectError from "@lib/RedirectError";
 
 type SinglePageCreatorProps = {
   links: Array<{
@@ -15,6 +16,7 @@ type SinglePageCreatorProps = {
   }> | null;
   buttons?: null;
   isEditable?: boolean;
+  accessRole: ROLES
 };
 
 interface SinglePageProps extends SinglePageCreatorProps {
@@ -97,13 +99,18 @@ const SinglePage = (props: SinglePageProps) => {
   );
 };
 
-export const createSinglePage = (props: SinglePageCreatorProps) => {
+export const createSinglePage = ({ accessRole, ...props }: SinglePageCreatorProps) => {
   return {
     runGetServerSideProps: ({ query, req, res }): Promise<object> => {
-      return new Promise(async (resolve) => {
-        await checkAuthentication({
+      return new Promise(async (resolve, reject) => {
+        await checkRoleAuthentication({
+          role: accessRole,
           req,
-          cb: (user) => {
+          cb: (redirect, user) => {
+            if (redirect) {
+              return reject(new RedirectError(`Redirection to ${redirect}`, redirect));
+            }
+
             resolve({
               query,
               req,

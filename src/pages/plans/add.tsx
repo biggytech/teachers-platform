@@ -1,24 +1,33 @@
 import { getAddPlanProps } from "@services/pages/plans";
 
 import { createEditPage } from "@components/pages";
+import { ROLES } from "@types/user";
+import handleRedirectError from "@services/pages/handleRedirectError";
 
 const { runGetServerSideProps, EditPage } = createEditPage({
   title: "Учебные планы",
   name: "учебный план",
   action: "/api/plans/add",
+  accessRole: ROLES.TEACHER
 });
 
 const getServerSideProps = async (data) => {
-  const props = await runGetServerSideProps(data);
-  return {
-    props: {
-      ...props,
-      ...(await getAddPlanProps({
+  try {
+    const props = await runGetServerSideProps(data);
+    return {
+      props: {
         ...props,
-        studentId: +props.query.student_id || null,
-      }))
-    },
-  };
+        ...(await getAddPlanProps({
+          ...props,
+          studentId: +props.query.student_id || null,
+          user: props.user
+        }))
+      },
+    };
+  } catch (err) {
+    return handleRedirectError(err);
+  }
+
 };
 
 export { getServerSideProps };

@@ -1,29 +1,35 @@
 import { getAddProgramProps } from "@services/pages/programs";
 
 import { createEditPage } from "@components/pages";
+import { ROLES } from "@types/user";
+import handleRedirectError from "@services/pages/handleRedirectError";
 
 const { runGetServerSideProps, EditPage } = createEditPage({
   title: "Учебные программы",
   name: "учебную программу",
   action: (id) => `/api/programs/edit/${id}`,
   isEdit: true,
+  accessRole: ROLES.TEACHER
 });
 
 const getServerSideProps = async (data) => {
-  const props = await runGetServerSideProps(data);
+  try {
+    const props = await runGetServerSideProps(data);
 
-  // console.log("PROPS:", props);
-
-  return {
-    props: {
-      ...props,
-      ...(await getAddProgramProps({
+    return {
+      props: {
         ...props,
-        ownerId: props.userId,
-        isEdit: true,
-      }))
-    },
-  };
+        ...(await getAddProgramProps({
+          ...props,
+          ownerId: props.userId,
+          isEdit: true,
+        }))
+      },
+    };
+  } catch (err) {
+    return handleRedirectError(err);
+  }
+
 };
 
 export { getServerSideProps };

@@ -1,5 +1,6 @@
-import { checkAuthentication } from "@services/api";
 import pointsService from "@db/points/pointsService";
+import { checkRoleAuthentication } from "@services/pages";
+import { ROLES } from "@types/user";
 
 interface ProgramBody {
   title: string;
@@ -8,10 +9,15 @@ interface ProgramBody {
 
 async function handler(req, res) {
   try {
-    return await checkAuthentication({
+    return await checkRoleAuthentication({
+      role: ROLES.TEACHER,
       req,
       res,
-      cb: async (user) => {
+      cb: async (redirect, user) => {
+        if (redirect) {
+          return res.redirect(redirect);
+        }
+
         let point = req.body;
         point = Object.keys(point).reduce((o, key) => {
           if (point[key]) {
