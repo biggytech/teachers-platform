@@ -1,10 +1,19 @@
-import { Tasks, TasksPoints, Points, TaskMarks } from "@db/models";
+import { Tasks, TasksPoints, Points, TaskMarks, Programs, Plans } from "@db/models";
 import {
   PaginatedResult,
   SequelizeReturning,
   SequelizeRowsAndCount,
 } from "@db/types";
-import { Task, TaskWithPoint, TaskPoint, Point } from "@db/interfaces";
+import { Task, TaskWithPoints, TaskPoint, Point, Plan } from "@db/interfaces";
+import { Id } from "@projectTypes/database";
+
+interface CourseTask {
+  id: Id;
+  title: string;
+  description?: string;
+  course: string;
+  point: string;
+}
 
 const tasksService = {
   add: async (task: Omit<Task, "id">, pointId: number): Promise<Task> => {
@@ -31,7 +40,7 @@ const tasksService = {
 
     return createdTask;
   },
-  getAllByPointId: async (pointId: number): Promise<TaskWithPoint[]> => {
+  getAllByPointId: async (pointId: number): Promise<TaskWithPoints[]> => {
     const tasksPoints = await TasksPoints.findAll({
       where: {
         'point_id': pointId
@@ -104,6 +113,104 @@ const tasksService = {
     >[];
 
     return data.filter(({ taskMarks }) => taskMarks.length === 0).map(({ dataValues }) => dataValues);
+  },
+  getCourseTasks: async (planId: Id, page: number, limit: number): Promise<PaginatedResult<CourseTask>> => {
+    const attributes: Array<keyof Task> = ['id', 'title', 'description'];
+
+    const data: SequelizeRowsAndCount<TaskWithPoints> = await Tasks.findAndCountAll({
+      attributes,
+      offset: (page - 1) * limit,
+        limit,
+        subQuery: false, // DEVNOTE: to fix this issue: https://github.com/sequelize/sequelize/issues/11617
+        include: [
+            {
+              model: Points,
+              as: 'points',
+              required: true,
+              include: [
+                {
+                  model: Programs,
+                  as: 'program',
+                  required: true,
+                  include: [
+                    {
+                      model: Plans,
+                      as: 'plans',
+                      required: true,
+                      where: {
+                        id: planId
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+        ]
+    }) as unknown as SequelizeRowsAndCount<TaskWithPoints>;
+
+    const tasks: CourseTask[] = data.rows.map(task => {
+      return {
+        id: task.dataValues.id,
+        title: task.dataValues.title,
+        description: task.dataValues.description,
+        course: task.dataValues.points[0].dataValues.program.dataValues.title,
+        point: task.dataValues.points[0].dataValues.title,
+      }
+    });
+
+    return {
+      rows: tasks,
+      totalRecords: data.count
+    }
+  },
+  getStudentTasks: async (studentId: Id, page: number, limit: number): Promise<PaginatedResult<CourseTask>> => {
+    const attributes: Array<keyof Task> = ['id', 'title', 'description'];
+
+    const data: SequelizeRowsAndCount<TaskWithPoints> = await Tasks.findAndCountAll({
+      attributes,
+      offset: (page - 1) * limit,
+        limit,
+        subQuery: false, // DEVNOTE: to fix this issue: https://github.com/sequelize/sequelize/issues/11617
+        include: [
+            {
+              model: Points,
+              as: 'points',
+              required: true,
+              include: [
+                {
+                  model: Programs,
+                  as: 'program',
+                  required: true,
+                  include: [
+                    {
+                      model: Plans,
+                      as: 'plans',
+                      required: true,
+                      where: {
+                        'student_id': studentId
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+        ]
+    }) as unknown as SequelizeRowsAndCount<TaskWithPoints>;
+
+    const tasks: CourseTask[] = data.rows.map(task => {
+      return {
+        id: task.dataValues.id,
+        title: task.dataValues.title,
+        description: task.dataValues.description,
+        course: task.dataValues.points[0].dataValues.program.dataValues.title,
+        point: task.dataValues.points[0].dataValues.title,
+      }
+    });
+
+    return {
+      rows: tasks,
+      totalRecords: data.count
+    }
   },
 };
 

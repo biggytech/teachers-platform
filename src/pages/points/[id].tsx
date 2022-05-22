@@ -5,16 +5,20 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { createSinglePage } from "@components/pages";
 import { ROLES } from "@projectTypes/user";
 import handleRedirectError from "@services/pages/handleRedirectError";
+import BallotIcon from '@mui/icons-material/Ballot';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 
 const { runGetServerSideProps, SinglePage } = createSinglePage({
   links: [
     {
       link: (contextId) => `/tasks?point_id=${contextId}`,
-      text: "Практические задания пункта программы",
+      text: "Задания",
+      icon: <BorderColorIcon />
     },
     {
       link: (contextId) => `/tests?point_id=${contextId}`,
-      text: "Тесты пункта программы",
+      text: "Тесты",
+      icon: <BallotIcon />
     },
   ],
   isEditable: true,
@@ -28,13 +32,35 @@ const { runGetServerSideProps, SinglePage } = createSinglePage({
 const getServerSideProps = async (data) => {
   try {
     const props = await runGetServerSideProps(data);
+    const addProps = (await getSinglePointProps({
+      ...props,
+      id: +data.params.id,
+    }));
+
+    const items = [
+      {
+        id: 'title',
+        label: 'Название',
+        value: addProps.data.title,
+      },
+      {
+        id: 'description',
+        label: 'Описание',
+        value: addProps.data.description,
+      },
+      {
+        id: 'duration_days',
+        label: 'Продолжительность (дней)',
+        value: addProps.data.duration_days,
+      },
+    ]
+
+
     return {
       props: {
         user: props.user,
-        ...(await getSinglePointProps({
-          ...props,
-          id: +data.params.id,
-        }))
+        ...addProps,
+        items
       },
     };
   } catch (error) {

@@ -87,7 +87,7 @@ export interface Point {
 }
 
 export interface PointWithProgram extends Point {
-  program: Program;
+  program: SequelizeReturning<Program>;
 }
 
 export interface TaskPoint {
@@ -96,13 +96,13 @@ export interface TaskPoint {
 }
 
 export interface Task {
-  id: number;
+  id: Id;
   title: string;
   description?: string;
 }
 
-export interface TaskWithPoint {
-  point: Point;
+export interface TaskWithPoints extends Task {
+  points: SequelizeReturning<PointWithProgram>[];
 }
 
 export interface TaskMark {

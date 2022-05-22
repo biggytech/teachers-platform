@@ -4,10 +4,16 @@ import { checkRoleAuthentication } from "@services/pages";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
-import RemoveIcon from "@mui/icons-material/Remove";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Head from "next/head";
 import { ROLES, User } from "@projectTypes/user";
 import RedirectError from "@lib/RedirectError";
+import AppLayout from "@components/AppLayout";
+import { useMemo } from "react";
+import InfoList from '@components/InfoList'
+import ButtonsRow from "@components/ButtonsRow";
+import NewButton, { ButtonColors } from "@components/NewButton";
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 
 type SinglePageCreatorProps = {
   links: Array<{
@@ -42,12 +48,9 @@ const SinglePage = (props: SinglePageProps) => {
     deleteLink,
     backLink,
     editLink,
+    items,
     user
   } = props;
-
-  if (!data) {
-    return <div>not found</div>;
-  }
 
   const callDelete = async () => {
     const result = confirm("Вы уверены, что хотите удалить?");
@@ -61,41 +64,28 @@ const SinglePage = (props: SinglePageProps) => {
     }
   };
 
+  console.log(data);
+
   return (
-    <>
-      <Header role={user.role} />
-      <Head>
-        <title>{data.title}</title>
-      </Head>
-      <section style={{ padding: 10 }}>
-        <Typography variant="h2" component="div" gutterBottom>
-          {data.title}
-        </Typography>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          {isEditable && editLink ? (
-            <LinkButton link={editLink(id)} text="Редактировать" />
-          ) : null}
-          {isDeletable && deleteLink && backLink ? (
-            <Button
-              variant="contained"
-              endIcon={<RemoveIcon />}
-              onClick={callDelete}
-            >
-              Удалить
-            </Button>
-          ) : null}
-        </div>
-
-        <FieldsProfile data={data} mapData={mapData} />
-
-        <div style={{ justifySelf: "flex-start", alignItems: "center" }}>
-          {/* {console.log(links)} */}
-          {links.map(({ link, text }) => {
-            return <LinkButton key={text} link={link(id)} text={text} />;
-          })}
-        </div>
-      </section>
-    </>
+    <AppLayout userRole={user.role} title={data.title}>
+      <InfoList items={items} />
+      <ButtonsRow>
+        {links.map(({ link, text, icon }) => {
+          return <NewButton key={text} link={link(id)} text={text} icon={icon} />;
+        })}
+        {isEditable && editLink ? (
+          <NewButton link={editLink(id)} text="Редактировать" color={ButtonColors.warning} icon={<DriveFileRenameOutlineIcon />} />
+        ) : null}
+        {isDeletable && deleteLink && backLink ? (
+          <NewButton
+            color={ButtonColors.error}
+            text="Удалить"
+            icon={<DeleteIcon />}
+            onClick={callDelete}
+          />
+        ) : null}
+      </ButtonsRow>
+    </AppLayout>
   );
 };
 
