@@ -10,15 +10,8 @@ import { ColumnDefinitionWithValue } from "@db/Schema";
 import { HtmlType } from "@db/DataTypes";
 import NewButton, { ButtonColors } from "@components/NewButton";
 import SaveIcon from '@mui/icons-material/Save';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import TextField from '@mui/material/TextField';
 import DateInput from "@components/DateInput";
 
 type FormProps = {

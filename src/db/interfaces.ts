@@ -105,6 +105,10 @@ export interface TaskWithPoints extends Task {
   points: SequelizeReturning<PointWithProgram>[];
 }
 
+export interface TaskWithPointsAndMarks extends TaskWithPoints {
+  taskMarks: SequelizeReturning<TaskMark>[];
+}
+
 export interface TaskMark {
   mark: number;
   task_id: number;
@@ -125,6 +129,14 @@ export interface Test {
 export interface TestWithPoint extends Test {
   point: Point;
 };
+
+export interface TestWithPoints extends Test {
+  points: SequelizeReturning<PointWithProgram>[];
+}
+
+export interface TestWithPointsAndMarks extends TestWithPoints {
+  testMarks: SequelizeReturning<TestMark>[];
+}
 
 export interface TestPoint {
   test_id: number;

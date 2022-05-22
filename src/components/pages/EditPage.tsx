@@ -46,7 +46,7 @@ const EditPage = (props: EditPageProps) => {
 
 export const createEditPage = ({ accessRole, ...props }: EditPageCreatorProps) => {
   return {
-    runGetServerSideProps: ({ query, req, res }) => {
+    runGetServerSideProps: ({ query, req, res }): Promise<{ user: User }> => {
       return new Promise(async (resolve, reject) => {
         await checkRoleAuthentication({
           role: accessRole,

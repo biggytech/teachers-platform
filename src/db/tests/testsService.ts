@@ -1,10 +1,20 @@
-import { Tests, TestsPoints, Points, TaskMarks } from "@db/models";
+import { Tests, TestsPoints, Points, TaskMarks, Programs, Plans, TestMarks } from "@db/models";
 import {
   PaginatedResult,
   SequelizeReturning,
   SequelizeRowsAndCount,
 } from "@db/types";
-import { Test, TestWithPoint, TestPoint, Point } from "@db/interfaces";
+import { Test, TestWithPoint, TestPoint, Point, TestWithPointsAndMarks, Plan } from "@db/interfaces";
+import { Id } from "@projectTypes/database";
+
+interface CourseTestWithMark {
+  id: Id;
+  title: string;
+  description?: string;
+  course: string;
+  point: string;
+  mark: number | string;
+}
 
 const testsService = {
   add: async (test: Omit<Test, "id">, pointId: number): Promise<Test> => {
@@ -81,6 +91,130 @@ const testsService = {
     > | null;
 
     return data?.dataValues ?? null;
+  },
+  getCourseTests: async (planId: Id, page: number, limit: number): Promise<PaginatedResult<CourseTestWithMark>> => {
+    const attributes: Array<keyof Test> = ['id', 'title', 'description'];
+
+    const data: SequelizeRowsAndCount<TestWithPointsAndMarks> = await Tests.findAndCountAll({
+      attributes,
+      offset: (page - 1) * limit,
+        limit,
+        subQuery: false, // DEVNOTE: to fix this issue: https://github.com/sequelize/sequelize/issues/11617
+        include: [
+            {
+              model: Points,
+              as: 'points',
+              required: true,
+              include: [
+                {
+                  model: Programs,
+                  as: 'program',
+                  required: true,
+                  include: [
+                    {
+                      model: Plans,
+                      as: 'plans',
+                      required: true,
+                      where: {
+                        id: planId
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              model: TestMarks,
+              as: 'testMarks',
+              required: false,
+              where: {
+                plan_id: planId
+              }
+            }
+        ]
+    }) as unknown as SequelizeRowsAndCount<TestWithPointsAndMarks>;
+
+    const tests: CourseTestWithMark[] = data.rows.map(test => {
+      return {
+        id: test.dataValues.id,
+        title: test.dataValues.title,
+        description: test.dataValues.description,
+        course: test.dataValues.points[0].dataValues.program.dataValues.title,
+        point: test.dataValues.points[0].dataValues.title,
+        mark: test.dataValues.testMarks[0]?.dataValues.mark ?? '-'
+      }
+    });
+
+    return {
+      rows: tests,
+      totalRecords: data.count
+    }
+  },
+  getStudentTests: async (studentId: Id, page: number, limit: number): Promise<PaginatedResult<CourseTestWithMark>> => {
+    const attributes: Array<keyof Test> = ['id', 'title', 'description'];
+
+    const plans: SequelizeReturning<Plan>[] = await Plans.findAll({
+      attributes: ['id'],
+      where: {
+        'student_id': studentId
+      }
+    }) as unknown as SequelizeReturning<Plan>[];
+    const plansIds = plans.map(plan => plan.dataValues.id);
+
+    const data: SequelizeRowsAndCount<TestWithPointsAndMarks> = await Tests.findAndCountAll({
+      attributes,
+      offset: (page - 1) * limit,
+        limit,
+        subQuery: false, // DEVNOTE: to fix this issue: https://github.com/sequelize/sequelize/issues/11617
+        include: [
+            {
+              model: Points,
+              as: 'points',
+              required: true,
+              include: [
+                {
+                  model: Programs,
+                  as: 'program',
+                  required: true,
+                  include: [
+                    {
+                      model: Plans,
+                      as: 'plans',
+                      required: true,
+                      where: {
+                        id: plansIds
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              model: TestMarks,
+              as: 'testMarks',
+              required: false,
+              where: {
+                plan_id: plansIds
+              }
+            }
+        ]
+    }) as unknown as SequelizeRowsAndCount<TestWithPointsAndMarks>;
+
+    const tests: CourseTestWithMark[] = data.rows.map(test => {
+      return {
+        id: test.dataValues.id,
+        title: test.dataValues.title,
+        description: test.dataValues.description,
+        course: test.dataValues.points[0].dataValues.program.dataValues.title,
+        point: test.dataValues.points[0].dataValues.title,
+        mark: test.dataValues.testMarks[0]?.dataValues.mark ?? '-'
+      }
+    });
+
+    return {
+      rows: tests,
+      totalRecords: data.count
+    }
   },
 };
 

@@ -36,6 +36,10 @@ const getServerSideProps = async (data) => {
       {
         name: 'point',
         displayName: "Пункт программы",
+      },
+      {
+        name: 'mark',
+        displayName: "Оценка",
       }
     ];
 

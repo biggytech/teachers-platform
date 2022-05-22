@@ -2,10 +2,10 @@ import { createQueryPage } from "@components/pages";
 import { ROLES } from "@projectTypes/user";
 import handleRedirectError from "@services/pages/handleRedirectError";
 import logger from "@logger";
-import tasksService from "@db/tasks/tasksService";
+import testsService from "@db/tests/testsService";
 
 const { runGetServerSideProps, QueryPage } = createQueryPage({
-  title: "Задания",
+  title: "Тесты",
   accessRole: ROLES.STUDENT,
 });
 
@@ -13,8 +13,8 @@ const getServerSideProps = async (data) => {
   try {
     const { user, page, limit, ...props } = await runGetServerSideProps(data);
 
-    const courses = await tasksService.getCourseTasks(data.params.id, page, limit);
-    logger.info('Tasks are:', courses);
+    const courses = await testsService.getCourseTests(data.params.id, page, limit);
+    logger.info('Tests are:', courses);
 
     const columns = [
       {

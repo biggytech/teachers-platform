@@ -4,15 +4,16 @@ import {
   SequelizeReturning,
   SequelizeRowsAndCount,
 } from "@db/types";
-import { Task, TaskWithPoints, TaskPoint, Point, Plan } from "@db/interfaces";
+import { Task, TaskWithPoints, TaskPoint, Point, Plan, TaskWithPointsAndMarks } from "@db/interfaces";
 import { Id } from "@projectTypes/database";
 
-interface CourseTask {
+interface CourseTaskWithMark {
   id: Id;
   title: string;
   description?: string;
   course: string;
   point: string;
+  mark: number | string;
 }
 
 const tasksService = {
@@ -114,10 +115,10 @@ const tasksService = {
 
     return data.filter(({ taskMarks }) => taskMarks.length === 0).map(({ dataValues }) => dataValues);
   },
-  getCourseTasks: async (planId: Id, page: number, limit: number): Promise<PaginatedResult<CourseTask>> => {
+  getCourseTasks: async (planId: Id, page: number, limit: number): Promise<PaginatedResult<CourseTaskWithMark>> => {
     const attributes: Array<keyof Task> = ['id', 'title', 'description'];
 
-    const data: SequelizeRowsAndCount<TaskWithPoints> = await Tasks.findAndCountAll({
+    const data: SequelizeRowsAndCount<TaskWithPointsAndMarks> = await Tasks.findAndCountAll({
       attributes,
       offset: (page - 1) * limit,
         limit,
@@ -144,17 +145,26 @@ const tasksService = {
                   ]
                 }
               ]
+            },
+            {
+              model: TaskMarks,
+              as: 'taskMarks',
+              required: false,
+              where: {
+                plan_id: planId
+              }
             }
         ]
-    }) as unknown as SequelizeRowsAndCount<TaskWithPoints>;
+    }) as unknown as SequelizeRowsAndCount<TaskWithPointsAndMarks>;
 
-    const tasks: CourseTask[] = data.rows.map(task => {
+    const tasks: CourseTaskWithMark[] = data.rows.map(task => {
       return {
         id: task.dataValues.id,
         title: task.dataValues.title,
         description: task.dataValues.description,
         course: task.dataValues.points[0].dataValues.program.dataValues.title,
         point: task.dataValues.points[0].dataValues.title,
+        mark: task.dataValues.taskMarks[0]?.dataValues.mark ?? '-'
       }
     });
 
@@ -163,10 +173,18 @@ const tasksService = {
       totalRecords: data.count
     }
   },
-  getStudentTasks: async (studentId: Id, page: number, limit: number): Promise<PaginatedResult<CourseTask>> => {
+  getStudentTasks: async (studentId: Id, page: number, limit: number): Promise<PaginatedResult<CourseTaskWithMark>> => {
     const attributes: Array<keyof Task> = ['id', 'title', 'description'];
 
-    const data: SequelizeRowsAndCount<TaskWithPoints> = await Tasks.findAndCountAll({
+    const plans: SequelizeReturning<Plan>[] = await Plans.findAll({
+      attributes: ['id'],
+      where: {
+        'student_id': studentId
+      }
+    }) as unknown as SequelizeReturning<Plan>[];
+    const plansIds = plans.map(plan => plan.dataValues.id);
+
+    const data: SequelizeRowsAndCount<TaskWithPointsAndMarks> = await Tasks.findAndCountAll({
       attributes,
       offset: (page - 1) * limit,
         limit,
@@ -187,23 +205,32 @@ const tasksService = {
                       as: 'plans',
                       required: true,
                       where: {
-                        'student_id': studentId
+                        id: plansIds
                       }
                     }
                   ]
                 }
               ]
+            },
+            {
+              model: TaskMarks,
+              as: 'taskMarks',
+              required: false,
+              where: {
+                plan_id: plansIds
+              }
             }
         ]
-    }) as unknown as SequelizeRowsAndCount<TaskWithPoints>;
+    }) as unknown as SequelizeRowsAndCount<TaskWithPointsAndMarks>;
 
-    const tasks: CourseTask[] = data.rows.map(task => {
+    const tasks: CourseTaskWithMark[] = data.rows.map(task => {
       return {
         id: task.dataValues.id,
         title: task.dataValues.title,
         description: task.dataValues.description,
         course: task.dataValues.points[0].dataValues.program.dataValues.title,
         point: task.dataValues.points[0].dataValues.title,
+        mark: task.dataValues.taskMarks[0]?.dataValues.mark ?? '-'
       }
     });
 

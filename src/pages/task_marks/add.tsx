@@ -12,10 +12,10 @@ const { runGetServerSideProps, EditPage } = createEditPage({
 
 export const getServerSideProps = async ({ req, res, query }) => {
   try {
-    await runGetServerSideProps({ query, req, res });
+    const { user } = await runGetServerSideProps({ query, req, res });
     return {
       props: {
-        ...props,
+        user: user,
         ...(await getAddTaskMarkProps({
           planId: +query.plan_id ?? null,
           pointId: +query.point_id ?? null,

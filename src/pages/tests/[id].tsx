@@ -5,30 +5,33 @@ import Head from "next/head";
 import { ROLES, User } from "@projectTypes/user";
 import RedirectError from "@lib/RedirectError";
 import handleRedirectError from "@services/pages/handleRedirectError";
+import AppLayout from "@components/AppLayout";
+import { useMemo } from "react";
+import InfoList from "@components/InfoList";
+import ButtonsRow from "@components/ButtonsRow";
+import NewButton from "@components/NewButton";
+import QuestionMarkIcon from '@mui/icons-material/HelpOutline';
 
 interface SingleTestProps {
   user: User
 }
 
 const SingleTest: React.FC<SingleTestProps> = ({ data, id, mapData, user }) => {
-  if (!data) {
-    return <div>not found</div>;
-  }
+  const items = useMemo(() => [
+    {
+      id: 'description',
+      label: 'Описание',
+      value: data.description
+    }
+  ], [data]);
 
   return (
-    <>
-      <Header role={user.role} />
-      <Head>
-        <title>Тест: {data.title}</title>
-      </Head>
-      <section style={{ padding: 10 }}>
-        <h2 className="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">
-          {data.title}
-        </h2>
-        <FieldsProfile data={data} mapData={mapData} />
-        <LinkButton link={`/questions?test_id=${id}`} text="Вопросы к тесту" />
-      </section>
-    </>
+    <AppLayout userRole={user.role} title={`Тест: ${data.title}`}>
+      <InfoList items={items} />
+      <ButtonsRow>
+        <NewButton link={`/questions?test_id=${id}`} text="Вопросы" icon={<QuestionMarkIcon />} />
+      </ButtonsRow>
+    </AppLayout>
   );
 };
 
@@ -36,14 +39,14 @@ const getServerSideProps = async ({ params, req }) => {
   return await checkRoleAuthentication({
     role: ROLES.TEACHER,
     req,
-    cb: (redirect, user) => {
+    cb: async (redirect, user) => {
       if (redirect) {
         return handleRedirectError(new RedirectError(`Redirection to ${redirect}`, redirect));
       }
 
       return {
         props: {
-          ...getSingleTestProps({ id: +params.id }),
+          ...(await getSingleTestProps({ id: +params.id })),
           user
         },
       };

@@ -52,6 +52,11 @@ const Header: React.FC<HeaderProps> = ({ role }) => {
                   Задания
                 </a>
               </Link>
+              <Link href="/students/tests">
+                <a className="hover:text-gray-200 mr-4" href="#">
+                  Тесты
+                </a>
+              </Link>
             </>) : null}
           </li>
         </ul>
