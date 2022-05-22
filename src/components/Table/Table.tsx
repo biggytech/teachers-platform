@@ -37,8 +37,8 @@ const Table = (props: TableProps) => {
   }
 
   return (
-    <div className="bg-white shadow-md rounded">
-      <table className="min-w-max w-full table-auto">
+    <div className="bg-white shadow-md rounded" style={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+      <table className="min-w-max w-full table-auto" style={{ overflow: 'auto' }}>
         <thead>
           <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
             {columns.map(({ name, displayName }) => (
@@ -52,7 +52,7 @@ const Table = (props: TableProps) => {
           {rows.map((row) => {
             const content = (
               <tr
-                className={`${pathName ? 'cursor-pointer' : ''} border-b border-gray-200 hover:bg-gray-100`}
+                className={`${(pathName || onClick) ? 'cursor-pointer' : ''} border-b border-gray-200 hover:bg-gray-100`}
                 onClick={
                   onClick
                     ? () => window.open(onClick(row), "_blank").focus()
@@ -97,7 +97,7 @@ const Table = (props: TableProps) => {
       </table>
 
       {isUsePagination ? (
-        <>
+        <div style={{ marginTop: 'auto' }}>
           <div>
             <p className="text-sm leading-5 text-blue-700 text-right py-1 px-3">
               Показано <span className="font-medium">{rows?.length || 0}</span>{" "}
@@ -166,7 +166,7 @@ const Table = (props: TableProps) => {
               </svg>
             </Link>
           </div>
-        </>
+        </div>
       ) : null}
     </div>
   );

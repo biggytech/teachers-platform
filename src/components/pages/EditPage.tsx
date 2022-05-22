@@ -35,7 +35,6 @@ const EditPage = (props: EditPageProps) => {
   return (
     <AppLayout userRole={user.role} title={`${title} | ${isEdit ? "Редактировать" : "Добавить"}`}>
       <Form
-        name={isEdit ? `Редактирование` : `Добавить ${name}`}
         action={isEdit ? action(id) : action}
         columns={columns}
         encType={encType}

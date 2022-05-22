@@ -8,6 +8,7 @@ import RedirectError from "@lib/RedirectError";
 import { Id } from "@projectTypes/database";
 import NewButton, { ButtonColors } from "@components/NewButton";
 import AddIcon from '@mui/icons-material/Add';
+import AppLayout from "@components/AppLayout";
 
 type QueryPageCreatorProps = {
   title: string;
@@ -40,11 +41,7 @@ const QueryPage = (props: QueryPageProps) => {
   } = props;
 
   return (
-    <>
-      <Header role={user.role} />
-      <Head>
-        <title>{title}</title>
-      </Head>
+    <AppLayout userRole={user.role} title={title} isNarrow={false}>
       {addLink ? (
         <div style={{ alignSelf: "flex-end", margin: '1em' }}>
           <NewButton
@@ -52,7 +49,6 @@ const QueryPage = (props: QueryPageProps) => {
             text="Добавить"
             icon={<AddIcon />}
             color={ButtonColors.success}
-          // className="float-right"
           />
         </div>
       ) : null}
@@ -68,7 +64,7 @@ const QueryPage = (props: QueryPageProps) => {
         queryParams={queryParams}
         onClick={onClick}
       />
-    </>
+    </AppLayout>
   );
 };
 

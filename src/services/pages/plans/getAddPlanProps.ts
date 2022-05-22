@@ -4,7 +4,7 @@ import programsService from "@db/programs/programsService";
 import checkRoleAuthentication from "../checkRoleAuthentication";
 import { ROLES } from "@projectTypes/user";
 
-const getAddPlanProps = ({ req, res, studentId, user }) => {
+const getAddPlanProps = async ({ req, res, studentId, user }) => {
   const { rows: programs } = await programsService.getAllBy(
     "owner_id",
     user.id,

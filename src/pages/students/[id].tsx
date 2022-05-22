@@ -6,6 +6,11 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { ROLES, User } from "@projectTypes/user";
 import RedirectError from "@lib/RedirectError";
 import handleRedirectError from "@services/pages/handleRedirectError";
+import AppLayout from "@components/AppLayout";
+import ButtonsRow from "@components/ButtonsRow";
+import NewButton, { ButtonColors } from "@components/NewButton";
+import TocIcon from '@mui/icons-material/Toc';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface SingleStudentProps {
   user: User
@@ -31,27 +36,13 @@ const SingleStudent: React.FC<SingleStudentProps> = ({ data, id, mapData, user }
   };
 
   return (
-    <>
-      <Header role={user.role} />
-
+    <AppLayout userRole={user.role} title={`Студент: ${data.firstname} ${data.lastname}`}>
       <UserProfile pageType="Студент" data={data} mapData={mapData} />
-      <div
-        style={{
-          alignSelf: "flex-start",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <LinkButton link={`/plans?student_id=${id}`} text="Учебные планы" />
-        <Button
-          variant="contained"
-          endIcon={<RemoveIcon />}
-          onClick={callDelete}
-        >
-          Удалить
-        </Button>
-      </div>
-    </>
+      <ButtonsRow>
+        <NewButton link={`/plans?student_id=${id}`} text="Учебные планы" icon={<TocIcon />} />
+        <NewButton text="Удалить" color={ButtonColors.error} icon={<DeleteIcon />} onClick={callDelete} />
+      </ButtonsRow>
+    </AppLayout>
   );
 };
 
@@ -59,13 +50,13 @@ const getServerSideProps = async ({ params, req }) => {
   return await checkRoleAuthentication({
     role: ROLES.TEACHER,
     req,
-    cb: (redirect, user) => {
+    cb: async (redirect, user) => {
       if (redirect) {
         return handleRedirectError(new RedirectError(`Redirection to ${redirect}`, redirect));
       }
       return {
         props: {
-          ...getSingleStudentProps({ id: +params.id }),
+          ...(await getSingleStudentProps({ id: +params.id })),
           user
         }
       };

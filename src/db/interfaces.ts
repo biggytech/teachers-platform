@@ -42,6 +42,10 @@ export interface ProgramWithTeacherAndPoints extends Program {
   points: SequelizeReturning<Point>[]
 }
 
+export interface ProgramWithMaterials extends Program {
+  materials: SequelizeReturning<Material>[]
+}
+
 export interface Plan {
   id: number;
   start_date: Date;
@@ -50,8 +54,12 @@ export interface Plan {
 }
 
 export interface PlanWithStudentAndProgram extends Plan {
-  student: Student;
-  program: Program;
+  student: SequelizeReturning<Student>;
+  program: SequelizeReturning<Program>;
+}
+
+export interface PlanWithMaterials extends Plan {
+  program: SequelizeReturning<ProgramWithMaterials>
 }
 
 export interface PlanWithProgramAndTeacher extends Plan {
@@ -59,15 +67,15 @@ export interface PlanWithProgramAndTeacher extends Plan {
 }
 
 export interface Material {
-  id: number;
+  id: Id;
   title: string;
   description?: string;
-  link?: string;
+  link: string;
   program_id: number;
 }
 
 export interface MaterialWithProgram extends Material {
-  program: Program;
+  program: SequelizeReturning<Program>;
 }
 
 export interface Point {

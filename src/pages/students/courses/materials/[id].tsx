@@ -1,21 +1,21 @@
 import { createQueryPage } from "@components/pages";
 import { ROLES } from "@projectTypes/user";
 import handleRedirectError from "@services/pages/handleRedirectError";
-import studentsService from "@db/students/studentsService";
 import logger from "@logger";
+import materialsService from "@db/materials/materialsService";
 
 const { runGetServerSideProps, QueryPage } = createQueryPage({
-  title: "Мои курсы",
+  title: "Учебные материалы",
   accessRole: ROLES.STUDENT,
-  pathName: '/students/courses'
+  onClick: (row) => row.link,
 });
 
 const getServerSideProps = async (data) => {
   try {
     const { user, page, limit, ...props } = await runGetServerSideProps(data);
 
-    const courses = await studentsService.getCoursesByStudent(user.id, page, limit);
-    logger.info('Courses are:', courses);
+    const courses = await materialsService.getCourseMaterials(data.params.id, page, limit);
+    logger.info('Materials are:', courses);
 
     const columns = [
       {
@@ -23,20 +23,20 @@ const getServerSideProps = async (data) => {
         displayName: "Id",
       },
       {
-        name: 'name',
+        name: 'title',
         displayName: "Название",
       },
       {
-        name: 'startDate',
-        displayName: "Дата начала",
+        name: 'link',
+        displayName: "Ссылка",
       },
       {
-        name: 'endDate',
-        displayName: "Дата окончания",
+        name: 'description',
+        displayName: "Описание",
       },
       {
-        name: 'teacher',
-        displayName: "Инструктор",
+        name: 'course',
+        displayName: "Курс",
       }
     ];
 
