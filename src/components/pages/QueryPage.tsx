@@ -6,6 +6,8 @@ import { LinkButton } from "@components";
 import { ROLES, User } from "@projectTypes/user";
 import RedirectError from "@lib/RedirectError";
 import { Id } from "@projectTypes/database";
+import NewButton, { ButtonColors } from "@components/NewButton";
+import AddIcon from '@mui/icons-material/Add';
 
 type QueryPageCreatorProps = {
   title: string;
@@ -44,12 +46,13 @@ const QueryPage = (props: QueryPageProps) => {
         <title>{title}</title>
       </Head>
       {addLink ? (
-        <div style={{ alignSelf: "flex-end" }}>
-          <LinkButton
+        <div style={{ alignSelf: "flex-end", margin: '1em' }}>
+          <NewButton
             link={addLink instanceof Function ? addLink(contextId) : addLink}
             text="Добавить"
-            icon="&#43;&nbsp;&nbsp;"
-            className="float-right"
+            icon={<AddIcon />}
+            color={ButtonColors.success}
+          // className="float-right"
           />
         </div>
       ) : null}

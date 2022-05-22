@@ -134,6 +134,8 @@ const studentsService = {
 
     const data: SequelizeRowsAndCount<PlanWithProgramAndTeacher> = await Plans.findAndCountAll({
       attributes,
+      offset: (page - 1) * limit,
+        limit,
       where: {
         "student_id": studentId
       },
@@ -176,6 +178,46 @@ const studentsService = {
       rows: courses,
       totalRecords: data.count,
     };
+  },
+  getSingleCourse: async (courseId: Id): Promise<Course | null> => {
+const attributes: Array<keyof Plan> = ["id", "start_date", "student_id", "program_id"];
+
+    const data: SequelizeReturning<PlanWithProgramAndTeacher> = await Plans.findByPk(courseId, {
+      attributes,
+      include: [
+        {
+          model: Programs,
+          as: "program",
+          include: [
+            {
+              model: Teachers,
+              as: "teacher"
+            },
+            {
+              model: Points,
+              as: 'points'
+            }
+          ]
+        },        
+      ]
+    }) as unknown as SequelizeReturning<PlanWithProgramAndTeacher>;
+
+    if (!data?.dataValues) return null;
+
+      const points = data.dataValues.program.dataValues.points;
+
+      const startDate = new Date(data.dataValues.start_date);
+      const programDuration = points.reduce((sum, point) => sum + point.dataValues.duration_days, 0);
+      const endDate = new Date(startDate);
+      endDate.setDate(endDate.getDate() + programDuration);
+
+      return {
+        id: data.dataValues.id,
+        name: data.dataValues.program.dataValues.title,
+        startDate: formatDateToGeneral(startDate),
+        endDate: formatDateToGeneral(endDate),
+        teacher: data.dataValues.program.dataValues.teacher.dataValues.firstname + ' ' + data.dataValues.program.dataValues.teacher.dataValues.lastname
+      }
   }
 };
 

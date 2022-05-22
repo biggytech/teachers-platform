@@ -7,12 +7,21 @@ import Head from "next/head";
 import { ROLES, User } from "@projectTypes/user";
 import RedirectError from "@lib/RedirectError";
 import handleRedirectError from "@services/pages/handleRedirectError";
+import AppLayout from "@components/AppLayout";
+import logger from "@logger";
+import { useMemo } from "react";
+import InfoList from "@components/InfoList";
+import ButtonsRow from "@components/ButtonsRow";
+import NewButton, { ButtonColors } from "@components/NewButton";
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import AutoStoriesIcon from '@mui/icons-material/AutoStories';
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 
 interface SingleProgramProps {
   user: User
 }
 
-const SingleProgram: React.FC<SingleProgramProps> = ({ data, id, mapData, user }) => {
+const SingleProgram: React.FC<SingleProgramProps> = ({ data, id, user }) => {
   if (!data) {
     return <div>not found</div>;
   }
@@ -31,39 +40,38 @@ const SingleProgram: React.FC<SingleProgramProps> = ({ data, id, mapData, user }
     }
   };
 
+  logger.info('Program data: ', data);
+
+  const items = useMemo(() => {
+    return [
+      {
+        id: 'title',
+        label: 'Название',
+        value: data.title
+      },
+      {
+        id: 'description',
+        label: 'Описание',
+        value: data.description
+      },
+      {
+        id: 'teacher',
+        label: 'Инструктор',
+        value: data.owner
+      }
+    ];
+  }, [data]);
+
   return (
-    <>
-      <Header role={user.role} />
-      <Head>
-        <title>Учебная программа: {data.title}</title>
-      </Head>
-      <section style={{ padding: 10 }}>
-        <h2 className="uppercase tracking-wide text-lg font-semibold text-gray-700 my-2">
-          {data.title}
-        </h2>
-        <FieldsProfile data={data} mapData={mapData} />
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <LinkButton
-            link={`/points?program_id=${id}`}
-            text="Пункты учебной программы"
-          />
-
-          <LinkButton
-            link={`/materials?program_id=${id}`}
-            text="Материалы учебной программы"
-          />
-          <Button
-            variant="contained"
-            endIcon={<RemoveIcon />}
-            onClick={callDelete}
-          >
-            Удалить
-          </Button>
-
-          <LinkButton link={`/programs/edit/${id}`} text="Редактировать" />
-        </div>
-      </section>
-    </>
+    <AppLayout userRole={user.role} title={`Учебная программа: "${data.title}"`}>
+      <InfoList items={items} />
+      <ButtonsRow>
+        <NewButton link={`/points?program_id=${id}`} text="Пункты" icon={<FormatListBulletedIcon />} />
+        <NewButton link={`/materials?program_id=${id}`} text="Учебные материалы" icon={<AutoStoriesIcon />} />
+        <NewButton color={ButtonColors.warning} link={`/programs/edit/${id}`} text="Редактировать" icon={<DriveFileRenameOutlineIcon />} />
+        <NewButton color={ButtonColors.error} text="Удалить" icon={<RemoveIcon />} onClick={callDelete} />
+      </ButtonsRow>
+    </AppLayout>
   );
 };
 

@@ -16,7 +16,7 @@ const getServerSideProps = async (data) => {
     const props = await runGetServerSideProps(data);
     return {
       props: {
-        ...props,
+        user: props.user,
         ...(await getAddMaterialProps({
           ...props,
           programId: +props.query.program_id || null,

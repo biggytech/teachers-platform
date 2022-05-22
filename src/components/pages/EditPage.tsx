@@ -4,6 +4,7 @@ import { Form, Header } from "@components";
 import { checkRoleAuthentication } from "@services/pages";
 import { ROLES, User } from "@projectTypes/user";
 import RedirectError from "@lib/RedirectError";
+import AppLayout from "@components/AppLayout";
 
 type EditPageCreatorProps = {
   title: string;
@@ -32,13 +33,7 @@ const EditPage = (props: EditPageProps) => {
   } = props;
 
   return (
-    <>
-      <Head>
-        <title>
-          {title} | {isEdit ? "Редактировать" : "Добавить"}
-        </title>
-      </Head>
-      <Header role={user.role} />
+    <AppLayout userRole={user.role} title={`${title} | ${isEdit ? "Редактировать" : "Добавить"}`}>
       <Form
         name={isEdit ? `Редактирование` : `Добавить ${name}`}
         action={isEdit ? action(id) : action}
@@ -46,7 +41,7 @@ const EditPage = (props: EditPageProps) => {
         encType={encType}
         data={data}
       />
-    </>
+    </AppLayout>
   );
 };
 

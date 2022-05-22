@@ -7,6 +7,8 @@ import React, {
 import { Input } from "@components/fields";
 import { ColumnDefinitionWithValue } from "@db/Schema";
 import { HtmlType } from "@db/DataTypes";
+import NewButton, { ButtonColors } from "@components/NewButton";
+import SaveIcon from '@mui/icons-material/Save';
 
 type FormProps = {
   name: string;
@@ -103,12 +105,12 @@ const Form = forwardRef((props: FormProps, ref) => {
               >
                 {"options" in column.type
                   ? column.type.options.map((option) => {
-                      return (
-                        <option key={option.name} value={option.name}>
-                          {option.displayName}
-                        </option>
-                      );
-                    })
+                    return (
+                      <option key={option.name} value={option.name}>
+                        {option.displayName}
+                      </option>
+                    );
+                  })
                   : null}
               </select>
             </label>
@@ -116,12 +118,12 @@ const Form = forwardRef((props: FormProps, ref) => {
         }
       })}
       {action && (
-        <button
+        <NewButton
+          color={ButtonColors.success}
+          icon={<SaveIcon />}
+          text="Отправить"
           type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-        >
-          Отправить
-        </button>
+        />
       )}
     </form>
   );

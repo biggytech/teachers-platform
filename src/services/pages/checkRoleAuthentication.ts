@@ -3,7 +3,7 @@ import { Authenticator } from '@services/Authenticator';
 import { ROLES, User } from '@projectTypes/user';
 
 
-const checkRoleAuthentication = async ({ req, cb, role }: { role: ROLES, cb: (redirect: string | null, user?: User) => void }) => {
+const checkRoleAuthentication = async ({ req, cb, role }: { req: any, role: ROLES, cb: (redirect: string | null, user?: User) => void }) => {
   const user = await Authenticator.userFromRequest(req);
 
   if (!user) {

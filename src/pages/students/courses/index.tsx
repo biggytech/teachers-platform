@@ -6,7 +6,8 @@ import logger from "@logger";
 
 const { runGetServerSideProps, QueryPage } = createQueryPage({
   title: "Мои курсы",
-  accessRole: ROLES.STUDENT
+  accessRole: ROLES.STUDENT,
+  pathName: '/students/courses'
 });
 
 const getServerSideProps = async (data) => {
