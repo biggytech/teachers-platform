@@ -14,8 +14,8 @@ const getServerSideProps = async (data) => {
   try {
     const { user, page, limit, ...props } = await runGetServerSideProps(data);
 
-    const courses = await materialsService.getCourseMaterials(data.params.id, page, limit);
-    logger.info('Materials are:', courses);
+    const materials = await materialsService.getCourseMaterials(data.params.id, page, limit);
+    logger.info('Materials are:', materials);
 
     const columns = [
       {
@@ -45,8 +45,8 @@ const getServerSideProps = async (data) => {
         user,
         data: {
           columns,
-          rows: courses.rows,
-          totalRecords: courses.totalRecords,
+          rows: materials.rows,
+          totalRecords: materials.totalRecords,
           pageSize: limit,
           page,
         }

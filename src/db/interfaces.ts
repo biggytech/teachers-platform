@@ -53,9 +53,12 @@ export interface Plan {
   program_id: number;
 }
 
-export interface PlanWithStudentAndProgram extends Plan {
-  student: SequelizeReturning<Student>;
+export interface PlanWithProgram extends Plan {
   program: SequelizeReturning<Program>;
+}
+
+export interface PlanWithStudentAndProgram extends PlanWithProgram {
+  student: SequelizeReturning<Student>;
 }
 
 export interface PlanWithMaterials extends Plan {
@@ -115,9 +118,9 @@ export interface TaskMark {
   plan_id: number;
 };
 
-export interface TaskMarkWithTaskAndProgram extends TaskMark {
-  task: Task;
-  program: Program;
+export interface TaskMarkWithTaskAndPlan extends TaskMark {
+  task: SequelizeReturning<Task>;
+  plan: SequelizeReturning<PlanWithProgram>;
 }
 
 export interface Test {
@@ -173,4 +176,9 @@ export interface TestMark {
 export interface TestMarkWithTestAndProgram extends TestMark {
   test: Test;
   program: Program;
+}
+
+export interface TestMarkWithTestAndPlan extends TestMark {
+  test: SequelizeReturning<Test>;
+  plan: SequelizeReturning<PlanWithProgram>;
 }

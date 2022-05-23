@@ -1,14 +1,21 @@
-import Head from "next/head";
-import { Table, Header } from "@components";
+import { Table } from "@components";
 import { checkRoleAuthentication } from "@services/pages";
-
-import { LinkButton } from "@components";
 import { ROLES, User } from "@projectTypes/user";
 import RedirectError from "@lib/RedirectError";
 import { Id } from "@projectTypes/database";
 import NewButton, { ButtonColors } from "@components/NewButton";
 import AddIcon from '@mui/icons-material/Add';
 import AppLayout from "@components/AppLayout";
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import { useEffect, useState } from "react";
+
+interface ITab {
+  query: string;
+  label: string;
+}
 
 type QueryPageCreatorProps = {
   title: string;
@@ -19,6 +26,7 @@ type QueryPageCreatorProps = {
   queryParams?: any;
   onClick?: Function;
   accessRole: ROLES;
+  tabs?: ITab[]
 };
 
 interface QueryPageProps extends QueryPageCreatorProps {
@@ -37,8 +45,25 @@ const QueryPage = (props: QueryPageProps) => {
     queryParams,
     onClick,
     user,
-
+    tabs
   } = props;
+  const [activeTab, setActiveTab] = useState(tabs?.length ? tabs[0].query : null);
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const activeTab = searchParams.get('tab');
+    if (activeTab) {
+      setActiveTab(activeTab)
+    }
+  }, []);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    if (newValue !== activeTab) {
+      const searchParams = new URLSearchParams(window.location.search);
+      searchParams.set("tab", newValue);
+      window.location.search = searchParams.toString();
+    }
+  };
 
   return (
     <AppLayout userRole={user.role} title={title} isNarrow={false}>
@@ -51,6 +76,13 @@ const QueryPage = (props: QueryPageProps) => {
             color={ButtonColors.success}
           />
         </div>
+      ) : null}
+      {tabs ? (
+        <Box sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: '0.5rem' }}>
+          <Tabs value={activeTab} onChange={handleChange}>
+            {tabs.map(({ query, label }) => <Tab key={query} value={query} label={label} />)}
+          </Tabs>
+        </Box>
       ) : null}
       <Table
         pathName={pathName}
