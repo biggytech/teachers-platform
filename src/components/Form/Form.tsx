@@ -11,8 +11,9 @@ import { HtmlType } from "@db/DataTypes";
 import NewButton, { ButtonColors } from "@components/NewButton";
 import SaveIcon from '@mui/icons-material/Save';
 import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import DateInput from "@components/DateInput";
+import Checkbox from '@mui/material/Checkbox';
 
 type FormProps = {
   name?: string;
@@ -83,20 +84,12 @@ const Form = forwardRef((props: FormProps, ref) => {
             <label key={column.name}>
               {column.displayName}
               <Select
-                // labelId="demo-multiple-name-label"
-                // id="demo-multiple-name"
-                // multiple
-                // value={personName}
-                // onChange={handleChange}
-                // input={<OutlinedInput label="Name" />}
-                // MenuProps={MenuProps}
                 name={column.name}
                 required={column.isRequired}
                 data-input-name={column.name}
                 defaultValue={data?.[column.name] ?? column.value}
                 style={{
                   width: "100%",
-                  // border: "1px solid black",
                   marginBottom: "10px",
                 }}
               >
@@ -109,37 +102,7 @@ const Form = forwardRef((props: FormProps, ref) => {
                     );
                   })
                   : null}
-                {/* {names.map((name) => (
-                <MenuItem
-                  key={name}
-                  value={name}
-                  style={getStyles(name, personName, theme)}
-                >
-                  {name}
-                </MenuItem>
-              ))} */}
               </Select>
-              {/* <select
-                name={column.name}
-                required={column.isRequired}
-                data-input-name={column.name}
-                defaultValue={data?.[column.name] ?? column.value}
-                style={{
-                  width: "100%",
-                  border: "1px solid black",
-                  marginBottom: "10px",
-                }}
-              >
-                {"options" in column.type
-                  ? column.type.options.map((option) => {
-                    return (
-                      <option key={option.name} value={option.name}>
-                        {option.displayName}
-                      </option>
-                    );
-                  })
-                  : null}
-              </select> */}
             </label>
           );
         } else if (column.type.htmlType === HtmlType.date) {
@@ -148,6 +111,19 @@ const Form = forwardRef((props: FormProps, ref) => {
             value={data?.[column.name] ?? column.value}
             name={column.name}
           />
+        } else if (column.type.htmlType === HtmlType.checkbox) {
+          return <div className="mb-6">
+            <label
+              htmlFor={`column-${name}`}
+              className="text-sm font-medium text-gray-900 block mb-2"
+            >
+              {column.displayName}
+            </label>
+            <Checkbox key={column.name} inputProps={{
+              name: column.name,
+              'data-input-name': column.name,
+              defaultValue: data?.[column.name] ?? column.value,
+            }} /></div>
         } else {
           return (
             <Input
@@ -155,11 +131,7 @@ const Form = forwardRef((props: FormProps, ref) => {
               name={column.name}
               displayName={column.displayName}
               type={HtmlType[column.type.htmlType]}
-              isRequired={
-                column.type.htmlType === HtmlType.checkbox
-                  ? false
-                  : column.isRequired
-              }
+              isRequired={column.isRequired}
               data-input-name={column.name}
               defaultValue={data?.[column.name] ?? column.value}
             />

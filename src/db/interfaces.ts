@@ -146,8 +146,17 @@ export interface TestPoint {
   point_id: number;
 }
 
+export interface TestWithQuestionsAndAnswers extends Test {
+  questions: SequelizeReturning<QuestionWithAnswers>[];
+  testMarks: SequelizeReturning<TestMark>[]
+}
+
+export interface TestWithFullQuestionsAndAnswers extends Test {
+  questions: SequelizeReturning<QuestionWithFullAnswers>[];
+}
+
 export interface Question {
-  id: number;
+  id: Id;
   description: string;
   test_id: number;
 }
@@ -156,13 +165,23 @@ export interface QuestionWithTest extends Question {
   test: Test;
 }
 
+export interface QuestionWithAnswers extends Question {
+  answers: SequelizeReturning<AnswerWithoutIsCorrect>[]
+}
+
+export interface QuestionWithFullAnswers extends Question {
+  answers: SequelizeReturning<Answer>[]
+}
+
 export interface Answer {
-  id: number;
+  id: Id;
   description: string;
   is_correct: boolean;
   question_id: number;
 }
 
+
+export type AnswerWithoutIsCorrect = Omit<Answer, 'is_correct'>
 export interface AnswerWithQuestion extends Answer {
   question: Question;
 }

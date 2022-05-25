@@ -15,10 +15,10 @@ export const getServerSideProps = async ({ query, req, res }) => {
     const props = await runGetServerSideProps({ query, req, res });
     return {
       props: {
-        ...props,
-        ...getAddAnswersProps({
+        user: props.user,
+        ...(await getAddAnswersProps({
           questionId: +query.question_id || null,
-        }),
+        })),
       },
     };
   } catch (err) {

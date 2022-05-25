@@ -1,8 +1,6 @@
-import { UserProfile, Header, LinkButton } from "@components";
+import { UserProfile } from "@components";
 import { getSingleStudentProps } from "@services/pages/students";
 import { checkRoleAuthentication } from "@services/pages";
-import Button from "@mui/material/Button";
-import RemoveIcon from "@mui/icons-material/Remove";
 import { ROLES, User } from "@projectTypes/user";
 import RedirectError from "@lib/RedirectError";
 import handleRedirectError from "@services/pages/handleRedirectError";

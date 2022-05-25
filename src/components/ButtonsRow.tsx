@@ -1,7 +1,11 @@
 import Stack from '@mui/material/Stack';
 
-const ButtonsRow: React.FC = ({ children }) => {
-  return <Stack spacing={2} direction="row">
+interface ButtonsRowProps {
+  style?: object;
+}
+
+const ButtonsRow: React.FC<ButtonsRowProps> = ({ children, style }) => {
+  return <Stack spacing={2} direction="row" style={style}>
     {children}
   </Stack>
 }

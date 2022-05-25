@@ -7,6 +7,7 @@ import testsService from "@db/tests/testsService";
 const { runGetServerSideProps, QueryPage } = createQueryPage({
   title: "Тесты",
   accessRole: ROLES.STUDENT,
+  pathName: '/students/tests'
 });
 
 const getServerSideProps = async (data) => {
