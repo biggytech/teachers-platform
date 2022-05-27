@@ -121,7 +121,7 @@ export const createQueryPage = ({ accessRole,
 
             resolve({
               page: +query.page || 1,
-              limit: +query.limit || 20,
+              limit: +query.limit || 5,
               userId: user.id,
               query,
               user
